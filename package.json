@@ -1,6 +1,6 @@
 {
   "name": "@rehookify/datepicker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React hook for ui-independent datepicker logic",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
@@ -25,7 +25,7 @@
     "clean": "rimraf dist",
     "build": "rollup -c ./rollup/rollup.config.js",
     "build:types": "tsc --noEmit",
-    "lint:fix": "eslint --fix 'src/**/*.{ts,tsx}' && prettier --write 'src/**/*.{ts,tsx,css}'",
+    "lint:fix": "eslint src/ --fix",
     "prebuild": "npm run clean",
     "prepare": "husky install"
   },
@@ -67,6 +67,7 @@
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "husky": "^8.0.0",
     "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
     "react": "^18.2.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.79.1",
@@ -80,8 +81,7 @@
     "react": "^16.8.0 || ^17 || ^18"
   },
   "dependencies": {
-    "dayjs": "^1.11.6",
-    "prettier": "^2.7.1"
+    "dayjs": "^1.11.6"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [

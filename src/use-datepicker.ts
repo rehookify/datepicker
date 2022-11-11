@@ -1,29 +1,10 @@
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { useState } from 'react';
 
 import { DAYS_ARRAY, DAYS_NAMES, MONTHS_NAMES, NOW } from './constants';
-import {
-  CalendarDay,
-  CalendarMonth,
-  CreateCalendarDay,
-  PropsGetterConfig,
-} from './types';
+import { CalendarDay, CalendarMonth, PropsGetterConfig } from './types';
+import { createCalendarDay } from './utils/create-calendar-day';
 import { isFunction } from './utils/predicates';
-
-const createCalendarDay: CreateCalendarDay = (
-  day,
-  currentDate,
-  selectedDate,
-) => ({
-  $day: day,
-  date: day.format('DD.MM.YYYY'),
-  day: day.format('DD'),
-  month: day.format('MM'),
-  year: day.format('YYYY'),
-  currentDisplayedMonth: day.format('MM') === currentDate.format('MM'),
-  isToday: dayjs().isSame(day, 'day'),
-  isSelected: day.isSame(selectedDate, 'day'),
-});
 
 export const useDatepicker = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(NOW);
