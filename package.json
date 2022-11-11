@@ -1,0 +1,94 @@
+{
+  "name": "@rehookify/datepicker",
+  "version": "0.0.1",
+  "description": "React hook for ui-independent datepicker logic",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.mjs",
+  "umd:main": "dist/index.umd.js",
+  "unpkg": "dist/index.umd.js",
+  "jsdelivr": "dist/index.umd.js",
+  "jsnext:main": "dist/index.esm.mjs",
+  "source": "src/index.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.mjs",
+      "require": "./dist/index.cjs.js"
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "rollup -c ./rollup/rollup.config.js",
+    "build:types": "tsc --noEmit",
+    "lint:fix": "eslint --fix 'src/**/*.{ts,tsx}' && prettier --write 'src/**/*.{ts,tsx,css}'",
+    "prebuild": "npm run clean",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rehookify/datepicker.git"
+  },
+  "keywords": [
+    "react",
+    "hook",
+    "react-hooks",
+    "typescript",
+    "datepicker",
+    "react-datepicker",
+    "datepicker-hook",
+    "react-datepicker-hook",
+    "rangepicker",
+    "react-rangepicker",
+    "rangepicker-hook",
+    "react-rangepicker-hook"
+  ],
+  "author": "<pavel.feschenko@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rehookify/datepicker/issues"
+  },
+  "homepage": "https://github.com/rehookify/datepicker#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@types/react": "^18.0.25",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "eslint": "^8.27.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^8.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
+    "react": "^18.2.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.79.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "typescript": "^4.8.4"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17 || ^18"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.6",
+    "prettier": "^2.7.1"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "yarn lint:fix"
+    ]
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
