@@ -1,6 +1,6 @@
 {
   "name": "@rehookify/datepicker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React hook for ui-independent datepicker logic",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
@@ -9,6 +9,7 @@
   "jsdelivr": "dist/index.umd.js",
   "jsnext:main": "dist/index.esm.mjs",
   "source": "src/index.ts",
+  "types": "dist/index.d.ts",
   "sideEffects": false,
   "files": [
     "dist"
@@ -24,10 +25,11 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "rollup -c ./rollup/rollup.config.js",
-    "build:types": "tsc --noEmit",
+    "build:watch": "rollup -c ./rollup/rollup.config.js -w",
     "lint:fix": "eslint src/ --fix",
     "prebuild": "npm run clean",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepublishOnly": "npm run clean && npm run build"
   },
   "repository": {
     "type": "git",
@@ -90,5 +92,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }
