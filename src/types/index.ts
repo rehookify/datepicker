@@ -1,9 +1,5 @@
 import type { Dayjs } from 'dayjs';
-
-export interface CalendarMonth {
-  name: string;
-  index: number;
-}
+import type { MouseEvent } from 'react';
 
 export interface CalendarDay {
   $day: Dayjs;
@@ -15,12 +11,63 @@ export interface CalendarDay {
   isSelected: boolean;
 }
 
+export interface CalendarMonth {
+  name: string;
+  $day: Dayjs;
+  isSelected: boolean;
+}
+
+export interface CalendarYear {
+  value: number;
+  $day: Dayjs;
+  isSelected: boolean;
+}
+
 export type CreateCalendarDay = (
   day: Dayjs,
   currentDate: Dayjs,
-  selectedDate: Dayjs,
+  selectedDate: Dayjs | null,
 ) => CalendarDay;
 
+export type CreateCalendarMonth = (
+  index: number,
+  currentDate: Dayjs,
+) => CalendarMonth;
+
+export type CreateCalendarYear = (
+  offset: number,
+  currentYear: number,
+  currentDate: Dayjs,
+) => CalendarYear;
+
 export interface PropsGetterConfig extends Record<string, unknown> {
-  onClick?(day: Dayjs): void;
+  onClick?(day?: Dayjs, evt?: MouseEvent<HTMLElement>): void;
+  onClick?(evt?: MouseEvent<HTMLElement>): void;
+  disabled?: boolean;
+}
+
+export type CalendarMode = 'static' | 'fluid';
+export interface CalendarConfig {
+  mode?: CalendarMode;
+  selectNow?: boolean;
+}
+
+export type YearsPagination = 'decade' | 'centered';
+export interface YearsConfig {
+  numberOfYearsDisplayed?: number;
+  pagination?: YearsPagination;
+  disablePagination?: boolean;
+}
+
+export interface MinMaxDate {
+  day: number;
+  month: number;
+  year: number;
+}
+
+export interface DatePickerConfig {
+  calendar?: CalendarConfig;
+  years?: YearsConfig;
+  minDate?: MinMaxDate | undefined;
+  maxDate?: MinMaxDate | undefined;
 }

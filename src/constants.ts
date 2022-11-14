@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import { CalendarMonth } from './types';
+import { CalendarConfig, YearsConfig } from './types';
 
 /*
  * It is used for static 🗓 to cover all possible month start and end date combination
@@ -24,12 +24,19 @@ export const DAYS_NAMES: string[] = Array(7)
   .fill(1)
   .map((el, index) => NOW.day(el + index).format('ddd'));
 
-// @TODO generate it using dayjs localization and format from config
-// Indexes in dayjs starts from 0
-// [{ name: 'January', index: 0 }, { name: 'February', index: 1 }, ...]
-export const MONTHS_NAMES: CalendarMonth[] = Array(12)
-  .fill(0)
-  .map((_, index) => ({
-    name: NOW.month(index).format('MMMM'),
-    index,
-  }));
+export const MONTHS_NAMES: number[] = Array(12).fill(0);
+
+// Number of yearn by default to mimic number of month
+// It will be easy to reuse same layout for years picker
+export const NUMBER_OF_YEARS_DISPLAYED = 12;
+
+export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
+  mode: 'static',
+  selectNow: false,
+};
+
+export const DEFAULT_CONFIG_YEARS: YearsConfig = {
+  numberOfYearsDisplayed: NUMBER_OF_YEARS_DISPLAYED,
+  pagination: 'decade',
+  disablePagination: false,
+};

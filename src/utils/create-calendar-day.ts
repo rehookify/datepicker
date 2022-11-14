@@ -13,5 +13,5 @@ export const createCalendarDay: CreateCalendarDay = (
   year: day.format('YYYY'),
   currentDisplayedMonth: day.format('MM') === currentDate.format('MM'),
   isToday: dayjs().isSame(day, 'day'),
-  isSelected: day.isSame(selectedDate, 'day'),
+  isSelected: day.isSame(selectedDate || '', 'day'),
 });
