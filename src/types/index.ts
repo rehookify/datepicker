@@ -9,6 +9,7 @@ export interface CalendarDay {
   year: string;
   currentDisplayedMonth: boolean;
   isSelected: boolean;
+  isToday: boolean;
 }
 
 export interface CalendarMonth {
@@ -59,15 +60,18 @@ export interface YearsConfig {
   disablePagination?: boolean;
 }
 
-export interface MinMaxDate {
-  day: number;
-  month: number;
-  year: number;
+export interface DatePickerUserConfig {
+  calendar?: CalendarConfig;
+  years?: YearsConfig;
+  minDate?: Date | undefined;
+  maxDate?: Date | undefined;
+  selectedDate?: Date | undefined;
 }
 
 export interface DatePickerConfig {
-  calendar?: CalendarConfig;
-  years?: YearsConfig;
-  minDate?: MinMaxDate | undefined;
-  maxDate?: MinMaxDate | undefined;
+  calendar: CalendarConfig;
+  years: YearsConfig;
+  minDate: Dayjs | null;
+  maxDate: Dayjs | null;
+  selectedDate: Dayjs | null;
 }

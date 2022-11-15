@@ -7,7 +7,7 @@ import {
   CalendarMonth,
   CalendarYear,
   PropsGetterConfig,
-  DatePickerConfig,
+  DatePickerUserConfig,
 } from './types';
 import {
   createCalendarDay,
@@ -17,20 +17,23 @@ import {
   getStartDecadePosition,
   isFunction,
   createConfig,
+  getCalendarDate,
 } from './utils';
 
-export const useDatepicker = (userConfig?: DatePickerConfig) => {
+export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   const config = createConfig(userConfig);
 
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(
-    config.calendar.selectNow ? NOW : null,
+    config.selectedDate || (config.calendar.selectNow ? NOW : null),
   );
-  const [calendarDate, setCalendarDate] = useState<Dayjs>(selectedDate || NOW);
+  const [calendarDate, setCalendarDate] = useState<Dayjs>(
+    selectedDate || getCalendarDate(config),
+  );
   const [currentYear, setCurrentYear] = useState<number>(() =>
     getStartDecadePosition(Number(calendarDate.format('YYYY'))),
   );
 
-  const previousMonthLastDay = Number(calendarDate.date(0).format('d'));
+  const previousMonthLastDay = calendarDate.date(0).day();
 
   const calendar = DAYS_ARRAY.map((el, index) =>
     createCalendarDay(
@@ -59,7 +62,7 @@ export const useDatepicker = (userConfig?: DatePickerConfig) => {
     setMonthAndYear(day);
   };
 
-  const onMonthClick = (day: Dayjs) => setCalendarDate(day);
+  const onMonthClick = setCalendarDate;
 
   const onNextMonthClick = () => setMonthAndYear(calendarDate.add(1, 'month'));
 
@@ -99,6 +102,26 @@ export const useDatepicker = (userConfig?: DatePickerConfig) => {
     };
   };
 
+  const monthButton = (
+    { $day }: CalendarMonth,
+    { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
+  ) => {
+    const disabled =
+      !!disabledProps ||
+      (config.minDate && $day.isBefore(config.minDate.date(1))) ||
+      (config.maxDate && $day.date(1).isAfter(config.maxDate));
+
+    return {
+      onClick(evt: MouseEvent<HTMLElement>) {
+        if (disabled) return;
+        onMonthClick($day);
+        if (onClick && isFunction(onClick)) onClick($day, evt);
+      },
+      ...createButtonProps(disabled as boolean),
+      ...rest,
+    };
+  };
+
   const nextMonthButton = ({
     onClick,
     disabled: disabledProps,
@@ -106,7 +129,8 @@ export const useDatepicker = (userConfig?: DatePickerConfig) => {
   }: PropsGetterConfig = {}) => {
     const nextMonth = calendarDate.add(1, 'month');
     const disabled =
-      !!disabledProps || (config.maxDate && nextMonth.isAfter(config.maxDate));
+      !!disabledProps ||
+      (config.maxDate && nextMonth.date(1).isAfter(config.maxDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -126,7 +150,8 @@ export const useDatepicker = (userConfig?: DatePickerConfig) => {
   }: PropsGetterConfig = {}) => {
     const nextMonth = calendarDate.subtract(1, 'month');
     const disabled =
-      !!disabledProps || (config.minDate && nextMonth.isBefore(config.minDate));
+      !!disabledProps ||
+      (config.minDate && nextMonth.isBefore(config.minDate.date(1)));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -139,34 +164,14 @@ export const useDatepicker = (userConfig?: DatePickerConfig) => {
     };
   };
 
-  const monthButton = (
-    { $day }: CalendarMonth,
-    { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
-  ) => {
-    const disabled =
-      !!disabledProps ||
-      (config.minDate && $day.isBefore(config.minDate)) ||
-      (config.maxDate && $day.isAfter(config.maxDate));
-
-    return {
-      onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled) return;
-        onMonthClick($day);
-        if (onClick && isFunction(onClick)) onClick($day, evt);
-      },
-      ...createButtonProps(disabled as boolean),
-      ...rest,
-    };
-  };
-
   const yearButton = (
     { $day }: CalendarYear,
     { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
   ) => {
     const disabled =
       !!disabledProps ||
-      (config.minDate && $day.isBefore(config.minDate)) ||
-      (config.maxDate && $day.isAfter(config.maxDate));
+      (config.minDate && $day.isBefore(config.minDate.date(1))) ||
+      (config.maxDate && $day.date(1).isAfter(config.maxDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {

@@ -2,8 +2,8 @@ export { createCalendarDay } from './create-calendar-day';
 export { createCalendarMonth } from './create-calendar-month';
 export { createCalendarYear } from './create-calendar-year';
 export { createConfig } from './create-config';
-export { createDayFromDate } from './create-day-from-date';
 export { createButtonProps } from './create-button-props';
+export { getCalendarDate } from './get-calendar-date';
 export {
   getCenteredYearPosition,
   getStartDecadePosition,
