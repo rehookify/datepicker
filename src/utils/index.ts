@@ -10,4 +10,5 @@ export {
   getCenteredYearPosition,
   getStartDecadePosition,
 } from './get-current-year-position';
+export { getMultipleDates } from './get-multiple-dates';
 export { isFunction, isBoolean } from './predicates';

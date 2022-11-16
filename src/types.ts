@@ -29,14 +29,14 @@ export type CreateCalendarDay = (
   day: Date,
   currentDate: Date,
   selectedDates: Date[],
-  locale: Intl.LocalesArgument,
+  locale: LocaleConfig,
 ) => CalendarDay;
 
 export type CreateCalendarMonth = (
   day: Date,
   currentDate: Date,
   selectedDates: Date[],
-  locale: Intl.LocalesArgument,
+  locale: LocaleConfig,
 ) => CalendarMonth;
 
 export type CreateCalendarYear = (
@@ -55,16 +55,17 @@ export interface PropsGetterConfig extends Record<string, unknown> {
 export type DatesMode = 'single' | 'multiple' | 'range';
 export interface DatesUserConfig {
   mode?: DatesMode;
-  minDate?: Date | undefined;
-  maxDate?: Date | undefined;
-  selectedDate?: Date | Date[] | undefined;
+  minDate?: Date;
+  maxDate?: Date;
+  selectedDate?: Date | Date[];
+  toggle?: boolean;
+  limit?: number;
 }
 
 export type CalendarMode = 'static' | 'fluid';
 export interface CalendarConfig {
   mode?: CalendarMode;
   selectNow?: boolean;
-  locale?: Intl.LocalesArgument;
 }
 
 export type YearsPagination = 'decade' | 'centered';
@@ -74,10 +75,17 @@ export interface YearsConfig {
   disablePagination?: boolean;
 }
 
+export interface LocaleConfig {
+  locale?: Intl.LocalesArgument;
+  options?: Intl.DateTimeFormatOptions;
+  monthName: Intl.DateTimeFormatOptions['month'];
+}
+
 export interface DatePickerUserConfig {
   calendar?: CalendarConfig;
   years?: YearsConfig;
   dates?: DatesUserConfig;
+  locale?: LocaleConfig;
 }
 
 export interface DatesConfig {
@@ -85,12 +93,15 @@ export interface DatesConfig {
   minDate: Date | null;
   maxDate: Date | null;
   selectedDates: Date[] | null;
+  toggle: boolean;
+  limit: number;
 }
 
 export interface DatePickerConfig {
   calendar: CalendarConfig;
   years: YearsConfig;
   dates: DatesConfig;
+  locale: LocaleConfig;
 }
 
 export type DatePart = 'year' | 'month' | 'date';

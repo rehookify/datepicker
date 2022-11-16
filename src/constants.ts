@@ -1,4 +1,9 @@
-import { CalendarConfig, DatesConfig, YearsConfig } from './types';
+import {
+  CalendarConfig,
+  DatesConfig,
+  LocaleConfig,
+  YearsConfig,
+} from './types';
 import { getCleanDate } from './utils';
 
 /*
@@ -27,7 +32,6 @@ export const NUMBER_OF_YEARS_DISPLAYED = 12;
 export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
   mode: 'static',
   selectNow: false,
-  locale: 'en',
 };
 
 export const DEFAULT_YEARS_CONFIG: YearsConfig = {
@@ -38,4 +42,16 @@ export const DEFAULT_YEARS_CONFIG: YearsConfig = {
 
 export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
   mode: 'single',
+  toggle: false,
+};
+
+export const DEFAULT_LOCALE_CONFIG: LocaleConfig = {
+  locale: navigator?.language || 'en',
+  options: {
+    weekday: 'short',
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  },
+  monthName: 'long',
 };

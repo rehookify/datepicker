@@ -23,26 +23,25 @@ import {
   isBefore,
   isAfter,
   getFirstMonthDay,
+  getMultipleDates,
 } from './utils';
 
 export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   const config = createConfig(userConfig);
-  const { dates } = config;
+  const { dates, calendar, locale, years } = config;
 
   const [selectedDates, setSelectedDates] = useState<Date[]>(() => {
-    if (config.dates?.selectedDates) {
-      return config.dates.selectedDates;
+    if (dates.selectedDates) {
+      return dates.selectedDates;
     }
 
-    return config.calendar.selectNow ? [NOW] : [];
+    return calendar.selectNow ? [NOW] : [];
   });
-
   const [calendarDate, setCalendarDate] = useState<Date>(
     selectedDates.length > 0
       ? selectedDates[selectedDates.length - 1]
       : getCalendarDate(config),
   );
-
   const [currentYear, setCurrentYear] = useState<number>(
     getStartDecadePosition(calendarDate.getFullYear()),
   );
@@ -56,17 +55,17 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
       new Date(NOW_YEAR, NOW_MONTH, el - firstDayOffset + index + 1),
       calendarDate,
       selectedDates,
-      config.calendar.locale,
+      locale,
     ),
   );
 
-  const weekDays = calendars
-    .slice(0, 7)
-    .map(({ $day }) =>
-      $day.toLocaleDateString(config.calendar.locale, { weekday: 'short' }),
-    );
+  const weekDays = calendars.slice(0, 7).map(({ $day }) =>
+    $day.toLocaleDateString(locale.locale, {
+      weekday: locale.options?.weekday,
+    }),
+  );
 
-  const years = Array(config.years.numberOfYearsDisplayed)
+  const calendarYears = Array(years.numberOfYearsDisplayed)
     .fill(1)
     .map((_, index) =>
       createCalendarYear(index, currentYear, calendarDate, selectedDates),
@@ -77,7 +76,7 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
       new Date(calendarDate.getFullYear(), index, 1),
       calendarDate,
       selectedDates,
-      config.calendar.locale,
+      locale,
     ),
   );
 
@@ -88,7 +87,7 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
 
   // Actions
   const onDayClick = (day: Date) => {
-    setSelectedDates([day]);
+    setSelectedDates(getMultipleDates(selectedDates, day, dates));
     setMonthAndYear(day);
   };
 
@@ -108,14 +107,14 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
 
   const reset = (day?: Date) => {
     const resetDay = ensureArray(day) as Date[];
-    const nowDay = config.calendar.selectNow ? [NOW] : [];
+    const nowDay = calendar.selectNow ? [NOW] : [];
     setSelectedDates(resetDay.length > 0 ? resetDay : nowDay);
     setMonthAndYear(resetDay[0]);
   };
 
   // propsGetter
   const dayButton = (
-    { $day }: CalendarDay,
+    { $day, isSelected }: CalendarDay,
     { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
   ) => {
     const disabled =
@@ -125,7 +124,7 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled) return;
+        if (disabled || (isSelected && !dates.toggle)) return;
         onDayClick($day);
         if (onClick && isFunction(onClick)) onClick($day, evt);
       },
@@ -223,8 +222,9 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   }: PropsGetterConfig = {}) => {
     const disabled =
       !!disabledProps ||
-      config.years.disablePagination ||
-      (dates.maxDate && isAfter(years[years.length - 1].$day, dates.maxDate));
+      years.disablePagination ||
+      (dates.maxDate &&
+        isAfter(calendarYears[calendarYears.length - 1].$day, dates.maxDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -244,8 +244,8 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   }: PropsGetterConfig = {}) => {
     const disabled =
       !!disabledProps ||
-      config.years.disablePagination ||
-      (dates.minDate && isBefore(years[0].$day, dates.minDate));
+      years.disablePagination ||
+      (dates.minDate && isBefore(calendarYears[0].$day, dates.minDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -260,20 +260,15 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
 
   return {
     data: {
-      today: createCalendarDay(
-        NOW,
-        calendarDate,
-        selectedDates,
-        config.calendar.locale,
-      ),
+      today: createCalendarDay(NOW, calendarDate, selectedDates, locale),
       calendars,
       weekDays,
-      month: calendarDate.toLocaleDateString(config.calendar.locale, {
-        month: 'long',
+      month: calendarDate.toLocaleDateString(locale.locale, {
+        month: locale.monthName,
       }),
       months,
       year: calendarDate.getFullYear(),
-      years,
+      years: calendarYears,
     },
     propGetters: {
       nextMonthButton,
