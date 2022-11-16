@@ -1,56 +1,70 @@
-import type { Dayjs } from 'dayjs';
 import type { MouseEvent } from 'react';
 
 export interface CalendarDay {
-  $day: Dayjs;
+  $day: Date;
   date: string;
-  day: string;
-  month: string;
-  year: string;
+  day: number;
+  month: number;
+  year: number;
   currentDisplayedMonth: boolean;
   isSelected: boolean;
   isToday: boolean;
 }
 
 export interface CalendarMonth {
+  $day: Date;
   name: string;
-  $day: Dayjs;
   isSelected: boolean;
+  isActive: boolean;
 }
 
 export interface CalendarYear {
+  $day: Date;
   value: number;
-  $day: Dayjs;
   isSelected: boolean;
+  isActive: boolean;
 }
 
 export type CreateCalendarDay = (
-  day: Dayjs,
-  currentDate: Dayjs,
-  selectedDate: Dayjs | null,
+  day: Date,
+  currentDate: Date,
+  selectedDates: Date[],
+  locale: Intl.LocalesArgument,
 ) => CalendarDay;
 
 export type CreateCalendarMonth = (
-  index: number,
-  currentDate: Dayjs,
+  day: Date,
+  currentDate: Date,
+  selectedDates: Date[],
+  locale: Intl.LocalesArgument,
 ) => CalendarMonth;
 
 export type CreateCalendarYear = (
   offset: number,
   currentYear: number,
-  currentDate: Dayjs,
+  currentDate: Date,
+  selectedDates: Date[],
 ) => CalendarYear;
 
 export interface PropsGetterConfig extends Record<string, unknown> {
-  onClick?(day?: Dayjs, evt?: MouseEvent<HTMLElement>): void;
+  onClick?(day?: Date, evt?: MouseEvent<HTMLElement>): void;
   onClick?(evt?: MouseEvent<HTMLElement>): void;
   disabled?: boolean;
+}
+
+export type DatesMode = 'single' | 'multiple' | 'range';
+export interface DatesUserConfig {
+  mode?: DatesMode;
+  minDate?: Date | undefined;
+  maxDate?: Date | undefined;
+  selectedDate?: Date | Date[] | undefined;
 }
 
 export type CalendarMode = 'static' | 'fluid';
 export interface CalendarConfig {
   mode?: CalendarMode;
   selectNow?: boolean;
+  locale?: Intl.LocalesArgument;
 }
 
 export type YearsPagination = 'decade' | 'centered';
@@ -63,15 +77,20 @@ export interface YearsConfig {
 export interface DatePickerUserConfig {
   calendar?: CalendarConfig;
   years?: YearsConfig;
-  minDate?: Date | undefined;
-  maxDate?: Date | undefined;
-  selectedDate?: Date | undefined;
+  dates?: DatesUserConfig;
+}
+
+export interface DatesConfig {
+  mode: DatesMode;
+  minDate: Date | null;
+  maxDate: Date | null;
+  selectedDates: Date[] | null;
 }
 
 export interface DatePickerConfig {
   calendar: CalendarConfig;
   years: YearsConfig;
-  minDate: Dayjs | null;
-  maxDate: Dayjs | null;
-  selectedDate: Dayjs | null;
+  dates: DatesConfig;
 }
+
+export type DatePart = 'year' | 'month' | 'date';

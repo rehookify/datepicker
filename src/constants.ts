@@ -1,5 +1,5 @@
-import dayjs, { Dayjs } from 'dayjs';
-import { CalendarConfig, YearsConfig } from './types';
+import { CalendarConfig, DatesConfig, YearsConfig } from './types';
+import { getCleanDate } from './utils';
 
 /*
  * It is used for static 🗓 to cover all possible month start and end date combination
@@ -16,13 +16,7 @@ const NUMBER_OF_DAYS = 42;
 export const DAYS_ARRAY: number[] = Array(NUMBER_OF_DAYS).fill(1);
 
 // Nice to have it statically :)
-export const NOW: Dayjs = dayjs();
-
-// @TODO generate it using dayjs localization and format from config
-// [Mon, Tue, Wed, Thu, Fri, Sat, Sun]
-export const DAYS_NAMES: string[] = Array(7)
-  .fill(1)
-  .map((el, index) => NOW.day(el + index).format('ddd'));
+export const NOW: Date = getCleanDate(new Date());
 
 export const MONTHS_NAMES: number[] = Array(12).fill(0);
 
@@ -33,10 +27,15 @@ export const NUMBER_OF_YEARS_DISPLAYED = 12;
 export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
   mode: 'static',
   selectNow: false,
+  locale: 'en',
 };
 
-export const DEFAULT_CONFIG_YEARS: YearsConfig = {
+export const DEFAULT_YEARS_CONFIG: YearsConfig = {
   numberOfYearsDisplayed: NUMBER_OF_YEARS_DISPLAYED,
   pagination: 'decade',
   disablePagination: false,
+};
+
+export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
+  mode: 'single',
 };

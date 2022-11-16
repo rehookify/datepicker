@@ -1,34 +1,26 @@
 import { DatePickerConfig } from '../types';
+import { isAfter, isBefore } from './date';
 
-export const validateConfig = ({
-  selectedDate,
-  minDate,
-  maxDate,
-}: DatePickerConfig) => {
-  if (selectedDate) {
-    if (minDate && selectedDate.isBefore(minDate)) {
+export const validateConfig = ({ dates }: DatePickerConfig) => {
+  const { selectedDates, minDate, maxDate } = dates || {};
+  if (selectedDates && selectedDates.length > 0) {
+    if (minDate && selectedDates.every((date) => isBefore(date, minDate))) {
       throw new Error(
-        `selectedDate ${selectedDate.format(
-          'DD.MM.YYYY',
-        )} date is before minDate ${minDate.format('DD.MM.YYYY')}`,
+        `All selectedDates should be after the ${minDate.toLocaleDateString()}`,
       );
     }
 
-    if (maxDate && selectedDate.isAfter(maxDate)) {
+    if (maxDate && selectedDates.every((date) => isAfter(date, maxDate))) {
       throw new Error(
-        `selectedDate ${selectedDate.format(
-          'DD.MM.YYYY',
-        )} date is after maxDate ${maxDate.format('DD.MM.YYYY')}`,
+        `All selectedDates must be before maxDate ${maxDate.toLocaleDateString()}`,
       );
     }
   }
 
   if (minDate && maxDate) {
-    if (maxDate.isBefore(minDate)) {
+    if (isBefore(maxDate, minDate)) {
       throw new Error(
-        `maxDate ${maxDate.format(
-          'DD.MM.YYYY',
-        )} is before minDate ${minDate.format('DD.MM.YYYY')}`,
+        `maxDate ${maxDate.toLocaleDateString()} is before minDate ${minDate.toLocaleDateString()}`,
       );
     }
   }

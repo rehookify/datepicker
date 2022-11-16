@@ -1,14 +1,20 @@
 import { CreateCalendarMonth } from '../types';
 
 export const createCalendarMonth: CreateCalendarMonth = (
-  index,
+  day,
   currentDate,
+  selectedDates,
+  locale,
 ) => {
-  const currentDay = currentDate.month(index);
-  const name = currentDay.format('MMMM');
+  const name = day.toLocaleDateString(locale, { month: 'long' });
   return {
-    $day: currentDay,
+    $day: day,
     name,
-    isSelected: currentDate.format('MMMM') === name,
+    isSelected:
+      selectedDates.filter(
+        (d) => d.toLocaleDateString(locale, { month: 'long' }) === name,
+      ).length > 0,
+    isActive:
+      currentDate.toLocaleDateString(locale, { month: 'long' }) === name,
   };
 };

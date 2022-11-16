@@ -1,7 +1,6 @@
-import { Dayjs } from 'dayjs';
 import { useState, MouseEvent } from 'react';
 
-import { DAYS_ARRAY, DAYS_NAMES, MONTHS_NAMES, NOW } from './constants';
+import { DAYS_ARRAY, MONTHS_NAMES, NOW } from './constants';
 import {
   CalendarDay,
   CalendarMonth,
@@ -18,56 +17,88 @@ import {
   isFunction,
   createConfig,
   getCalendarDate,
+  ensureArray,
+  addToDate,
+  subtractFromDate,
+  isBefore,
+  isAfter,
+  getFirstMonthDay,
 } from './utils';
 
 export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   const config = createConfig(userConfig);
+  const { dates } = config;
 
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(
-    config.selectedDate || (config.calendar.selectNow ? NOW : null),
-  );
-  const [calendarDate, setCalendarDate] = useState<Dayjs>(
-    selectedDate || getCalendarDate(config),
-  );
-  const [currentYear, setCurrentYear] = useState<number>(() =>
-    getStartDecadePosition(Number(calendarDate.format('YYYY'))),
+  const [selectedDates, setSelectedDates] = useState<Date[]>(() => {
+    if (config.dates?.selectedDates) {
+      return config.dates.selectedDates;
+    }
+
+    return config.calendar.selectNow ? [NOW] : [];
+  });
+
+  const [calendarDate, setCalendarDate] = useState<Date>(
+    selectedDates.length > 0
+      ? selectedDates[selectedDates.length - 1]
+      : getCalendarDate(config),
   );
 
-  const previousMonthLastDay = calendarDate.date(0).day();
+  const [currentYear, setCurrentYear] = useState<number>(
+    getStartDecadePosition(calendarDate.getFullYear()),
+  );
 
-  const calendar = DAYS_ARRAY.map((el, index) =>
+  const NOW_YEAR = calendarDate.getFullYear();
+  const NOW_MONTH = calendarDate.getMonth();
+  const firstDayOffset = new Date(NOW_YEAR, NOW_MONTH, 1).getDay();
+
+  const calendars = DAYS_ARRAY.map((el, index) =>
     createCalendarDay(
-      calendarDate.date(el + index - previousMonthLastDay),
+      new Date(NOW_YEAR, NOW_MONTH, el - firstDayOffset + index + 1),
       calendarDate,
-      selectedDate,
+      selectedDates,
+      config.calendar.locale,
     ),
   );
 
+  const weekDays = calendars
+    .slice(0, 7)
+    .map(({ $day }) =>
+      $day.toLocaleDateString(config.calendar.locale, { weekday: 'short' }),
+    );
+
   const years = Array(config.years.numberOfYearsDisplayed)
     .fill(1)
-    .map((_, index) => createCalendarYear(index, currentYear, calendarDate));
+    .map((_, index) =>
+      createCalendarYear(index, currentYear, calendarDate, selectedDates),
+    );
 
   const months: CalendarMonth[] = MONTHS_NAMES.map((_, index) =>
-    createCalendarMonth(index, calendarDate),
+    createCalendarMonth(
+      new Date(calendarDate.getFullYear(), index, 1),
+      calendarDate,
+      selectedDates,
+      config.calendar.locale,
+    ),
   );
 
-  const setMonthAndYear = (day: Dayjs) => {
+  const setMonthAndYear = (day: Date) => {
     setCalendarDate(day);
-    setCurrentYear(getStartDecadePosition(Number(day.format('YYYY'))));
+    setCurrentYear(getStartDecadePosition(day.getFullYear()));
   };
 
   // Actions
-  const onDayClick = (day: Dayjs) => {
-    setSelectedDate(day);
+  const onDayClick = (day: Date) => {
+    setSelectedDates([day]);
     setMonthAndYear(day);
   };
 
   const onMonthClick = setCalendarDate;
 
-  const onNextMonthClick = () => setMonthAndYear(calendarDate.add(1, 'month'));
+  const onNextMonthClick = () =>
+    setMonthAndYear(addToDate(calendarDate, 1, 'month'));
 
   const onPreviousMonthClick = () =>
-    setMonthAndYear(calendarDate.subtract(1, 'month'));
+    setMonthAndYear(subtractFromDate(calendarDate, 1, 'month'));
 
   const onNextYearsClick = () => setCurrentYear((s) => s + 10);
 
@@ -75,10 +106,11 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
 
   const onYearClick = setMonthAndYear;
 
-  const reset = (day?: Dayjs) => {
-    const resetDay = day || NOW;
-    setSelectedDate(day || null);
-    setMonthAndYear(resetDay);
+  const reset = (day?: Date) => {
+    const resetDay = ensureArray(day) as Date[];
+    const nowDay = config.calendar.selectNow ? [NOW] : [];
+    setSelectedDates(resetDay.length > 0 ? resetDay : nowDay);
+    setMonthAndYear(resetDay[0]);
   };
 
   // propsGetter
@@ -88,8 +120,8 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   ) => {
     const disabled =
       !!disabledProps ||
-      (!!config.minDate && $day.isBefore(config.minDate)) ||
-      (!!config.maxDate && $day.isAfter(config.maxDate));
+      (!!dates.minDate && isBefore($day, dates.minDate)) ||
+      (!!dates.maxDate && isAfter($day, dates.maxDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -108,8 +140,8 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   ) => {
     const disabled =
       !!disabledProps ||
-      (config.minDate && $day.isBefore(config.minDate.date(1))) ||
-      (config.maxDate && $day.date(1).isAfter(config.maxDate));
+      (dates.minDate && isBefore($day, getFirstMonthDay(dates.minDate))) ||
+      (dates.maxDate && isAfter(getFirstMonthDay($day), dates.maxDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -127,10 +159,10 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
     disabled: disabledProps,
     ...rest
   }: PropsGetterConfig = {}) => {
-    const nextMonth = calendarDate.add(1, 'month');
+    const nextMonth = addToDate(calendarDate, 1, 'month');
     const disabled =
       !!disabledProps ||
-      (config.maxDate && nextMonth.date(1).isAfter(config.maxDate));
+      (dates.maxDate && isAfter(getFirstMonthDay(nextMonth), dates.maxDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -148,10 +180,10 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
     disabled: disabledProps,
     ...rest
   }: PropsGetterConfig = {}) => {
-    const nextMonth = calendarDate.subtract(1, 'month');
+    const nextMonth = subtractFromDate(calendarDate, 1, 'month');
     const disabled =
       !!disabledProps ||
-      (config.minDate && nextMonth.isBefore(config.minDate.date(1)));
+      (dates.minDate && isBefore(nextMonth, getFirstMonthDay(dates.minDate)));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -170,8 +202,8 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   ) => {
     const disabled =
       !!disabledProps ||
-      (config.minDate && $day.isBefore(config.minDate.date(1))) ||
-      (config.maxDate && $day.date(1).isAfter(config.maxDate));
+      (dates.minDate && isBefore($day, getFirstMonthDay(dates.minDate))) ||
+      (dates.maxDate && isAfter(getFirstMonthDay($day), dates.maxDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -192,7 +224,7 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
     const disabled =
       !!disabledProps ||
       config.years.disablePagination ||
-      (config.maxDate && years[years.length - 1].$day.isAfter(config.maxDate));
+      (dates.maxDate && isAfter(years[years.length - 1].$day, dates.maxDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -213,7 +245,7 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
     const disabled =
       !!disabledProps ||
       config.years.disablePagination ||
-      (config.minDate && years[0].$day.isBefore(config.minDate));
+      (dates.minDate && isBefore(years[0].$day, dates.minDate));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -228,13 +260,20 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
 
   return {
     data: {
-      today: createCalendarDay(NOW, calendarDate, selectedDate),
-      weekDays: DAYS_NAMES,
-      month: calendarDate.format('MMMM'),
+      today: createCalendarDay(
+        NOW,
+        calendarDate,
+        selectedDates,
+        config.calendar.locale,
+      ),
+      calendars,
+      weekDays,
+      month: calendarDate.toLocaleDateString(config.calendar.locale, {
+        month: 'long',
+      }),
       months,
-      year: calendarDate.format('YYYY'),
+      year: calendarDate.getFullYear(),
       years,
-      calendar,
     },
     propGetters: {
       nextMonthButton,
