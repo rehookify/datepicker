@@ -1,12 +1,12 @@
 import { DatesConfig } from '../types';
-import { isSame } from './date';
+import { isSame, sortDatesAsc } from './date';
 
 export const getMultipleDates = (
   selectedDates: Date[],
   day: Date,
   dates: DatesConfig,
 ): Date[] => {
-  if (dates.mode !== 'multiple') return [day];
+  if (dates.mode === 'single') return [day];
 
   if (dates.mode === 'multiple') {
     if (dates.toggle) {
@@ -14,11 +14,12 @@ export const getMultipleDates = (
       if (filtered.length < selectedDates.length) return filtered;
     }
 
-    return selectedDates.length < dates?.limit
-      ? selectedDates.concat(day).sort()
+    return !dates.limit || selectedDates.length < dates.limit
+      ? selectedDates.concat(day).sort(sortDatesAsc)
       : selectedDates;
   }
 
-  //@TODO logic for dates.mode === 'range'
-  return [];
+  return selectedDates.length === 2
+    ? [day]
+    : selectedDates.concat(day).sort(sortDatesAsc);
 };

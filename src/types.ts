@@ -1,50 +1,33 @@
 import type { MouseEvent } from 'react';
 
 export interface CalendarDay {
-  $day: Date;
+  $date: Date;
   date: string;
-  day: number;
-  month: number;
-  year: number;
+  day: string;
+  month: string;
+  year: string;
   currentDisplayedMonth: boolean;
   isSelected: boolean;
   isToday: boolean;
+  inRange: boolean;
+  isRangeStart: boolean;
+  isRangeEnd: boolean;
+  willBeInRange: boolean;
 }
 
 export interface CalendarMonth {
-  $day: Date;
+  $date: Date;
   name: string;
   isSelected: boolean;
   isActive: boolean;
 }
 
 export interface CalendarYear {
-  $day: Date;
+  $date: Date;
   value: number;
   isSelected: boolean;
   isActive: boolean;
 }
-
-export type CreateCalendarDay = (
-  day: Date,
-  currentDate: Date,
-  selectedDates: Date[],
-  locale: LocaleConfig,
-) => CalendarDay;
-
-export type CreateCalendarMonth = (
-  day: Date,
-  currentDate: Date,
-  selectedDates: Date[],
-  locale: LocaleConfig,
-) => CalendarMonth;
-
-export type CreateCalendarYear = (
-  offset: number,
-  currentYear: number,
-  currentDate: Date,
-  selectedDates: Date[],
-) => CalendarYear;
 
 export interface PropsGetterConfig extends Record<string, unknown> {
   onClick?(day?: Date, evt?: MouseEvent<HTMLElement>): void;
@@ -67,32 +50,29 @@ export interface CalendarConfig {
   mode?: CalendarMode;
   selectNow?: boolean;
 }
-
-export type YearsPagination = 'decade' | 'centered';
 export interface YearsConfig {
-  numberOfYearsDisplayed?: number;
-  pagination?: YearsPagination;
-  disablePagination?: boolean;
+  numberOfYearsDisplayed: number;
+  disablePagination: boolean;
 }
 
 export interface LocaleConfig {
-  locale?: Intl.LocalesArgument;
-  options?: Intl.DateTimeFormatOptions;
+  locale: Intl.LocalesArgument;
+  options: Intl.DateTimeFormatOptions;
   monthName: Intl.DateTimeFormatOptions['month'];
 }
 
 export interface DatePickerUserConfig {
   calendar?: CalendarConfig;
-  years?: YearsConfig;
+  years?: Partial<YearsConfig>;
   dates?: DatesUserConfig;
-  locale?: LocaleConfig;
+  locale?: Partial<LocaleConfig>;
 }
 
 export interface DatesConfig {
   mode: DatesMode;
   minDate: Date | null;
   maxDate: Date | null;
-  selectedDates: Date[] | null;
+  selectedDates: Date[];
   toggle: boolean;
   limit: number;
 }
@@ -105,3 +85,9 @@ export interface DatePickerConfig {
 }
 
 export type DatePart = 'year' | 'month' | 'date';
+
+export interface Calendar {
+  year: string;
+  month: string;
+  days: CalendarDay[];
+}

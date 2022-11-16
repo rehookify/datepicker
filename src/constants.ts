@@ -16,14 +16,10 @@ import { getCleanDate } from './utils';
  * 24 25 26 27 28 29 30
  * 31 01 02 03 04 05 06
  */
-const NUMBER_OF_DAYS = 42;
-
-export const DAYS_ARRAY: number[] = Array(NUMBER_OF_DAYS).fill(1);
+export const NUMBER_OF_STATIC_CALENDAR_DAYS = 42;
 
 // Nice to have it statically :)
 export const NOW: Date = getCleanDate(new Date());
-
-export const MONTHS_NAMES: number[] = Array(12).fill(0);
 
 // Number of yearn by default to mimic number of month
 // It will be easy to reuse same layout for years picker
@@ -36,7 +32,6 @@ export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
 
 export const DEFAULT_YEARS_CONFIG: YearsConfig = {
   numberOfYearsDisplayed: NUMBER_OF_YEARS_DISPLAYED,
-  pagination: 'decade',
   disablePagination: false,
 };
 
