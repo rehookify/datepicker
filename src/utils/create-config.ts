@@ -39,7 +39,7 @@ export const createConfig = ({
       ...restLocaleParams,
       options: {
         ...DEFAULT_LOCALE_CONFIG.options,
-        ...locale?.options,
+        ...options,
       },
     },
   } as DatePickerConfig;

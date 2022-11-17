@@ -3,23 +3,27 @@ import { isSame, sortDatesAsc } from './date';
 
 export const getMultipleDates = (
   selectedDates: Date[],
-  day: Date,
-  dates: DatesConfig,
+  date: Date,
+  { mode, toggle, limit }: DatesConfig,
 ): Date[] => {
-  if (dates.mode === 'single') return [day];
+  if (mode === 'single') {
+    return toggle && selectedDates[0] && isSame(date, selectedDates[0])
+      ? []
+      : [date];
+  }
 
-  if (dates.mode === 'multiple') {
-    if (dates.toggle) {
-      const filtered = selectedDates.filter((d) => !isSame(d, day));
+  if (mode === 'multiple') {
+    if (toggle) {
+      const filtered = selectedDates.filter((d) => !isSame(d, date));
       if (filtered.length < selectedDates.length) return filtered;
     }
 
-    return !dates.limit || selectedDates.length < dates.limit
-      ? selectedDates.concat(day).sort(sortDatesAsc)
+    return !limit || selectedDates.length < limit
+      ? selectedDates.concat(date).sort(sortDatesAsc)
       : selectedDates;
   }
 
   return selectedDates.length === 2
-    ? [day]
-    : selectedDates.concat(day).sort(sortDatesAsc);
+    ? [date]
+    : selectedDates.concat(date).sort(sortDatesAsc);
 };

@@ -44,7 +44,7 @@ export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
 };
 
 export const DEFAULT_LOCALE_CONFIG: LocaleConfig = {
-  locale: navigator?.language || 'en',
+  locale: 'en-GB',
   options: {
     day: '2-digit',
     month: '2-digit',

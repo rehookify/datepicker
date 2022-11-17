@@ -29,7 +29,7 @@ import {
   createWeekdays,
 } from './utils';
 
-export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
+export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
   const { dates, calendar, locale, years } = createConfig(userConfig);
 
   const [rangeEnd, setRangeEnd] = useState<Date | null>(null);

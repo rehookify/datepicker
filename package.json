@@ -1,6 +1,6 @@
 {
   "name": "@rehookify/datepicker",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "React hook for ui-independent datepicker logic",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
