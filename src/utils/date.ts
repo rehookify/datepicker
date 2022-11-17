@@ -7,16 +7,6 @@ import { DatePart, LocaleConfig } from '../types';
 export const getCleanDate = (d: Date): Date =>
   new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
-export const isSame = (d1: Date, d2: Date): boolean =>
-  d1.toString() === d2.toString();
-
-export const isBefore = (d1: Date, d2: Date): boolean => d1 < d2;
-
-export const isAfter = (d1: Date, d2: Date): boolean => d1 > d2;
-
-export const isBetween = (start: Date, d: Date, end: Date) =>
-  isAfter(d, start) && isBefore(d, end);
-
 export const daysInMonth = (d: Date): number =>
   new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
 

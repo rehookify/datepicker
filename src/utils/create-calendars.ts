@@ -9,16 +9,8 @@ import {
   DatesConfig,
   LocaleConfig,
 } from '../types';
-import {
-  addToDate,
-  daysInMonth,
-  formatDate,
-  formatMonthName,
-  isAfter,
-  isBefore,
-  isBetween,
-  isSame,
-} from './date';
+import { addToDate, daysInMonth, formatDate, formatMonthName } from './date';
+import { isAfter, isBefore, isBetween, isSame } from './predicates';
 
 const willBeInRange = (
   day: Date,

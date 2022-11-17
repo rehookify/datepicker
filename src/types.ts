@@ -28,8 +28,7 @@ export interface CalendarYear {
 }
 
 export interface PropsGetterConfig extends Record<string, unknown> {
-  onClick?(day?: Date, evt?: MouseEvent<HTMLElement>): void;
-  onClick?(evt?: MouseEvent<HTMLElement>): void;
+  onClick?(evt?: MouseEvent<HTMLElement>, date?: Date): void;
   disabled?: boolean;
 }
 

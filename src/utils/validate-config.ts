@@ -1,5 +1,5 @@
 import { DatePickerConfig } from '../types';
-import { isAfter, isBefore } from './date';
+import { isAfter, isBefore } from './predicates';
 
 export const validateConfig = ({ dates }: DatePickerConfig) => {
   const { selectedDates, minDate, maxDate } = dates || {};

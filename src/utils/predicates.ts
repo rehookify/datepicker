@@ -1,7 +1,14 @@
-import { getFirstMonthDay, isAfter, isBefore } from './date';
+import { getFirstMonthDay } from './date';
 
-export const isFunction = (fn: unknown): boolean =>
-  !!(fn && typeof fn === 'function');
+export const isSame = (d1: Date, d2: Date): boolean =>
+  d1.toString() === d2.toString();
+
+export const isBefore = (d1: Date, d2: Date): boolean => d1 < d2;
+
+export const isAfter = (d1: Date, d2: Date): boolean => d1 > d2;
+
+export const isBetween = (start: Date, d: Date, end: Date) =>
+  isAfter(d, start) && isBefore(d, end);
 
 export const maxDateAndAfter = (maxDate: Date | null, date: Date): boolean =>
   !!maxDate && isAfter(date, maxDate);

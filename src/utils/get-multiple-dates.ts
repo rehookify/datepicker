@@ -1,5 +1,6 @@
 import { DatesConfig } from '../types';
-import { isSame, sortDatesAsc } from './date';
+import { sortDatesAsc } from './date';
+import { isSame } from './predicates';
 
 export const getMultipleDates = (
   selectedDates: Date[],
