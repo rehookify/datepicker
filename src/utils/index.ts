@@ -1,5 +1,5 @@
 export { createYears } from './create-years';
-export { createCalendar } from './create-calendar';
+export { createCalendars } from './create-calendars';
 export { createMonths } from './create-months';
 export { createWeekdays } from './create-weekdays';
 export { createConfig } from './create-config';

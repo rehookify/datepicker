@@ -10,20 +10,24 @@ import { ensureArray } from './ensure-type';
 import { validateConfig } from './validate-config';
 
 export const createConfig = ({
-  calendar: calendarParams,
-  years: yearsParams,
-  dates: datesParams,
-  locale: localeParams,
+  calendar,
+  years,
+  dates,
+  locale,
 }: DatePickerUserConfig = {}) => {
-  const { minDate, maxDate, selectedDate, ...restDatesParams } =
-    datesParams || {};
-  const { options, ...restLocaleParams } = localeParams || {};
+  const { minDate, maxDate, selectedDate, ...restDates } = dates || {};
+  const { options, ...restLocaleParams } = locale || {};
+  const { offsets = [], ...restCalendarParams } = calendar || {};
   const config = {
-    calendar: { ...DEFAULT_CALENDAR_CONFIG, ...calendarParams },
-    years: { ...DEFAULT_YEARS_CONFIG, ...yearsParams },
+    calendar: {
+      ...DEFAULT_CALENDAR_CONFIG,
+      ...restCalendarParams,
+      offsets: DEFAULT_CALENDAR_CONFIG.offsets.concat(offsets),
+    },
+    years: { ...DEFAULT_YEARS_CONFIG, ...years },
     dates: {
       ...DEFAULT_DATES_CONFIG,
-      ...restDatesParams,
+      ...restDates,
       minDate: minDate ? getCleanDate(minDate) : null,
       maxDate: maxDate ? getCleanDate(maxDate) : null,
       selectedDates: ensureArray(selectedDate).map((d) =>
@@ -35,7 +39,7 @@ export const createConfig = ({
       ...restLocaleParams,
       options: {
         ...DEFAULT_LOCALE_CONFIG.options,
-        ...localeParams?.options,
+        ...locale?.options,
       },
     },
   } as DatePickerConfig;

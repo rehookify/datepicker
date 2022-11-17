@@ -30,6 +30,7 @@ export const NUMBER_OF_YEARS_DISPLAYED = 12;
 export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
   mode: 'static',
   selectNow: false,
+  offsets: [0],
 };
 
 export const DEFAULT_YEARS_CONFIG: YearsConfig = {

@@ -47,6 +47,7 @@ export type CalendarMode = 'static' | 'fluid';
 export interface CalendarConfig {
   mode: CalendarMode;
   selectNow: boolean;
+  offsets: number[];
 }
 export interface YearsConfig {
   numberOfYearsDisplayed: number;

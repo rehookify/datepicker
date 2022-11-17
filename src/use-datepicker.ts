@@ -9,7 +9,7 @@ import {
   DatePickerUserConfig,
 } from './types';
 import {
-  createCalendar,
+  createCalendars,
   createYears,
   createButtonProps,
   getStartDecadePosition,
@@ -49,16 +49,14 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
     getStartDecadePosition(calendarDate.getFullYear()),
   );
 
-  const calendars = [
-    createCalendar(
-      calendarDate,
-      selectedDates,
-      rangeEnd,
-      locale,
-      dates,
-      calendar.mode,
-    ),
-  ];
+  const calendars = createCalendars(
+    calendarDate,
+    selectedDates,
+    rangeEnd,
+    locale,
+    dates,
+    calendar,
+  );
 
   const weekDays = createWeekdays(calendars[0], locale);
 

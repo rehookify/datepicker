@@ -3,8 +3,14 @@ import {
   NOW,
   NUMBER_OF_STATIC_CALENDAR_DAYS,
 } from '../constants';
-import { Calendar, CalendarMode, DatesConfig, LocaleConfig } from '../types';
 import {
+  CalendarConfig,
+  CalendarMode,
+  DatesConfig,
+  LocaleConfig,
+} from '../types';
+import {
+  addToDate,
   daysInMonth,
   formatDate,
   formatDay,
@@ -66,14 +72,14 @@ const getMonthParams = (
   };
 };
 
-export const createCalendar = (
+const createCalendar = (
   calendarDate: Date,
   selectedDates: Date[],
   rangeEnd: Date | null,
   locale: LocaleConfig,
   { mode }: DatesConfig,
   calendarMode: CalendarMode,
-): Calendar => {
+) => {
   const year = calendarDate.getFullYear();
   const month = calendarDate.getMonth();
   const { firstDayOffset, numberOfDaysToDisplay } = getMonthParams(
@@ -117,4 +123,24 @@ export const createCalendar = (
     month: formatMonthName(calendarDate, locale),
     days,
   };
+};
+
+export const createCalendars = (
+  calendarDate: Date,
+  selectedDates: Date[],
+  rangeEnd: Date | null,
+  locale: LocaleConfig,
+  dates: DatesConfig,
+  { mode, offsets }: CalendarConfig,
+) => {
+  return offsets.map((offset) =>
+    createCalendar(
+      addToDate(calendarDate, offset, 'month'),
+      selectedDates,
+      rangeEnd,
+      locale,
+      dates,
+      mode,
+    ),
+  );
 };
