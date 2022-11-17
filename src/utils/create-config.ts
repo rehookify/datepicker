@@ -16,7 +16,6 @@ export const createConfig = ({
   locale,
 }: DatePickerUserConfig = {}) => {
   const { minDate, maxDate, selectedDate, ...restDates } = dates || {};
-  const { options, ...restLocaleParams } = locale || {};
   const { offsets = [], ...restCalendarParams } = calendar || {};
   const config = {
     calendar: {
@@ -36,11 +35,7 @@ export const createConfig = ({
     },
     locale: {
       ...DEFAULT_LOCALE_CONFIG,
-      ...restLocaleParams,
-      options: {
-        ...DEFAULT_LOCALE_CONFIG.options,
-        ...options,
-      },
+      ...locale,
     },
   } as DatePickerConfig;
 

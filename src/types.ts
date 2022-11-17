@@ -56,7 +56,10 @@ export interface YearsConfig {
 
 export interface LocaleConfig {
   locale: Intl.LocalesArgument;
-  options: Intl.DateTimeFormatOptions;
+  options?: Intl.DateTimeFormatOptions;
+  day: Intl.DateTimeFormatOptions['day'];
+  month: Intl.DateTimeFormatOptions['month'];
+  year: Intl.DateTimeFormatOptions['year'];
   monthName: Intl.DateTimeFormatOptions['month'];
   weekday: Intl.DateTimeFormatOptions['weekday'];
 }

@@ -13,9 +13,7 @@ import {
   addToDate,
   daysInMonth,
   formatDate,
-  formatDay,
   formatMonthName,
-  formatYear,
   isAfter,
   isBefore,
   isBetween,
@@ -80,6 +78,7 @@ const createCalendar = (
   { mode }: DatesConfig,
   calendarMode: CalendarMode,
 ) => {
+  const { locale: localeStr, day, year: localeYear } = locale;
   const year = calendarDate.getFullYear();
   const month = calendarDate.getMonth();
   const { firstDayOffset, numberOfDaysToDisplay } = getMonthParams(
@@ -95,7 +94,7 @@ const createCalendar = (
     days.push({
       $date: date,
       date: formatDate(date, locale),
-      day: formatDay(date, locale),
+      day: date.toLocaleDateString(localeStr, { day }),
       currentDisplayedMonth: date.getMonth() === month,
       isToday: isSame(NOW, date),
       isSelected: selectedDates.some((d) => isSame(d as Date, date)),
@@ -119,7 +118,7 @@ const createCalendar = (
   }
 
   return {
-    year: formatYear(calendarDate, locale),
+    year: calendarDate.toLocaleDateString(localeStr, { year: localeYear }),
     month: formatMonthName(calendarDate, locale),
     days,
   };

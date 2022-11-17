@@ -6,13 +6,13 @@ export const validateConfig = ({ dates }: DatePickerConfig) => {
   if (selectedDates && selectedDates.length > 0) {
     if (minDate && selectedDates.every((date) => isBefore(date, minDate))) {
       throw new Error(
-        `All selectedDates should be after the ${minDate.toLocaleDateString()}`,
+        `All selectedDates must be after minDate: ${minDate.toLocaleDateString()}`,
       );
     }
 
     if (maxDate && selectedDates.every((date) => isAfter(date, maxDate))) {
       throw new Error(
-        `All selectedDates must be before maxDate ${maxDate.toLocaleDateString()}`,
+        `All selectedDates must be before maxDate: ${maxDate.toLocaleDateString()}`,
       );
     }
   }

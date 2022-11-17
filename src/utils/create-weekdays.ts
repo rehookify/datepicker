@@ -1,12 +1,16 @@
 import { DAYS_IN_WEEK } from '../constants';
 import { Calendar, LocaleConfig } from '../types';
-import { formatWeekdays } from './date';
 
-export const createWeekdays = (calendar: Calendar, locale: LocaleConfig) => {
+export const createWeekdays = (
+  calendar: Calendar,
+  { locale, weekday }: LocaleConfig,
+) => {
   const weekdays = [];
 
   for (let i = 0; i < DAYS_IN_WEEK; i++) {
-    weekdays.push(formatWeekdays(calendar.days[i].$date, locale));
+    weekdays.push(
+      calendar.days[i].$date.toLocaleDateString(locale, { weekday }),
+    );
   }
 
   return weekdays;
