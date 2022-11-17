@@ -31,6 +31,9 @@ import {
 
 export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
   const { dates, calendar, locale, years } = createConfig(userConfig);
+  const { minDate, maxDate, toggle: datesToggle, mode: datesMode } = dates;
+  const { selectNow } = calendar;
+  const { disablePagination } = years;
 
   const [rangeEnd, setRangeEnd] = useState<Date | null>(null);
   const [selectedDates, setSelectedDates] = useState<Date[]>(() => {
@@ -38,7 +41,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       return dates.selectedDates;
     }
 
-    return calendar.selectNow ? [NOW] : [];
+    return selectNow ? [NOW] : [];
   });
   const [calendarDate, setCalendarDate] = useState<Date>(
     selectedDates.length > 0
@@ -90,79 +93,79 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
 
   const onPreviousYearsClick = () => setCurrentYear((s) => s - 10);
 
-  const reset = (day?: Date) => {
-    const resetDay = ensureArray(day) as Date[];
-    const nowDay = calendar.selectNow ? [NOW] : [];
-    setSelectedDates(resetDay.length > 0 ? resetDay : nowDay);
-    setMonthAndYear(resetDay[0]);
+  const reset = (date?: Date) => {
+    const resetDates = ensureArray(date) as Date[];
+    const newDates =
+      resetDates.length > 0 ? resetDates : selectNow ? [NOW] : [];
+    setSelectedDates(newDates);
+    setMonthAndYear(newDates[0]);
   };
 
   // propsGetter
   const dayButton = (
     { $date, isSelected }: CalendarDay,
-    { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
+    { onClick, disabled, ...rest }: PropsGetterConfig = {},
   ) => {
-    const disabled =
-      !!disabledProps ||
-      minDateAndBefore(dates.minDate, $date) ||
-      maxDateAndAfter(dates.maxDate, $date);
+    const isDisabled =
+      !!disabled ||
+      minDateAndBefore(minDate, $date) ||
+      maxDateAndAfter(maxDate, $date);
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled || (isSelected && !dates.toggle)) return;
-        if (dates.mode === 'range' && selectedDates.length === 1)
+        if (isDisabled || (isSelected && !datesToggle)) return;
+        if (datesMode === 'range' && selectedDates.length === 1)
           setRangeEnd(null);
         onDayClick($date);
         if (onClick && isFunction(onClick)) onClick($date, evt);
       },
-      ...(dates.mode === 'range' &&
+      ...(datesMode === 'range' &&
         selectedDates.length === 1 && {
           onMouseEnter() {
             setRangeEnd($date);
           },
         }),
-      ...createButtonProps(disabled as boolean),
+      ...createButtonProps(isDisabled),
       ...rest,
     };
   };
 
   const monthButton = (
     { $date }: CalendarMonth,
-    { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
+    { onClick, disabled, ...rest }: PropsGetterConfig = {},
   ) => {
-    const disabled =
-      !!disabledProps ||
-      minDateAndBeforeFirstDay(dates.minDate, $date) ||
-      maxDateAndAfter(dates.maxDate, getFirstMonthDay($date));
+    const isDisabled =
+      !!disabled ||
+      minDateAndBeforeFirstDay(minDate, $date) ||
+      maxDateAndAfter(maxDate, getFirstMonthDay($date));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled) return;
+        if (isDisabled) return;
         setCalendarDate($date);
         if (onClick && isFunction(onClick)) onClick($date, evt);
       },
-      ...createButtonProps(disabled as boolean),
+      ...createButtonProps(isDisabled),
       ...rest,
     };
   };
 
   const nextMonthButton = ({
     onClick,
-    disabled: disabledProps,
+    disabled,
     ...rest
   }: PropsGetterConfig = {}) => {
     const nextMonth = addToDate(calendarDate, 1, 'month');
-    const disabled =
-      !!disabledProps ||
-      maxDateAndAfter(dates.maxDate, getFirstMonthDay(nextMonth));
+    const isDisabled =
+      !!disabled || maxDateAndAfter(maxDate, getFirstMonthDay(nextMonth));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled) return;
+        if (isDisabled) return;
         setMonthAndYear(nextMonth);
         if (onClick && isFunction(onClick)) onClick(nextMonth, evt);
       },
-      ...createButtonProps(disabled as boolean),
+      ...createButtonProps(isDisabled),
       ...rest,
     };
   };
@@ -174,7 +177,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
   }: PropsGetterConfig = {}) => {
     const nextMonth = subtractFromDate(calendarDate, 1, 'month');
     const disabled =
-      !!disabledProps || minDateAndBeforeFirstDay(dates.minDate, nextMonth);
+      !!disabledProps || minDateAndBeforeFirstDay(minDate, nextMonth);
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
@@ -189,65 +192,62 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
 
   const yearButton = (
     { $date }: CalendarYear,
-    { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
+    { onClick, disabled, ...rest }: PropsGetterConfig = {},
   ) => {
-    const disabled =
-      !!disabledProps ||
-      minDateAndBeforeFirstDay(dates.minDate, $date) ||
-      maxDateAndAfter(dates.maxDate, getFirstMonthDay($date));
+    const isDisabled =
+      !!disabled ||
+      minDateAndBeforeFirstDay(minDate, $date) ||
+      maxDateAndAfter(maxDate, getFirstMonthDay($date));
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled) return;
+        if (isDisabled) return;
         setMonthAndYear($date);
         if (onClick && isFunction(onClick)) onClick($date, evt);
       },
-      ...createButtonProps(disabled as boolean),
+      ...createButtonProps(isDisabled),
       ...rest,
     };
   };
 
   const nextYearsButton = ({
     onClick,
-    disabled: disabledProps,
+    disabled,
     ...rest
   }: PropsGetterConfig = {}) => {
-    const disabled =
-      !!disabledProps ||
-      years.disablePagination ||
-      maxDateAndAfter(
-        dates.maxDate,
-        calendarYears[calendarYears.length - 1].$date,
-      );
+    const isDisabled =
+      !!disabled ||
+      disablePagination ||
+      maxDateAndAfter(maxDate, calendarYears[calendarYears.length - 1].$date);
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled) return;
+        if (isDisabled) return;
         onNextYearsClick();
         if (onClick && isFunction(onClick)) onClick(evt);
       },
-      ...createButtonProps(disabled as boolean),
+      ...createButtonProps(isDisabled),
       ...rest,
     };
   };
 
   const previousYearsButton = ({
     onClick,
-    disabled: disabledProps,
+    disabled,
     ...rest
   }: PropsGetterConfig = {}) => {
-    const disabled =
-      !!disabledProps ||
-      years.disablePagination ||
-      minDateAndBefore(dates.minDate, calendarYears[0].$date);
+    const isDisabled =
+      !!disabled ||
+      disablePagination ||
+      minDateAndBefore(minDate, calendarYears[0].$date);
 
     return {
       onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled) return;
+        if (isDisabled) return;
         onPreviousYearsClick();
         if (onClick && isFunction(onClick)) onClick(evt);
       },
-      ...createButtonProps(disabled as boolean),
+      ...createButtonProps(isDisabled),
       ...rest,
     };
   };
