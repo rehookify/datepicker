@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from 'react';
+import { useState } from 'react';
 
 import { NOW } from './constants';
 import {
@@ -11,7 +11,7 @@ import {
 import {
   createCalendars,
   createYears,
-  createButtonProps,
+  createPropGetter,
   getStartDecadePosition,
   createConfig,
   getCalendarStartDate,
@@ -113,22 +113,24 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       minDateAndBefore(minDate, $date) ||
       maxDateAndAfter(maxDate, $date);
 
-    return {
-      onClick(evt: MouseEvent<HTMLElement>) {
-        if (isDisabled || (isSelected && !datesToggle)) return;
+    return createPropGetter(
+      isDisabled,
+      (evt) => {
+        if (isSelected && !datesToggle) return;
         if (datesMode === 'range' && selectedDates.length === 1)
           setRangeEnd(null);
         callAll(onClick, skipFirst(onDayClick))(evt, $date);
       },
-      ...createButtonProps(isDisabled),
-      ...rest,
-      ...(datesMode === 'range' &&
-        selectedDates.length === 1 && {
-          onMouseEnter() {
-            setRangeEnd($date);
-          },
-        }),
-    };
+      {
+        ...rest,
+        ...(datesMode === 'range' &&
+          selectedDates.length === 1 && {
+            onMouseEnter() {
+              setRangeEnd($date);
+            },
+          }),
+      },
+    );
   };
 
   const monthButton = (
@@ -140,14 +142,11 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       minDateAndBeforeFirstDay(minDate, $date) ||
       maxDateAndAfter(maxDate, getFirstMonthDay($date));
 
-    return {
-      onClick(evt: MouseEvent<HTMLElement>) {
-        if (isDisabled) return;
-        callAll(onClick, skipFirst(onSetCalendarDate))(evt, $date);
-      },
-      ...createButtonProps(isDisabled),
-      ...rest,
-    };
+    return createPropGetter(
+      isDisabled,
+      (evt) => callAll(onClick, skipFirst(onSetCalendarDate))(evt, $date),
+      rest,
+    );
   };
 
   const nextMonthButton = ({
@@ -159,33 +158,27 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
     const isDisabled =
       !!disabled || maxDateAndAfter(maxDate, getFirstMonthDay(nextMonth));
 
-    return {
-      onClick(evt: MouseEvent<HTMLElement>) {
-        if (isDisabled) return;
-        callAll(onClick, skipFirst(setMonthAndYear))(evt, nextMonth);
-      },
-      ...createButtonProps(isDisabled),
-      ...rest,
-    };
+    return createPropGetter(
+      isDisabled,
+      (evt) => callAll(onClick, skipFirst(setMonthAndYear))(evt, nextMonth),
+      rest,
+    );
   };
 
   const previousMonthButton = ({
     onClick,
-    disabled: disabledProps,
+    disabled,
     ...rest
   }: PropsGetterConfig = {}) => {
     const nextMonth = subtractFromDate(calendarDate, 1, 'month');
-    const disabled =
-      !!disabledProps || minDateAndBeforeFirstDay(minDate, nextMonth);
+    const isDisabled =
+      !!disabled || minDateAndBeforeFirstDay(minDate, nextMonth);
 
-    return {
-      onClick(evt: MouseEvent<HTMLElement>) {
-        if (disabled) return;
-        callAll(onClick, skipFirst(setMonthAndYear))(evt, nextMonth);
-      },
-      ...createButtonProps(disabled as boolean),
-      ...rest,
-    };
+    return createPropGetter(
+      isDisabled,
+      (evt) => callAll(onClick, skipFirst(setMonthAndYear))(evt, nextMonth),
+      rest,
+    );
   };
 
   const yearButton = (
@@ -197,14 +190,11 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       minDateAndBeforeFirstDay(minDate, $date) ||
       maxDateAndAfter(maxDate, getFirstMonthDay($date));
 
-    return {
-      onClick(evt: MouseEvent<HTMLElement>) {
-        if (isDisabled) return;
-        callAll(onClick, skipFirst(setMonthAndYear))(evt, $date);
-      },
-      ...createButtonProps(isDisabled),
-      ...rest,
-    };
+    return createPropGetter(
+      isDisabled,
+      (evt) => callAll(onClick, skipFirst(setMonthAndYear))(evt, $date),
+      rest,
+    );
   };
 
   const nextYearsButton = ({
@@ -217,14 +207,11 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       disablePagination ||
       maxDateAndAfter(maxDate, calendarYears[calendarYears.length - 1].$date);
 
-    return {
-      onClick(evt: MouseEvent<HTMLElement>) {
-        if (isDisabled) return;
-        callAll(onClick, skipAll(onNextMonthClick))(evt, undefined);
-      },
-      ...createButtonProps(isDisabled),
-      ...rest,
-    };
+    return createPropGetter(
+      isDisabled,
+      (evt) => callAll(onClick, skipAll(onNextYearsClick))(evt),
+      rest,
+    );
   };
 
   const previousYearsButton = ({
@@ -237,14 +224,11 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       disablePagination ||
       minDateAndBefore(minDate, calendarYears[0].$date);
 
-    return {
-      onClick(evt: MouseEvent<HTMLElement>) {
-        if (isDisabled) return;
-        callAll(onClick, skipAll(onPreviousYearsClick))(evt, undefined);
-      },
-      ...createButtonProps(isDisabled),
-      ...rest,
-    };
+    return createPropGetter(
+      isDisabled,
+      (evt) => callAll(onClick, skipAll(onPreviousYearsClick))(evt),
+      rest,
+    );
   };
 
   return {
