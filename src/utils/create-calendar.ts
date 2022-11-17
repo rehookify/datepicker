@@ -1,9 +1,13 @@
-import { NOW, NUMBER_OF_STATIC_CALENDAR_DAYS } from '../constants';
-import { Calendar, DatesConfig, LocaleConfig } from '../types';
 import {
+  DAYS_IN_WEEK,
+  NOW,
+  NUMBER_OF_STATIC_CALENDAR_DAYS,
+} from '../constants';
+import { Calendar, CalendarMode, DatesConfig, LocaleConfig } from '../types';
+import {
+  daysInMonth,
   formatDate,
   formatDay,
-  formatMonth,
   formatMonthName,
   formatYear,
   isAfter,
@@ -26,28 +30,67 @@ const willBeInRange = (
   return false;
 };
 
+const getNumberOfDays = (
+  month: number,
+  year: number,
+  date: Date,
+  calendarMode: CalendarMode,
+  firstDayOffset: number,
+): number => {
+  if (calendarMode === 'static') return NUMBER_OF_STATIC_CALENDAR_DAYS;
+
+  const days = daysInMonth(date);
+  const lastDayOffset = new Date(year, month, days).getUTCDay();
+
+  return firstDayOffset + days + DAYS_IN_WEEK - lastDayOffset - 1;
+};
+
+const getMonthParams = (
+  month: number,
+  year: number,
+  calendarMode: CalendarMode,
+) => {
+  const firstDay = new Date(year, month, 1);
+  // getUTCDay here because if month 1 day is sun it getDay returns 0 instead of 7
+  const firstDayOffset = firstDay.getUTCDay();
+
+  return {
+    firstDayOffset,
+    numberOfDaysToDisplay: getNumberOfDays(
+      month,
+      year,
+      firstDay,
+      calendarMode,
+      firstDayOffset,
+    ),
+  };
+};
+
 export const createCalendar = (
   calendarDate: Date,
   selectedDates: Date[],
   rangeEnd: Date | null,
   locale: LocaleConfig,
   { mode }: DatesConfig,
+  calendarMode: CalendarMode,
 ): Calendar => {
   const year = calendarDate.getFullYear();
   const month = calendarDate.getMonth();
-  const firstDayOffset = new Date(year, month, 1).getDay();
+  const { firstDayOffset, numberOfDaysToDisplay } = getMonthParams(
+    month,
+    year,
+    calendarMode,
+  );
   const isRangeMode = mode === 'range';
   const days = [];
 
-  for (let i = 0; i < NUMBER_OF_STATIC_CALENDAR_DAYS; i++) {
-    const date = new Date(year, month, i - firstDayOffset + 2);
+  for (let i = 1; i <= numberOfDaysToDisplay; i++) {
+    const date = new Date(year, month, i - firstDayOffset);
     days.push({
       $date: date,
       date: formatDate(date, locale),
       day: formatDay(date, locale),
-      month: formatMonth(date, locale),
-      year: formatYear(date, locale),
-      currentDisplayedMonth: date.getMonth() === calendarDate.getMonth(),
+      currentDisplayedMonth: date.getMonth() === month,
       isToday: isSame(NOW, date),
       isSelected: selectedDates.some((d) => isSame(d as Date, date)),
       inRange:

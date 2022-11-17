@@ -4,8 +4,6 @@ export interface CalendarDay {
   $date: Date;
   date: string;
   day: string;
-  month: string;
-  year: string;
   currentDisplayedMonth: boolean;
   isSelected: boolean;
   isToday: boolean;
@@ -37,18 +35,18 @@ export interface PropsGetterConfig extends Record<string, unknown> {
 
 export type DatesMode = 'single' | 'multiple' | 'range';
 export interface DatesUserConfig {
-  mode?: DatesMode;
-  minDate?: Date;
-  maxDate?: Date;
-  selectedDate?: Date | Date[];
+  mode: DatesMode;
+  minDate: Date;
+  maxDate: Date;
+  selectedDate: Date | Date[];
   toggle?: boolean;
   limit?: number;
 }
 
 export type CalendarMode = 'static' | 'fluid';
 export interface CalendarConfig {
-  mode?: CalendarMode;
-  selectNow?: boolean;
+  mode: CalendarMode;
+  selectNow: boolean;
 }
 export interface YearsConfig {
   numberOfYearsDisplayed: number;
@@ -59,12 +57,13 @@ export interface LocaleConfig {
   locale: Intl.LocalesArgument;
   options: Intl.DateTimeFormatOptions;
   monthName: Intl.DateTimeFormatOptions['month'];
+  weekday: Intl.DateTimeFormatOptions['weekday'];
 }
 
 export interface DatePickerUserConfig {
-  calendar?: CalendarConfig;
+  calendar?: Partial<CalendarConfig>;
   years?: Partial<YearsConfig>;
-  dates?: DatesUserConfig;
+  dates?: Partial<DatesUserConfig>;
   locale?: Partial<LocaleConfig>;
 }
 

@@ -21,12 +21,12 @@ import {
   subtractFromDate,
   getFirstMonthDay,
   getMultipleDates,
-  formatWeekdays,
   formatDate,
   createMonths,
   maxDateAndAfter,
   minDateAndBeforeFirstDay,
   minDateAndBefore,
+  createWeekdays,
 } from './utils';
 
 export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
@@ -50,12 +50,17 @@ export const useDatepicker = (userConfig?: DatePickerUserConfig) => {
   );
 
   const calendars = [
-    createCalendar(calendarDate, selectedDates, rangeEnd, locale, dates),
+    createCalendar(
+      calendarDate,
+      selectedDates,
+      rangeEnd,
+      locale,
+      dates,
+      calendar.mode,
+    ),
   ];
 
-  const weekDays = calendars[0].days
-    .slice(0, 7)
-    .map(({ $date }) => formatWeekdays($date, locale));
+  const weekDays = createWeekdays(calendars[0], locale);
 
   const calendarYears = createYears(
     currentYear,

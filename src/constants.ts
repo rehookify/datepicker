@@ -18,6 +18,8 @@ import { getCleanDate } from './utils';
  */
 export const NUMBER_OF_STATIC_CALENDAR_DAYS = 42;
 
+export const DAYS_IN_WEEK = 7;
+
 // Nice to have it statically :)
 export const NOW: Date = getCleanDate(new Date());
 
@@ -43,10 +45,10 @@ export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
 export const DEFAULT_LOCALE_CONFIG: LocaleConfig = {
   locale: navigator?.language || 'en',
   options: {
-    weekday: 'short',
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
   },
+  weekday: 'short',
   monthName: 'long',
 };

@@ -39,15 +39,11 @@ export const sortDatesAsc = (a: Date, b: Date) => a.getTime() - b.getTime();
 export const formatMonthName = (d: Date, { locale, monthName }: LocaleConfig) =>
   d.toLocaleDateString(locale, { month: monthName });
 
-export const formatWeekdays = (
-  d: Date,
-  { locale, options: { weekday } }: LocaleConfig,
-) => d.toLocaleDateString(locale, { weekday: weekday });
+export const formatWeekdays = (d: Date, { locale, weekday }: LocaleConfig) =>
+  d.toLocaleDateString(locale, { weekday: weekday });
 
-export const formatDate = (
-  d: Date,
-  { locale, options: { day, month, year } }: LocaleConfig,
-) => d.toLocaleDateString(locale, { day, month, year });
+export const formatDate = (d: Date, { locale, options }: LocaleConfig) =>
+  d.toLocaleDateString(locale, options);
 
 export const formatDay = (
   d: Date,
