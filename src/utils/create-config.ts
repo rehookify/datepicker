@@ -15,7 +15,7 @@ export const createConfig = ({
   dates,
   locale,
 }: DatePickerUserConfig = {}) => {
-  const { minDate, maxDate, selectedDate, ...restDates } = dates || {};
+  const { minDate, maxDate, selectedDates, ...restDates } = dates || {};
   const { offsets = [], ...restCalendarParams } = calendar || {};
   const config = {
     calendar: {
@@ -29,7 +29,7 @@ export const createConfig = ({
       ...restDates,
       minDate: minDate ? getCleanDate(minDate) : null,
       maxDate: maxDate ? getCleanDate(maxDate) : null,
-      selectedDates: ensureArray(selectedDate).map((d) =>
+      selectedDates: ensureArray(selectedDates).map((d) =>
         getCleanDate(d as Date),
       ),
     },

@@ -123,6 +123,12 @@ const App = () => {
     - [setNextMonth](#setnextmonth)
     - [setPreviousMonth](#setpreviousmonth)
     - [setRangeEnd](#setrangeend)
+- [Configuration](#configuration)
+  - [Default configuration](#default-configuration)
+  - [Locale configuration](#locale-configuration)
+  - [Calendar configuration](#calendar-configuration)
+  - [Dates configuration](#dates-configuration)
+  - [Years configuration](#years-configuration)
 
 ### State
 
@@ -170,7 +176,7 @@ interface Calendar {
 
 #### weekdays
 
-Weekdays are an array of day's names. Names will be in the short form - [`Mon`, `Tue`, `Wed`, ...] for the 'en-GB' locale. You can change weekdays appearance, 👀 [Locales configuration](#locales-configuration) `weekdays`
+Weekdays are an array of day's names. Names will be in the short form - [`Mon`, `Tue`, `Wed`, ...] for the 'en-GB' locale. You can change weekdays appearance, 👀 [Locale configuration](#locale-configuration) `weekdays`
 
 ```ts
 type Weekdays = string[]
@@ -179,7 +185,7 @@ type Weekdays = string[]
 #### months
 
 Months are an array of objects that includes: `$date`, `name`, `isSelected`, `isActive`. Names formatted as a `long` version: ['January', 'February', ...].
-You can change names appearance, 👀 [Locales configuration](#locales-configuration) `monthName`
+You can change names appearance, 👀 [Locale configuration](#locale-configuration) `monthName`
 
 ```ts
 interface CalendarMonth {
@@ -212,7 +218,7 @@ interface CalendarYear {
 
 #### selectedDates
 
-An array of formatted dates `date.toLocaleDateString(locale, options)` 👀 [Locales configuration](#locales-configuration)
+An array of formatted dates `date.toLocaleDateString(locale, options)` 👀 [Locale configuration](#locale-configuration)
 
 ```ts
 type SelectedDates = string[];
@@ -365,4 +371,155 @@ Params:
 
 #### setRangeEnd
 
-`setRangeEnd` - it will temporary set Date outside of `selectedDates`. `setRangeEnd` is used inside `dayButton` 👆 [dayButton](#daybutton) prop getter with `dates.mode === 'range'` 👀 [Dates configuration](#dates-configuration). It will set CalendarDate.willBeInRange prop to true if date between `selectedDate` and `rangeEndDate`
+`setRangeEnd` - it will temporary set Date outside of `selectedDates`.
+
+`setRangeEnd` is used inside `dayButton` 👆 [dayButton](#daybutton) prop getter with `dates.mode === 'range'` 👀 [Dates configuration](#dates-configuration).
+
+It will set `CalendarDate.willBeInRange` prop to true if date is between `selectedDate` and `rangeEndDate`
+
+### Configuration
+
+`useDatePicker` and `DatePickerProvider` accepts same configuration object. It consists of: [locale](#locale-configuration), [calendar](#calendar-configuration), [dates](#dates-configuration) and [years](#years-configuration)
+
+#### Default configuration
+
+```ts
+{
+  locale: {
+    locale: 'en-GB',
+    day: '2-digit',
+    year: 'numeric',
+    weekday: 'short',
+    monthName: 'long',
+  },
+  calendar: {
+    mode: 'static',
+    offsets: [0],
+  },
+  dates: {
+    mode: 'single',
+    selectedDates: [],
+    minDate: null,
+    maxDate: null,
+    toggle: false,
+    limit: undefined,
+  },
+  years: {
+    numberOfYearsDisplayed: 12;
+  },
+}
+```
+
+#### Locale configuration
+
+Locale configuration consists of values compatible with `date.toLocaleString()`.
+
+For more information about locales please check [MDN doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString) for more information.
+
+```ts
+interface LocaleConfig {
+  locale?: Intl.LocalesArgument;
+  options?: Intl.DateTimeFormatOptions;
+  day?: Intl.DateTimeFormatOptions['day'];
+  year?: Intl.DateTimeFormatOptions['year'];
+  monthName?: Intl.DateTimeFormatOptions['month'];
+  weekday?: Intl.DateTimeFormatOptions['weekday'];
+}
+```
+
+- `locale: UnicodeBCP47LocaleIdentifier | Locale | (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined` - used to format all instances, a string with a BCP 47 language tag.
+- `options: Intl.DateTimeFormatOptions` it is left undefined to allow you to control how `selectedDates` will appear.
+- `day: "2-digit" | "numeric" | undefined` - used to show dates in [Calendars](#calendars)
+- `year: "numeric" | "2-digit" | undefined` - used to show years value in [Years](#years)
+- `monthName: "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined` - used to show moths in [Months](#months)
+- `weekday: "long" | "short" | "narrow" | undefined` - used to show weekdays in [Weekdays](#weekdays)
+
+#### Calendar configuration
+
+```ts
+interface CalendarConfig {
+  mode?: 'static' | 'fluid';
+  offsets?: number[];
+}
+```
+
+- `mode: 'static' | 'fluid'` it controls how calendar will look like
+
+Calendars in `static` mode will have 6 rows by 7 days. This will prevent UI from jumps when switching between months and years.
+
+🗓 February 2022 in `static` mode:
+
+``` text
+30 31 01 02 03 04 05
+06 07 08 09 10 11 12
+13 14 15 16 17 18 19
+20 21 22 23 24 25 26
+27 28 01 02 03 04 05
+06 07 08 09 10 11 12
+```
+
+Calendars in `fluid` modes counts start and end offsets.
+
+🗓 February 2022 in `fluid` mode:
+
+``` text
+30 31 01 02 03 04 05
+06 07 08 09 10 11 12
+13 14 15 16 17 18 19
+20 21 22 23 24 25 26
+27 28 01 02 03 04 05
+```
+
+- `offsets: number[]` - it will adds additional calendars to the [Calendars](#calendars);
+
+The first calendar is always `[0]` - offsets comes next.
+
+The values of offsets could be negative, `-1` will adds month before current.
+
+`offsets: [-1, 1]` gives you 3 calendars `November, October, December` (today is November 2022).
+
+#### Dates configuration
+
+```ts
+interface DatesUserConfig {
+  mode?: 'single' | 'multiple' | 'range';
+  minDate?: Date;
+  maxDate?: Date;
+  selectedDates?: Date | Date[];
+  toggle?: boolean;
+  limit?: number;
+}
+```
+
+- `mode: 'single' | 'multiple' | 'range'` - defines how date picker will behave with days
+
+`single` - the user can pick only 1 date
+`multiple` - the user can pick unlimited number of dates until `limit` is set
+`range` - the user can pick one dates range. `selectedDates` will have 2 dates
+
+- `minDate: Date` - all dates in prop getters before the `minDate` will be marked as disabled.
+
+✏️ NOTE: if `minDate > now` - initial calendar will show month with `minDate`
+
+- `maxDate: Date` - all dates in prop getters after the `minDate` will be marked as disabled.
+
+✏️ NOTE: if `maxDate < now` - initial calendar will show month with `maxDate`
+
+- `selectedDates: Date | Date[]` - all dates in this prop will be added to `selectedDates` state.
+
+✏️ NOTE: If `mode: 'single'` - after first click `selectedDates` will be reset to 1 date.
+
+- `toggle: boolean` - allows the user to unselect dates
+- `limit: number` - number of dates that the user could select
+
+✏️ NOTE: works only with `mode: 'multiple'`
+
+#### Years configuration
+
+```ts
+interface YearsConfig {
+  numberOfYearsDisplayed: number;
+},
+```
+
+- `numberOfYearsDisplayed: number` - the number of years you want to show to the user

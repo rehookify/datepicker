@@ -31,6 +31,3 @@ export const formatMonthName = (d: Date, { locale, monthName }: LocaleConfig) =>
 
 export const formatDate = (d: Date, { locale, options }: LocaleConfig) =>
   d.toLocaleDateString(locale, options);
-
-export const formatMonth = (d: Date, { locale, month }: LocaleConfig) =>
-  d.toLocaleDateString(locale, { month });

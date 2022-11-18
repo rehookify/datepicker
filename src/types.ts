@@ -37,7 +37,7 @@ export interface DatesUserConfig {
   mode: DatesMode;
   minDate: Date;
   maxDate: Date;
-  selectedDate: Date | Date[];
+  selectedDates: Date | Date[];
   toggle?: boolean;
   limit?: number;
 }
@@ -45,29 +45,26 @@ export interface DatesUserConfig {
 export type CalendarMode = 'static' | 'fluid';
 export interface CalendarConfig {
   mode: CalendarMode;
-  selectNow: boolean;
   offsets: number[];
 }
 export interface YearsConfig {
   numberOfYearsDisplayed: number;
-  disablePagination: boolean;
 }
 
 export interface LocaleConfig {
   locale: Intl.LocalesArgument;
   options?: Intl.DateTimeFormatOptions;
   day: Intl.DateTimeFormatOptions['day'];
-  month: Intl.DateTimeFormatOptions['month'];
   year: Intl.DateTimeFormatOptions['year'];
   monthName: Intl.DateTimeFormatOptions['month'];
   weekday: Intl.DateTimeFormatOptions['weekday'];
 }
 
 export interface DatePickerUserConfig {
-  calendar?: Partial<CalendarConfig>;
-  years?: Partial<YearsConfig>;
-  dates?: Partial<DatesUserConfig>;
   locale?: Partial<LocaleConfig>;
+  calendar?: Partial<CalendarConfig>;
+  dates?: Partial<DatesUserConfig>;
+  years?: Partial<YearsConfig>;
 }
 
 export interface DatesConfig {
@@ -80,10 +77,10 @@ export interface DatesConfig {
 }
 
 export interface DatePickerConfig {
-  calendar: CalendarConfig;
-  years: YearsConfig;
-  dates: DatesConfig;
   locale: LocaleConfig;
+  calendar: CalendarConfig;
+  dates: DatesConfig;
+  years: YearsConfig;
 }
 
 export type DatePart = 'year' | 'month' | 'date';

@@ -4,7 +4,7 @@ import {
   LocaleConfig,
   YearsConfig,
 } from './types';
-import { getCleanDate } from './utils';
+import { getCleanDate } from './utils/date';
 
 /*
  * It is used for static 🗓 to cover all possible month start and end date combination
@@ -30,13 +30,11 @@ export const NUMBER_OF_YEARS_DISPLAYED = 12;
 
 export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
   mode: 'static',
-  selectNow: false,
   offsets: [0],
 };
 
 export const DEFAULT_YEARS_CONFIG: YearsConfig = {
   numberOfYearsDisplayed: NUMBER_OF_YEARS_DISPLAYED,
-  disablePagination: false,
 };
 
 export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
@@ -47,7 +45,6 @@ export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
 export const DEFAULT_LOCALE_CONFIG: LocaleConfig = {
   locale: 'en-GB',
   day: '2-digit',
-  month: '2-digit',
   year: 'numeric',
   weekday: 'short',
   monthName: 'long',
