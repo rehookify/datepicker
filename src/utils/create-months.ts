@@ -9,7 +9,7 @@ export const createMonths = (
 ) => {
   const months = [];
 
-  // Months in Date starts has values 0 - 11
+  // Months in Date has values 0 - 11
   for (let i = 0; i < NUMBER_OF_MONTHS; i++) {
     const date = new Date(calendarDate.getFullYear(), i, 1);
     const name = formatMonthName(date, locale);

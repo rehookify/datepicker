@@ -15,7 +15,6 @@ import {
   getStartDecadePosition,
   createConfig,
   getCalendarStartDate,
-  ensureArray,
   addToDate,
   subtractFromDate,
   getFirstMonthDay,
@@ -94,14 +93,6 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
   const onPreviousYearsClick = () => setCurrentYear((s) => s - 10);
 
   const onSetCalendarDate = (d: Date) => setCalendarDate(d);
-
-  const reset = (date?: Date) => {
-    const resetDates = ensureArray(date) as Date[];
-    const newDates =
-      resetDates.length > 0 ? resetDates : selectNow ? [NOW] : [];
-    setSelectedDates(newDates);
-    setMonthAndYear(newDates[0]);
-  };
 
   // propsGetter
   const dayButton = (
@@ -249,14 +240,13 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       previousYearsButton,
     },
     actions: {
-      reset,
-      setNextYears: onNextYearsClick,
-      setPreviousYears: onPreviousYearsClick,
-      setNextMonth: onNextMonthClick,
-      setPreviousMonth: onPreviousMonthClick,
       setDay: onDayClick,
       setMonth: setCalendarDate,
+      setNextMonth: onNextMonthClick,
+      setPreviousMonth: onPreviousMonthClick,
       setYear: setMonthAndYear,
+      setNextYears: onNextYearsClick,
+      setPreviousYears: onPreviousYearsClick,
       setRangeEnd,
     },
   };
