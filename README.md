@@ -1,5 +1,5 @@
 # @rehookify/datepicker
-UI-independent date picker logic. The tiny library that helps you to use date-range picker logic with your UI library.
+The tiny tool to create a date and range picker in your React applications.
 
 ## Features
 
@@ -8,7 +8,7 @@ UI-independent date picker logic. The tiny library that helps you to use date-ra
 - You have full power to manipulate the state with actions.
 - You can get accessible component props with prop-getters.
 - Available as a hook or context.
-- Support localization with `.toLocaleString`
+- Support localization with `.toLocaleString`.
 
 ## Install
 
@@ -136,7 +136,7 @@ The state consists of three parts: [data](#data), [propGetters](#prop-getters) a
 
 ### Data
 
-The data represents all entities what you could use in your date picker. It consists of: [calendars](#calendars), [weekdays](#weekdays), [months](#months), [years](#years) and [selectedDates](#selecteddates)
+The data represents all entities that you could use in your date picker. It consists of [calendars](#calendars), [weekdays](#weekdays), [months](#months), [years](#years) and [selectedDates](#selecteddates)
 
 ```ts
 interface Data {
@@ -151,7 +151,7 @@ interface Data {
 
 #### calendars
 
-Calendars are an array of objects that includes: year, month and days array. It always has at least one member `calendars[0]` - an initial calendar. They could be `static` or `fluid`. We could set additional calendars by adding `offsets: [1, ...]` 👀 [Calendar config](#calendar-configuration)
+`calendars` are an array of objects with **year**, **month** and **days** properties. The `calendars` array always has at least one member.It always has at least one member - an initial calendar `calendars[0]`. For calendars configuration 👀 [Calendar config](#calendar-configuration)
 
 ```ts
 interface CalendarDay {
@@ -176,7 +176,7 @@ interface Calendar {
 
 #### weekdays
 
-Weekdays are an array of day's names. Names will be in the short form - [`Mon`, `Tue`, `Wed`, ...] for the 'en-GB' locale. You can change weekdays appearance, 👀 [Locale configuration](#locale-configuration) `weekdays`
+Weekdays are an array of names [`Mon`, `Tue`, `Wed`, ...]. The name format can be changed by `locale.weekdays` property 👀 [Locale configuration](#locale-configuration)
 
 ```ts
 type Weekdays = string[]
@@ -184,8 +184,7 @@ type Weekdays = string[]
 
 #### months
 
-Months are an array of objects that includes: `$date`, `name`, `isSelected`, `isActive`. Names formatted as a `long` version: ['January', 'February', ...].
-You can change names appearance, 👀 [Locale configuration](#locale-configuration) `monthName`
+Months are an array of objects with **$date**, **name**, **isSelected** and **isActive** properties. The name format could be changed by `locale.monthName` property 👀 [Locale configuration](#locale-configuration).
 
 ```ts
 interface CalendarMonth {
@@ -196,13 +195,13 @@ interface CalendarMonth {
 }
 ```
 
-`isSelected` - shows that we have a date selected for this month.
+`isSelected` - shaws that we have a date selected for this month.
 
-`isActive` - shows that the user currently sees this month on the screen.
+`isActive` - shows that a user sees this month as current.
 
 #### years
 
-Years are an array of objects that includes: $date, value, isSelected, isActive.
+Years are an array of objects with **$date**, **value**, **isSelected**, and **isActive** properties.
 
 ```ts
 interface CalendarYear {
@@ -214,7 +213,8 @@ interface CalendarYear {
 ```
 
 `isSelected` - shows that we have a date selected for this year.
-`isActive` - shows that the user currently sees this year on the screen.
+
+`isActive` - shows that a user sees this year as current.
 
 #### selectedDates
 
@@ -226,9 +226,9 @@ type SelectedDates = string[];
 
 ### Prop-Getters
 
-[Prop-getters](https://kentcdodds.com/blog/how-to-give-rendering-control-to-users-with-prop-getters)  is a pattern that allows you to get all necessary pops and logic for you components. It gives you possibility to pass additional configuration. `@rehookify/datepicker` composes `onClick` logic and sends event and date - `onClick(event, date)`.
+A [prop-getters](https://kentcdodds.com/blog/how-to-give-rendering-control-to-users-with-prop-getters) is a pattern that allows you to get all the necessary pops and logic for your components. It gives you the possibility to pass additional configuration. `@rehookify/datepicker` composes `onClick` and calls it with **event** and **date** - `onClick(event, date)`.
 
-Each prop getters accepted configuration object. This object could expand properties and functionality of the component.
+Each prop-getter accepts a configuration object to enhance the properties and functionality of the component.
 
 ```ts
 interface PropsGetterConfig extends Record<string, unknown> {
@@ -237,7 +237,7 @@ interface PropsGetterConfig extends Record<string, unknown> {
 }
 ```
 
-All of them returns object of component props.
+Each prop-getter returns an object with properties:
 
 ```ts
 interface PropGetterReturnValue extends Omit<PropsGetterConfig, 'onClick' | 'disabled'>{
@@ -251,7 +251,7 @@ interface PropGetterReturnValue extends Omit<PropsGetterConfig, 'onClick' | 'dis
 
 #### dayButton
 
-`dayButton` returns props for calendar days. It sets selectedDates when the user clicks on a day.
+`dayButton` produces properties for calendar days and sets the `selectedDates` state when a user clicks on a day.
 
 Params:
 
@@ -266,13 +266,11 @@ interface DayButtonReturnValue extends PropGetterReturnValue {
 }
 ```
 
-✏️ NOTE:
-
-`onMouseMove` - appears only if dates mode is `range`, it is not composable. 👀 [Dates configuration](#dates-configuration)
+✏️ NOTE: `onMouseMove` - appears only if dates mode is `range`, it is not composable. 👀 [Dates configuration](#dates-configuration)
 
 #### monthButton
 
-`monthButton` returns props for calendar months. It changes month that the user sees.
+`monthButton` produces properties for calendar months and changes month when a user clicks on a month.
 
 Params:
 
@@ -287,7 +285,6 @@ Params:
 
 - `props?: PropsGetterConfig`
 
-
 #### previousMonthButton
 
 `previousMonthButton` moves months pagination one step backward.
@@ -298,7 +295,7 @@ Params:
 
 #### yearButton
 
-`yearButton` returns props for calendar years. It changes the year that the user sees.
+`yearButton` produces properties for calendar years and changes the year when user clicks on a year.
 
 Params:
 
@@ -327,7 +324,7 @@ Params:
 
 ### Actions
 
-Actions allows you to control date picker internal state. They doesn't have any additional logic. You need to check states that days, months and years has. Or disable months and years pagination buttons.
+Actions allow you to control the date picker's state. They don't have any additional logic. You need to check the state of days, months and years or disable the months and years pagination buttons.
 
 #### setDay
 
@@ -339,7 +336,7 @@ Params:
 
 #### setMonth
 
-`setMonth` - set month that user sees
+`setMonth` - set the month that a user sees.
 
 Params:
 
@@ -347,15 +344,15 @@ Params:
 
 #### setNextMonth
 
-`setNextMonth` - adds one month to current
+`setNextMonth` adds one month to current
 
 #### setPreviousMonth
 
-`setPreviousMonth` - subtracts one month from current
+`setPreviousMonth` subtracts one month from current
 
 #### setYear
 
-`setMonth` - set year that user sees
+`setYear` set the year that user sees
 
 Params:
 
@@ -363,23 +360,23 @@ Params:
 
 #### setNextYears
 
-`setNextYears` - moves years pagination one step forward
+`setNextYears` moves years pagination one step forward
 
 #### setPreviousYears
 
-`setPreviousYears` - moves years pagination one step backward
+`setPreviousYears` moves years pagination one step backward
 
 #### setRangeEnd
 
 `setRangeEnd` - it will temporary set Date outside of `selectedDates`.
 
-`setRangeEnd` is used inside `dayButton` 👆 [dayButton](#daybutton) prop getter with `dates.mode === 'range'` 👀 [Dates configuration](#dates-configuration).
+`setRangeEnd` is used inside `dayButton` 👆 [dayButton](#daybutton) prop-getter with `dates.mode === 'range'` 👀 [Dates configuration](#dates-configuration).
 
-It will set `CalendarDate.willBeInRange` prop to true if date is between `selectedDate` and `rangeEndDate`
+It sets `CalendarDate.willBeInRange` property to true if date is between `selectedDate` and `rangeEndDate`
 
 ### Configuration
 
-`useDatePicker` and `DatePickerProvider` accepts same configuration object. It consists of: [locale](#locale-configuration), [calendar](#calendar-configuration), [dates](#dates-configuration) and [years](#years-configuration)
+`useDatePicker` and `DatePickerProvider` accepts same configuration object that consists of [locale](#locale-configuration), [calendar](#calendar-configuration), [dates](#dates-configuration) and [years](#years-configuration)
 
 #### Default configuration
 
@@ -414,7 +411,7 @@ It will set `CalendarDate.willBeInRange` prop to true if date is between `select
 
 Locale configuration consists of values compatible with `date.toLocaleString()`.
 
-For more information about locales please check [MDN doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString) for more information.
+For more information about locale you can reed at [MDN doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString).
 
 ```ts
 interface LocaleConfig {
@@ -428,11 +425,11 @@ interface LocaleConfig {
 ```
 
 - `locale: UnicodeBCP47LocaleIdentifier | Locale | (UnicodeBCP47LocaleIdentifier | Locale)[] | undefined` - used to format all instances, a string with a BCP 47 language tag.
-- `options: Intl.DateTimeFormatOptions` it is left undefined to allow you to control how `selectedDates` will appear.
-- `day: "2-digit" | "numeric" | undefined` - used to show dates in [Calendars](#calendars)
-- `year: "numeric" | "2-digit" | undefined` - used to show years value in [Years](#years)
-- `monthName: "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined` - used to show moths in [Months](#months)
-- `weekday: "long" | "short" | "narrow" | undefined` - used to show weekdays in [Weekdays](#weekdays)
+- `options: Intl.DateTimeFormatOptions` it is left undefined to allow you to control how `selectedDates` will formatted.
+- `day: "2-digit" | "numeric" | undefined` - defines the date's format in [Calendars](#calendars)
+- `year: "numeric" | "2-digit" | undefined` - defines the year's format in [Years](#years)
+- `monthName: "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined` - defines the moths format in [Months](#months)
+- `weekday: "long" | "short" | "narrow" | undefined` - defines weekday's format in [Weekdays](#weekdays)
 
 #### Calendar configuration
 
@@ -443,9 +440,9 @@ interface CalendarConfig {
 }
 ```
 
-- `mode: 'static' | 'fluid'` it controls how calendar will look like
+- `mode: 'static' | 'fluid'` controls how calendar will look like
 
-Calendars in `static` mode will have 6 rows by 7 days. This will prevent UI from jumps when switching between months and years.
+Calendars in `static` mode have 6 rows by 7 days. This prevents UI from jumping while switching between months and years.
 
 🗓 February 2022 in `static` mode:
 
@@ -458,7 +455,7 @@ Calendars in `static` mode will have 6 rows by 7 days. This will prevent UI from
 06 07 08 09 10 11 12
 ```
 
-Calendars in `fluid` modes counts start and end offsets.
+Calendars in `fluid` mode counts start and end offsets.
 
 🗓 February 2022 in `fluid` mode:
 
@@ -470,11 +467,11 @@ Calendars in `fluid` modes counts start and end offsets.
 27 28 01 02 03 04 05
 ```
 
-- `offsets: number[]` - it will adds additional calendars to the [Calendars](#calendars);
+- `offsets: number[]` - adds additional calendars to the [Calendars](#calendars);
 
 The first calendar is always `[0]` - offsets comes next.
 
-The values of offsets could be negative, `-1` will adds month before current.
+The values of offsets could be negative, `-1`, this will add month before current.
 
 `offsets: [-1, 1]` gives you 3 calendars `November, October, December` (today is November 2022).
 
@@ -491,26 +488,28 @@ interface DatesUserConfig {
 }
 ```
 
-- `mode: 'single' | 'multiple' | 'range'` - defines how date picker will behave with days
+- `mode: 'single' | 'multiple' | 'range'` - defines how date picker behaves with days
 
-`single` - the user can pick only 1 date
-`multiple` - the user can pick unlimited number of dates until `limit` is set
-`range` - the user can pick one dates range. `selectedDates` will have 2 dates
+`single` - a user can pick only 1 date
 
-- `minDate: Date` - all dates in prop getters before the `minDate` will be marked as disabled.
+`multiple` - a user can pick unlimited number of dates until `limit` is set
 
-✏️ NOTE: if `minDate > now` - initial calendar will show month with `minDate`
+`range` - a user can pick one dates range. `selectedDates` will have 2 dates
 
-- `maxDate: Date` - all dates in prop getters after the `minDate` will be marked as disabled.
+- `minDate: Date` - all dates in prop-getters before the `minDate` will be marked as disabled.
 
-✏️ NOTE: if `maxDate < now` - initial calendar will show month with `maxDate`
+✏️ NOTE: if `minDate > NOW` - initial calendar will show the month with `minDate`
 
-- `selectedDates: Date | Date[]` - all dates in this prop will be added to `selectedDates` state.
+- `maxDate: Date` - all dates in prop-getters after the `maxDate` will be marked as disabled.
 
-✏️ NOTE: If `mode: 'single'` - after first click `selectedDates` will be reset to 1 date.
+✏️ NOTE: if `maxDate < NOW` - initial calendar will show the month with `maxDate`
 
-- `toggle: boolean` - allows the user to unselect dates
-- `limit: number` - number of dates that the user could select
+- `selectedDates: Date | Date[]` - dates that will be added to `selectedDates` state.
+
+✏️ NOTE: If `mode: 'single'` - after the first click `selectedDates` will be reset to 1 date.
+
+- `toggle: boolean` - allows a user to unselect dates.
+- `limit: number` - number of dates that a user could select.
 
 ✏️ NOTE: works only with `mode: 'multiple'`
 
@@ -522,4 +521,4 @@ interface YearsConfig {
 },
 ```
 
-- `numberOfYearsDisplayed: number` - the number of years you want to show to the user
+- `numberOfYearsDisplayed: number` - the number of years you want to show to a user.
