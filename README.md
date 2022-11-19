@@ -1,5 +1,12 @@
 # @rehookify/datepicker
+
 The tiny tool to create a date and range picker in your React applications.
+
+## #StandWithUkraine 💙💛
+
+We have war at our home 🇺🇦
+
+Help us in our struggle, 💰  [United24](https://u24.gov.ua/), [KOLO](https://www.koloua.com/en), [Come Back Alive](https://savelife.in.ua/en/)
 
 ## Features
 
