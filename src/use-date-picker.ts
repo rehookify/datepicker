@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 
+import { NOW } from './constants';
 import {
   CalendarDay,
   CalendarMonth,
@@ -17,7 +18,7 @@ import { createYears } from './utils/create-years';
 import {
   addToDate,
   subtractFromDate,
-  getFirstMonthDay,
+  getFirstDayOfTheMonth,
   formatDate,
 } from './utils/date';
 import { getCalendarStartDate } from './utils/get-calendar-start-date';
@@ -40,7 +41,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
   const [calendarDate, setCalendarDate] = useState<Date>(
     selectedDates.length > 0
       ? selectedDates[selectedDates.length - 1]
-      : getCalendarStartDate(dates),
+      : getCalendarStartDate(dates, NOW),
   );
   const [currentYear, setCurrentYear] = useState<number>(
     getStartDecadePosition(calendarDate.getFullYear()),
@@ -50,6 +51,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
     calendarDate,
     selectedDates,
     rangeEnd,
+    NOW,
     locale,
     dates,
     calendar,
@@ -147,7 +149,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       const isDisabled =
         !!disabled ||
         minDateAndBeforeFirstDay(minDate, $date) ||
-        maxDateAndAfter(maxDate, getFirstMonthDay($date));
+        maxDateAndAfter(maxDate, getFirstDayOfTheMonth($date));
 
       return createPropGetter(
         isDisabled,
@@ -162,7 +164,8 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
     ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
       const nextMonth = addToDate(calendarDate, 1, 'month');
       const isDisabled =
-        !!disabled || maxDateAndAfter(maxDate, getFirstMonthDay(nextMonth));
+        !!disabled ||
+        maxDateAndAfter(maxDate, getFirstDayOfTheMonth(nextMonth));
 
       return createPropGetter(
         isDisabled,
@@ -196,7 +199,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       const isDisabled =
         !!disabled ||
         minDateAndBeforeFirstDay(minDate, $date) ||
-        maxDateAndAfter(maxDate, getFirstMonthDay($date));
+        maxDateAndAfter(maxDate, getFirstDayOfTheMonth($date));
 
       return createPropGetter(
         isDisabled,

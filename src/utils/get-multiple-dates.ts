@@ -24,7 +24,15 @@ export const getMultipleDates = (
       : selectedDates;
   }
 
-  return selectedDates.length === 2
-    ? [date]
-    : selectedDates.concat(date).sort(sortDatesAsc);
+  if (mode === 'range' && toggle) {
+    const filtered = selectedDates.filter((d) => !isSame(d, date));
+    if (filtered.length < selectedDates.length) return filtered;
+
+    return selectedDates.length === 2
+      ? [date]
+      : selectedDates.concat(date).sort(sortDatesAsc);
+  }
+
+  // Ideally we can't get here
+  return [];
 };

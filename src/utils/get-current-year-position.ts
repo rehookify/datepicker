@@ -9,8 +9,10 @@
  */
 export const getCenteredYearPosition = (
   numberOfDisplayedYears: number,
+  year: number,
 ): number =>
-  numberOfDisplayedYears / 2 - (numberOfDisplayedYears % 2 === 0 ? 1 : 0);
+  year -
+  (numberOfDisplayedYears / 2 - (numberOfDisplayedYears % 2 === 0 ? 1 : 0));
 
 /*
  * Default behavior years collection

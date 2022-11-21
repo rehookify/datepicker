@@ -10,7 +10,7 @@ export const getCleanDate = (d: Date): Date =>
 export const daysInMonth = (d: Date): number =>
   new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
 
-export const getFirstMonthDay = (d: Date): Date =>
+export const getFirstDayOfTheMonth = (d: Date): Date =>
   new Date(d.getFullYear(), d.getMonth(), 1);
 
 export const addToDate = (d: Date, value: number, part: DatePart) =>

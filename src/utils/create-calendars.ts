@@ -1,8 +1,4 @@
-import {
-  DAYS_IN_WEEK,
-  NOW,
-  NUMBER_OF_STATIC_CALENDAR_DAYS,
-} from '../constants';
+import { DAYS_IN_WEEK, NUMBER_OF_STATIC_CALENDAR_DAYS } from '../constants';
 import {
   CalendarConfig,
   CalendarMode,
@@ -66,6 +62,7 @@ const createCalendar = (
   calendarDate: Date,
   selectedDates: Date[],
   rangeEnd: Date | null,
+  NOW: Date,
   locale: LocaleConfig,
   { mode }: DatesConfig,
   calendarMode: CalendarMode,
@@ -120,6 +117,7 @@ export const createCalendars = (
   calendarDate: Date,
   selectedDates: Date[],
   rangeEnd: Date | null,
+  NOW: Date,
   locale: LocaleConfig,
   dates: DatesConfig,
   { mode, offsets }: CalendarConfig,
@@ -129,6 +127,7 @@ export const createCalendars = (
       addToDate(calendarDate, offset, 'month'),
       selectedDates,
       rangeEnd,
+      NOW,
       locale,
       dates,
       mode,
