@@ -1,0 +1,49 @@
+body, html {
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+body {
+  --font-family: 'Inter', sans-serif;
+
+  --body-background: #F5F5F5;
+  --main-text-color: #121212;
+  --day-color: #2F2F2F;
+  --secondary-day-color: #858585;
+  --selected-day: #5865F2;
+  --selected-range: #F1F2FF;
+  --today-color: var(--selected-day);
+  --calendar-background: white;
+
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
+
+  --day-size: 32px;
+
+  font-family: var(--font-family);
+  color: var(--main-text-color);
+  background-color: var(--body-background);
+}
+
+body.dark {
+  --body-background: #232323;
+  --main-text-color: #A0A0A0;
+  --day-color: #c0c0c0;
+  --secondary-day-color: #515151;
+  --selected-day: #5865F2;
+  --selected-range: #2F2F2F;
+  --calendar-background: #121212;
+  --today-color: white;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.svg {
+  display: block;
+}

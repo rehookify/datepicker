@@ -1,0 +1,88 @@
+.calendar {
+  display: grid;
+  grid-template-rows: min-content;
+  row-gap: 4px;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  background-color: var(--calendar-background);
+}
+
+.calendar__header {
+  height: 20px;
+  padding-bottom: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar__header-button {
+  width: 20px;
+  padding: 20px;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
+  border: 0;
+  color: var(--main-text-color)
+}
+
+.weekday {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.days {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, var(--day-size));
+  row-gap: 4px;
+}
+
+.day {
+  width: var(--day-size);
+  height: var(--day-size);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+button.day {
+  border: 0;
+  background-color: transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: var(--day-color);
+}
+
+button.day--today {
+  font-weight: 600;
+  color: var(--today-color);
+}
+
+button.day--secondary {
+  color: var(--secondary-day-color);
+}
+
+button.day--selected {
+  color: white;
+  background-color: var(--selected-day);
+}
+
+button.day--will-be-in-range,
+button.day--in-range {
+  background-color: var(--selected-range);
+  border-radius: 0;
+}
+
+button.day--will-be-in-range:nth-child(7n),
+button.day--in-range:nth-child(7n),
+button.day--range-end {
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+button.day--will-be-in-range:nth-child(7n+1),
+button.day--in-range:nth-child(7n+1),
+button.day--range-start {
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+}

@@ -31,8 +31,9 @@ export const getMultipleDates = (
     return selectedDates.length === 2
       ? [date]
       : selectedDates.concat(date).sort(sortDatesAsc);
+  } else {
+    return selectedDates.length === 2
+      ? [date]
+      : selectedDates.concat(date).sort(sortDatesAsc);
   }
-
-  // Ideally we can't get here
-  return [];
 };
