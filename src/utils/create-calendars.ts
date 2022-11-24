@@ -3,23 +3,48 @@ import {
   CalendarConfig,
   CalendarMode,
   DatesConfig,
+  DayRange,
   LocaleConfig,
 } from '../types';
 import { addToDate, daysInMonth, formatDate, formatMonthName } from './date';
-import { isAfter, isBefore, isBetween, isSame } from './predicates';
+import {
+  isBefore,
+  isBetween,
+  isSame,
+  maxDateAndAfter,
+  minDateAndBefore,
+} from './predicates';
 
-const willBeInRange = (
-  day: Date,
-  rangeEnd: Date,
-  selectedDate: Date,
-): boolean => {
-  if (isSame(day, rangeEnd)) return true;
-  if (isBefore(rangeEnd, selectedDate))
-    return isBetween(rangeEnd, day, selectedDate);
-  if (isAfter(rangeEnd, selectedDate))
-    return isBetween(selectedDate, day, rangeEnd);
+const detectRange = (
+  date: Date,
+  rangeEnd: Date | null,
+  selectedDates: Date[],
+) => {
+  // We have completed range
+  if (selectedDates.length === 2) {
+    if (isSame(date, selectedDates[0])) return 'range-start';
+    if (isSame(date, selectedDates[1])) return 'range-end';
+    if (isBetween(selectedDates[0], date, selectedDates[1])) return 'in-range';
+    return '';
+  }
 
-  return false;
+  // We have 1 date and rangeEnd date
+  if (selectedDates.length === 1 && rangeEnd) {
+    if (isBetween(selectedDates[0], date, rangeEnd)) return 'will-be-in-range';
+    // rangeEnd is before selectedDates[0]
+    if (isBefore(rangeEnd, selectedDates[0])) {
+      if (isSame(date, rangeEnd)) return 'will-be-range-start';
+      if (isSame(date, selectedDates[0])) return 'will-be-range-end';
+      return '';
+    }
+
+    // rangeEnd is after selectedDates[0];
+    if (isSame(date, selectedDates[0])) return 'will-be-range-start';
+    if (isSame(date, rangeEnd)) return 'will-be-range-end';
+    return '';
+  }
+
+  return '';
 };
 
 const getNumberOfDays = (
@@ -64,7 +89,7 @@ const createCalendar = (
   rangeEnd: Date | null,
   NOW: Date,
   locale: LocaleConfig,
-  { mode }: DatesConfig,
+  { mode, minDate, maxDate }: DatesConfig,
   calendarMode: CalendarMode,
 ) => {
   const { locale: localeStr, day, year: localeYear } = locale;
@@ -80,29 +105,33 @@ const createCalendar = (
 
   for (let i = 1; i <= numberOfDaysToDisplay; i++) {
     const date = new Date(year, month, i - firstDayOffset);
+    const range: DayRange = isRangeMode
+      ? detectRange(date, rangeEnd, selectedDates)
+      : '';
+    const disabled =
+      minDateAndBefore(minDate, date) || maxDateAndAfter(maxDate, date);
+    const selected = selectedDates.some((d) => isSame(d as Date, date));
+    const inCurrentMonth = date.getMonth() === month;
+
     days.push({
       $date: date,
       date: formatDate(date, locale),
       day: date.toLocaleDateString(localeStr, { day }),
-      currentDisplayedMonth: date.getMonth() === month,
+      currentDisplayedMonth: inCurrentMonth,
       isToday: isSame(NOW, date),
-      isSelected: selectedDates.some((d) => isSame(d as Date, date)),
-      inRange:
-        isRangeMode && selectedDates.length === 2
-          ? isBetween(selectedDates[0], date, selectedDates[1])
-          : false,
-      isRangeStart:
-        isRangeMode && selectedDates[0]
-          ? isSame(date, selectedDates[0])
-          : false,
-      isRangeEnd:
-        isRangeMode && selectedDates[1]
-          ? isSame(date, selectedDates[1])
-          : false,
-      willBeInRange:
-        isRangeMode && rangeEnd
-          ? willBeInRange(date, rangeEnd, selectedDates[0])
-          : false,
+      isSelected: selected,
+      inRange: range === 'in-range',
+      isRangeStart: range === 'range-start',
+      isRangeEnd: range === 'range-end',
+      willBeInRange: [
+        'will-be-in-range',
+        'will-be-range-start',
+        'will-be-range-end',
+      ].includes(range),
+      range,
+      disabled,
+      selected,
+      inCurrentMonth,
     });
   }
 

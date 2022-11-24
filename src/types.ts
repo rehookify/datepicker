@@ -1,5 +1,14 @@
 import type { MouseEvent } from 'react';
 
+export type DayRange =
+  | 'in-range'
+  | 'range-start'
+  | 'range-end'
+  | 'will-be-in-range'
+  | 'will-be-range-start'
+  | 'will-be-range-end'
+  | '';
+
 export interface CalendarDay {
   $date: Date;
   date: string;
@@ -11,6 +20,10 @@ export interface CalendarDay {
   isRangeStart: boolean;
   isRangeEnd: boolean;
   willBeInRange: boolean;
+  range: DayRange;
+  disabled: boolean;
+  selected: boolean;
+  inCurrentMonth: boolean;
 }
 
 export interface CalendarMonth {
@@ -18,6 +31,9 @@ export interface CalendarMonth {
   name: string;
   isSelected: boolean;
   isActive: boolean;
+  disabled: boolean;
+  active: boolean;
+  selected: boolean;
 }
 
 export interface CalendarYear {
@@ -25,6 +41,9 @@ export interface CalendarYear {
   value: number;
   isSelected: boolean;
   isActive: boolean;
+  selected: boolean;
+  active: boolean;
+  disabled: boolean;
 }
 
 export interface PropsGetterConfig extends Record<string, unknown> {

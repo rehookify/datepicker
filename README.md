@@ -168,17 +168,30 @@ interface Data {
 `calendars` are an array of objects with **year**, **month** and **days** properties. The `calendars` array always has at least one member.It always has at least one member - an initial calendar `calendars[0]`. For calendars configuration 👀 [Calendar config](#calendar-configuration)
 
 ```ts
+export type DayRange =
+  | 'in-range'
+  | 'range-start'
+  | 'range-end'
+  | 'will-be-in-range'
+  | 'will-be-range-start'
+  | 'will-be-range-end'
+  | '';
+
 interface CalendarDay {
   $date: Date;
   date: string;
   day: string;
-  currentDisplayedMonth: boolean;
-  isSelected: boolean;
+  currentDisplayedMonth: boolean; // deprecated use inCurrentMonth
+  isSelected: boolean; // deprecated use selected
   isToday: boolean;
-  inRange: boolean;
-  isRangeStart: boolean;
-  isRangeEnd: boolean;
-  willBeInRange: boolean;
+  inRange: boolean; // deprecated use range
+  isRangeStart: boolean; // deprecated use range
+  isRangeEnd: boolean; // deprecated use range
+  willBeInRange: boolean; // deprecated use range
+  range: DayRange;
+  disabled: boolean;
+  selected: boolean;
+  inCurrentMonth: boolean;
 }
 
 interface Calendar {
@@ -204,8 +217,11 @@ Months are an array of objects with **$date**, **name**, **isSelected** and **is
 interface CalendarMonth {
   $date: Date;
   name: string;
-  isSelected: boolean;
-  isActive: boolean;
+  isSelected: boolean; // deprecated use selected
+  isActive: boolean; // deprecated use active
+  disabled: boolean;
+  active: boolean;
+  selected: boolean;
 }
 ```
 
@@ -221,8 +237,11 @@ Years are an array of objects with **$date**, **value**, **isSelected**, and **i
 interface CalendarYear {
   $date: Date;
   value: number;
-  isSelected: boolean;
-  isActive: boolean;
+  isSelected: boolean; // deprecated use selected
+  isActive: boolean; // deprecated use active
+  disabled: boolean;
+  active: boolean;
+  selected: boolean;
 }
 ```
 
