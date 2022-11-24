@@ -10,7 +10,7 @@
     "link:datepicker": "npm link @rehookify/datepicker"
   },
   "dependencies": {
-    "@rehookify/datepicker": "^1.1.1",
+    "@rehookify/datepicker": "^1.2.0",
     "clsx": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
