@@ -6,7 +6,13 @@ import {
   LocaleConfig,
 } from '../types';
 
-import { addToDate, formatDate, formatMonthName } from './date';
+import {
+  addToDate,
+  formatDate,
+  formatMonthName,
+  getDateParts,
+  toLocaleDateString,
+} from './date';
 import { getCalendarMonthParams } from './get-calendar-month-params';
 import { getDateRangeState } from './get-date-range-state';
 import { isSame, maxDateAndAfter, minDateAndBefore } from './predicates';
@@ -21,29 +27,28 @@ const createCalendar = (
   calendarMode: CalendarMode,
 ) => {
   const { locale: localeStr, day, year: localeYear } = locale;
-  const year = calendarDate.getFullYear();
-  const month = calendarDate.getMonth();
-  const { firstDayOffset, numberOfDaysToDisplay } = getCalendarMonthParams(
-    month,
-    year,
+  const { M, Y } = getDateParts(calendarDate);
+  const { startOffset, numberOfDays } = getCalendarMonthParams(
+    M,
+    Y,
     calendarMode,
   );
 
   const days = [];
 
-  for (let i = 1; i <= numberOfDaysToDisplay; i++) {
-    const date = new Date(year, month, i - firstDayOffset);
+  for (let i = 1; i <= numberOfDays; i++) {
+    const date = new Date(Y, M, i - startOffset);
     const range: DayRange =
       mode === 'range' ? getDateRangeState(date, rangeEnd, selectedDates) : '';
     const disabled =
       minDateAndBefore(minDate, date) || maxDateAndAfter(maxDate, date);
     const selected = selectedDates.some((d) => isSame(d as Date, date));
-    const inCurrentMonth = date.getMonth() === month;
+    const inCurrentMonth = getDateParts(date).M === M;
 
     days.push({
       $date: date,
       date: formatDate(date, locale),
-      day: date.toLocaleDateString(localeStr, { day }),
+      day: toLocaleDateString(date, localeStr, { day }),
       currentDisplayedMonth: inCurrentMonth,
       isToday: isSame(NOW, date),
       isSelected: selected,
@@ -63,7 +68,7 @@ const createCalendar = (
   }
 
   return {
-    year: calendarDate.toLocaleDateString(localeStr, { year: localeYear }),
+    year: toLocaleDateString(calendarDate, localeStr, { year: localeYear }),
     month: formatMonthName(calendarDate, locale),
     days,
   };

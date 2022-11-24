@@ -8,6 +8,9 @@ import {
   sortDatesAsc,
   formatMonthName,
   formatDate,
+  getDateParts,
+  toLocaleDateString,
+  getUTCDay,
 } from '../utils/date';
 import { DEFAULT_LOCALE_CONFIG } from '../constants';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
@@ -139,5 +142,36 @@ describe('formatDate', () => {
     expect(formatDate(testDate, ALTERNATIVE_LOCALE_CONFIG)).toBe(
       '31 серпня 22 р.',
     );
+  });
+});
+
+describe('getDateParts', () => {
+  test('getDateParts should return correct date parts', () => {
+    const d1 = new Date(2022, 10, 25);
+    const { D, M, Y } = getDateParts(d1);
+
+    expect(D).toBe(d1.getDate());
+    expect(M).toBe(d1.getMonth());
+    expect(Y).toBe(d1.getFullYear());
+  });
+});
+
+// It is partially tested in formatDate and formatMonthName
+describe('toLocaleDateString', () => {
+  test('toLocaleDateString should format date correctly', () => {
+    const d1 = new Date(2022, 10, 25);
+    expect(toLocaleDateString(d1, 'en-GB')).toBe('25/11/2022');
+  });
+});
+
+describe('getUTCDate', () => {
+  test('getUTCDate should return correct day', () => {
+    // The 1 of November 2022 is Tuesday
+    const d1 = new Date(2022, 10, 1);
+    // The 1 of January 2023 is Sunday
+    const d2 = new Date(2023, 0, 1);
+
+    expect(getUTCDay(d1)).toBe(1);
+    expect(getUTCDay(d2)).toBe(6);
   });
 });

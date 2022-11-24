@@ -70,7 +70,6 @@ function App() {
       maxDate: new Date(),
     },
     calendar: {
-      mode: 'static',
       offsets: [-1, 1],
     },
   });

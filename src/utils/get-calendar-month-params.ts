@@ -1,6 +1,6 @@
 import { DAYS_IN_WEEK, NUMBER_OF_STATIC_CALENDAR_DAYS } from '../constants';
 import { CalendarMode } from '../types';
-import { daysInMonth } from './date';
+import { daysInMonth, getUTCDay } from './date';
 
 export const getCalendarMonthParams = (
   month: number,
@@ -8,20 +8,20 @@ export const getCalendarMonthParams = (
   calendarMode: CalendarMode,
 ) => {
   const firstDay = new Date(year, month, 1);
-  // getUTCDay here because if month 1 day is sun it getDay returns 0 instead of 7
+  // getUTCDay here because if the month 1 day is Sunday getDay returns 0 instead of 7
   const lastDay = daysInMonth(firstDay);
 
-  const numberOfDaysToDisplay =
+  const numberOfDays =
     calendarMode === 'static'
       ? NUMBER_OF_STATIC_CALENDAR_DAYS
-      : firstDay.getUTCDay() +
+      : getUTCDay(firstDay) +
         lastDay +
         DAYS_IN_WEEK -
-        new Date(year, month, lastDay).getUTCDay() -
+        getUTCDay(new Date(year, month, lastDay)) -
         1;
 
   return {
-    firstDayOffset: firstDay.getUTCDay(),
-    numberOfDaysToDisplay,
+    startOffset: getUTCDay(firstDay),
+    numberOfDays,
   };
 };

@@ -20,6 +20,7 @@ import {
   subtractFromDate,
   getFirstDayOfTheMonth,
   formatDate,
+  getDateParts,
 } from './utils/date';
 import { getCalendarStartDate } from './utils/get-calendar-start-date';
 import { getStartDecadePosition } from './utils/get-current-year-position';
@@ -44,7 +45,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       : getCalendarStartDate(dates, NOW),
   );
   const [currentYear, setCurrentYear] = useState<number>(
-    getStartDecadePosition(calendarDate.getFullYear()),
+    getStartDecadePosition(getDateParts(calendarDate).Y),
   );
 
   const calendars = createCalendars(
@@ -71,7 +72,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
 
   const setMonthAndYear = useCallback((d: Date) => {
     setCalendarDate(d);
-    setCurrentYear(getStartDecadePosition(d.getFullYear()));
+    setCurrentYear(getStartDecadePosition(getDateParts(d).Y));
   }, []);
 
   // Actions

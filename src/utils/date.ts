@@ -1,23 +1,31 @@
 import { DatePart, LocaleConfig } from '../types';
 
+export const getDateParts = (d: Date) => ({
+  D: d.getDate(),
+  M: d.getMonth(),
+  Y: d.getFullYear(),
+});
+
+export const getUTCDay = (d: Date) => d.getUTCDay();
+
 /*
  * We need this function to eliminate time from the comparison.
  * All date that comes to DP should go through this function.
  */
 export const getCleanDate = (d: Date): Date =>
-  new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  new Date(getDateParts(d).Y, getDateParts(d).M, getDateParts(d).D);
 
 export const daysInMonth = (d: Date): number =>
-  new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  new Date(getDateParts(d).Y, getDateParts(d).M + 1, 0).getDate();
 
 export const getFirstDayOfTheMonth = (d: Date): Date =>
-  new Date(d.getFullYear(), d.getMonth(), 1);
+  new Date(getDateParts(d).Y, getDateParts(d).M, 1);
 
 export const addToDate = (d: Date, value: number, part: DatePart) =>
   new Date(
-    d.getFullYear() + (part === 'year' ? value : 0),
-    d.getMonth() + (part === 'month' ? value : 0),
-    d.getDate() + (part === 'date' ? value : 0),
+    getDateParts(d).Y + (part === 'year' ? value : 0),
+    getDateParts(d).M + (part === 'month' ? value : 0),
+    getDateParts(d).D + (part === 'date' ? value : 0),
   );
 
 export const subtractFromDate = (d: Date, value: number, part: DatePart) =>
@@ -25,9 +33,14 @@ export const subtractFromDate = (d: Date, value: number, part: DatePart) =>
 
 export const sortDatesAsc = (a: Date, b: Date) => a.getTime() - b.getTime();
 
-// Format date
+export const toLocaleDateString = (
+  d: Date,
+  locale?: Intl.LocalesArgument,
+  options?: Intl.DateTimeFormatOptions,
+) => d.toLocaleDateString(locale, options);
+
 export const formatMonthName = (d: Date, { locale, monthName }: LocaleConfig) =>
-  d.toLocaleDateString(locale, { month: monthName });
+  toLocaleDateString(d, locale, { month: monthName });
 
 export const formatDate = (d: Date, { locale, options }: LocaleConfig) =>
-  d.toLocaleDateString(locale, options);
+  toLocaleDateString(d, locale, options);

@@ -8,15 +8,15 @@ describe('getCalendarMonthParams', () => {
 
   test('getCalendarMonthParams should return correct data in static mode', () => {
     expect(getCalendarMonthParams(month, year, 'static')).toEqual({
-      firstDayOffset: 1,
-      numberOfDaysToDisplay: 42,
+      startOffset: 1,
+      numberOfDays: 42,
     });
   });
 
   test('getCalendarMonthParams should return correct data in fluid mode', () => {
     expect(getCalendarMonthParams(month, year, 'fluid')).toEqual({
-      firstDayOffset: 1,
-      numberOfDaysToDisplay: 35,
+      startOffset: 1,
+      numberOfDays: 35,
     });
   });
 });
