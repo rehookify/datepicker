@@ -6,7 +6,8 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "link:datepicker": "npm link @rehookify/datepicker"
   },
   "dependencies": {
     "@rehookify/datepicker": "^1.1.1",
