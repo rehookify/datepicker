@@ -10,7 +10,7 @@ import {
   formatDate,
   getDateParts,
   toLocaleDateString,
-  getUTCDay,
+  getDay,
 } from '../utils/date';
 import { DEFAULT_LOCALE_CONFIG } from '../constants';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
@@ -171,7 +171,7 @@ describe('getUTCDate', () => {
     // The 1 of January 2023 is Sunday
     const d2 = new Date(2023, 0, 1);
 
-    expect(getUTCDay(d1)).toBe(1);
-    expect(getUTCDay(d2)).toBe(6);
+    expect(getDay(d1)).toBe(1);
+    expect(getDay(d2)).toBe(6);
   });
 });
