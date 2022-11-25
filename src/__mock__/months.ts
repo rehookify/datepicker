@@ -1,6 +1,6 @@
 export const TEST_MONTHS = [
   {
-    $date: new Date('2021-12-31T22:00:00.000Z'),
+    $date: new Date(2022, 0, 1),
     name: 'January',
     isSelected: false,
     isActive: false,
@@ -9,7 +9,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-01-31T22:00:00.000Z'),
+    $date: new Date(2022, 1, 1),
     name: 'February',
     isSelected: false,
     isActive: false,
@@ -18,7 +18,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-02-28T22:00:00.000Z'),
+    $date: new Date(2022, 2, 1),
     name: 'March',
     isSelected: false,
     isActive: false,
@@ -27,7 +27,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-03-31T21:00:00.000Z'),
+    $date: new Date(2022, 3, 1),
     name: 'April',
     isSelected: false,
     isActive: false,
@@ -36,7 +36,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-04-30T21:00:00.000Z'),
+    $date: new Date(2022, 4, 1),
     name: 'May',
     isSelected: false,
     isActive: false,
@@ -45,7 +45,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-05-31T21:00:00.000Z'),
+    $date: new Date(2022, 5, 1),
     name: 'June',
     isSelected: false,
     isActive: false,
@@ -54,7 +54,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-06-30T21:00:00.000Z'),
+    $date: new Date(2022, 6, 1),
     name: 'July',
     isSelected: false,
     isActive: false,
@@ -63,7 +63,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-07-31T21:00:00.000Z'),
+    $date: new Date(2022, 7, 1),
     name: 'August',
     isSelected: false,
     isActive: false,
@@ -72,7 +72,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-08-31T21:00:00.000Z'),
+    $date: new Date(2022, 8, 1),
     name: 'September',
     isSelected: false,
     isActive: false,
@@ -81,7 +81,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-09-30T21:00:00.000Z'),
+    $date: new Date(2022, 9, 1),
     name: 'October',
     isSelected: false,
     isActive: false,
@@ -90,7 +90,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-10-31T22:00:00.000Z'),
+    $date: new Date(2022, 10, 1),
     name: 'November',
     isSelected: false,
     isActive: true,
@@ -99,7 +99,7 @@ export const TEST_MONTHS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-11-30T22:00:00.000Z'),
+    $date: new Date(2022, 11, 1),
     name: 'December',
     isSelected: false,
     isActive: false,

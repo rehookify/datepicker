@@ -1,6 +1,6 @@
 export const TEST_YEARS = [
   {
-    $date: new Date('2019-11-19T22:00:00.000Z'),
+    $date: new Date(2019, 10, 20),
     value: 2019,
     isActive: false,
     isSelected: false,
@@ -9,7 +9,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2020-11-19T22:00:00.000Z'),
+    $date: new Date(2020, 10, 20),
     value: 2020,
     isActive: false,
     isSelected: false,
@@ -18,7 +18,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2021-11-19T22:00:00.000Z'),
+    $date: new Date(2021, 10, 20),
     value: 2021,
     isActive: false,
     isSelected: false,
@@ -27,7 +27,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2022-11-19T22:00:00.000Z'),
+    $date: new Date(2022, 10, 20),
     value: 2022,
     isActive: true,
     isSelected: false,
@@ -36,7 +36,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2023-11-19T22:00:00.000Z'),
+    $date: new Date(2023, 10, 20),
     value: 2023,
     isActive: false,
     isSelected: false,
@@ -45,7 +45,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2024-11-19T22:00:00.000Z'),
+    $date: new Date(2024, 10, 20),
     value: 2024,
     isActive: false,
     isSelected: false,
@@ -54,7 +54,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2025-11-19T22:00:00.000Z'),
+    $date: new Date(2025, 10, 20),
     value: 2025,
     isActive: false,
     isSelected: false,
@@ -63,7 +63,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2026-11-19T22:00:00.000Z'),
+    $date: new Date(2026, 10, 20),
     value: 2026,
     isActive: false,
     isSelected: false,
@@ -72,7 +72,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2027-11-19T22:00:00.000Z'),
+    $date: new Date(2027, 10, 20),
     value: 2027,
     isActive: false,
     isSelected: false,
@@ -81,7 +81,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2028-11-19T22:00:00.000Z'),
+    $date: new Date(2028, 10, 20),
     value: 2028,
     isActive: false,
     isSelected: false,
@@ -90,7 +90,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2029-11-19T22:00:00.000Z'),
+    $date: new Date(2029, 10, 20),
     value: 2029,
     isActive: false,
     isSelected: false,
@@ -99,7 +99,7 @@ export const TEST_YEARS = [
     disabled: false,
   },
   {
-    $date: new Date('2030-11-19T22:00:00.000Z'),
+    $date: new Date(2030, 10, 20),
     value: 2030,
     isActive: false,
     isSelected: false,
