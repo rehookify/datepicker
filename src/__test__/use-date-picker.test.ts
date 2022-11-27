@@ -1,7 +1,7 @@
 import { describe, test, expect } from '@jest/globals';
 import { useDatePicker } from '../use-date-picker';
 import { renderHook, act } from '@testing-library/react';
-import { getCleanDate, getDateParts } from '../utils/date';
+import { getDateParts } from '../utils/date';
 
 describe('useDatePicker', () => {
   test('useDatePicker returns correct selectedDates with default config', () => {

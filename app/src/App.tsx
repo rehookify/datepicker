@@ -16,16 +16,10 @@ const getDayClassName = ({
   currentDisplayedMonth,
   range,
 }: CalendarDay) =>
-  clsx('day', {
+  clsx('day', range, {
     selected: isSelected,
     today: isToday,
     secondary: !currentDisplayedMonth,
-    'will-be-in-range': range === 'will-be-in-range',
-    'will-be-range-start': range === 'will-be-range-start',
-    'will-be-range-end': range === 'will-be-range-end',
-    'in-range': range === 'in-range',
-    'range-start': range === 'range-start',
-    'range-end': range === 'range-end',
   });
 
 const getMonthClassName = (isActive: boolean) =>
@@ -78,7 +72,10 @@ function App() {
     <div className="container">
       <section className="calendar">
         <header className="calendar__header">
-          <HeaderButton {...previousMonthButton()}>
+          <HeaderButton
+            {...previousMonthButton()}
+            data-testid="previous-month-button"
+          >
             <ChevronLeft />
           </HeaderButton>
           <p>
@@ -108,7 +105,7 @@ function App() {
       <section className="calendar">
         <header className="calendar__header">
           <div className="dummy-button" />
-          <p>
+          <p data-testid="main-calendar-title">
             {calendars[0].month} {calendars[0].year}
           </p>
           <div className="dummy-button" />
@@ -138,7 +135,7 @@ function App() {
           <p>
             {calendars[2].month} {calendars[2].year}
           </p>
-          <HeaderButton {...nextMonthButton()}>
+          <HeaderButton {...nextMonthButton()} data-testid="next-month-button">
             <ChevronRight />
           </HeaderButton>
         </header>

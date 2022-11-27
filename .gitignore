@@ -10,3 +10,8 @@ node_modules/
 .idea/
 
 /dist
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
