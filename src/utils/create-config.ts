@@ -7,7 +7,6 @@ import {
 import { DatePickerConfig, DatePickerUserConfig } from '../types';
 import { getCleanDate, sortDatesAsc } from './date';
 import { ensureArray } from './ensure-type';
-import { validateConfig } from './validate-config';
 
 export const createConfig = ({
   calendar,
