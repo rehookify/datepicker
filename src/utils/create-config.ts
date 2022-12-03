@@ -5,7 +5,7 @@ import {
   DEFAULT_LOCALE_CONFIG,
 } from '../constants';
 import { DatePickerConfig, DatePickerUserConfig } from '../types';
-import { getCleanDate } from './date';
+import { getCleanDate, sortDatesAsc } from './date';
 import { ensureArray } from './ensure-type';
 import { validateConfig } from './validate-config';
 
@@ -17,6 +17,10 @@ export const createConfig = ({
 }: DatePickerUserConfig = {}) => {
   const { minDate, maxDate, selectedDates, ...restDates } = dates || {};
   const { offsets = [], ...restCalendarParams } = calendar || {};
+  let min, max;
+  if (minDate && maxDate) {
+    [min, max] = [minDate, maxDate].sort(sortDatesAsc);
+  }
   const config = {
     calendar: {
       ...DEFAULT_CALENDAR_CONFIG,
@@ -27,8 +31,8 @@ export const createConfig = ({
     dates: {
       ...DEFAULT_DATES_CONFIG,
       ...restDates,
-      minDate: minDate ? getCleanDate(minDate) : null,
-      maxDate: maxDate ? getCleanDate(maxDate) : null,
+      minDate: minDate ? getCleanDate(min || minDate) : null,
+      maxDate: maxDate ? getCleanDate(max || maxDate) : null,
       selectedDates: ensureArray(selectedDates).map((d) =>
         getCleanDate(d as Date),
       ),
@@ -38,8 +42,6 @@ export const createConfig = ({
       ...locale,
     },
   } as DatePickerConfig;
-
-  validateConfig(config);
 
   return config;
 };

@@ -62,7 +62,9 @@ describe('useDatePicker', () => {
 
     const [month2] = result.current.data.months.filter(({ active }) => active);
 
-    expect(month2.$date.getMonth()).toBe(month1.$date.getMonth() + 1);
+    const { Y, M, D } = getDateParts(month1.$date);
+    const calculatedMonth = new Date(Y, M + 1, D);
+    expect(month2.$date.getMonth()).toBe(calculatedMonth.getMonth());
 
     // @ts-ignore-next-line: we will have onClick with default config
     act(() => result.current.propGetters.previousMonthButton().onClick());
