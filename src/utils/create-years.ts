@@ -6,13 +6,13 @@ export const createYears = (
   currentYear: number,
   calendarDate: Date,
   selectedDates: Date[],
-  { numberOfYearsDisplayed }: YearsConfig,
+  { numberOfYears }: YearsConfig,
   { minDate, maxDate }: DatesConfig,
 ): CalendarYear[] => {
   const { Y, M, D } = getDateParts(calendarDate);
   const years = [];
 
-  for (let i = 0; i < numberOfYearsDisplayed; i++) {
+  for (let i = 0; i < numberOfYears; i++) {
     const value = currentYear + i;
     const date = new Date(value, M, D);
     const active = Y === value;

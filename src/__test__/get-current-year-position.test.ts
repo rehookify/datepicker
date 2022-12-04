@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import {
   getStartDecadePosition,
-  getCenteredYearPosition,
+  getFluidYearPosition,
 } from '../utils/get-current-year-position';
 
 describe('getStartDecadePosition', () => {
@@ -12,6 +12,6 @@ describe('getStartDecadePosition', () => {
 
 describe('getStartDecadePosition', () => {
   test('getStartDecadePosition should return centered position', () => {
-    expect(getCenteredYearPosition(12, 2022)).toBe(2017);
+    expect(getFluidYearPosition(2022, 12)).toBe(2017);
   });
 });

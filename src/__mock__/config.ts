@@ -1,6 +1,10 @@
 export const DEFAULT_CONFIG = {
   calendar: { mode: 'static', offsets: [0] },
-  years: { numberOfYearsDisplayed: 12 },
+  years: {
+    mode: 'decade',
+    numberOfYears: 12,
+    step: 10,
+  },
   dates: {
     mode: 'single',
     toggle: false,

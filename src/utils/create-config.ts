@@ -20,7 +20,12 @@ export const createConfig = ({
   if (minDate && maxDate) {
     [min, max] = [minDate, maxDate].sort(sortDatesAsc);
   }
-  const config = {
+  // @TODO remove after version 2.0.0
+  if (years?.numberOfYearsDisplayed && !years?.numberOfYears) {
+    years.numberOfYears = years.numberOfYearsDisplayed;
+  }
+
+  return {
     calendar: {
       ...DEFAULT_CALENDAR_CONFIG,
       ...restCalendarParams,
@@ -41,6 +46,4 @@ export const createConfig = ({
       ...locale,
     },
   } as DatePickerConfig;
-
-  return config;
 };

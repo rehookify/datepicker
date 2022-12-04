@@ -18,4 +18,22 @@ describe('createYears', () => {
     expect(years.length).toBe(12);
     expect(years).toEqual(TEST_YEARS);
   });
+
+  test('createYears should generate correct number of years', () => {
+    const { years: yearsConfig, dates } = createConfig({
+      years: {
+        numberOfYears: 50,
+      },
+    });
+
+    const years = createYears(
+      getStartDecadePosition(2022),
+      new Date(2022, 10, 20),
+      [],
+      yearsConfig,
+      dates,
+    );
+
+    expect(years.length).toBe(50);
+  });
 });

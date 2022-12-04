@@ -23,7 +23,7 @@ import {
   getDateParts,
 } from './utils/date';
 import { getCalendarStartDate } from './utils/get-calendar-start-date';
-import { getStartDecadePosition } from './utils/get-current-year-position';
+import { YEARS_STRATEGY } from './utils/get-current-year-position';
 import { getMultipleDates } from './utils/get-multiple-dates';
 import {
   minDateAndBefore,
@@ -45,7 +45,10 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
       : getCalendarStartDate(dates, NOW),
   );
   const [currentYear, setCurrentYear] = useState<number>(
-    getStartDecadePosition(getDateParts(calendarDate).Y),
+    YEARS_STRATEGY[years.mode](
+      getDateParts(calendarDate).Y,
+      years.numberOfYears,
+    ),
   );
 
   const calendars = createCalendars(
@@ -70,10 +73,15 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
 
   const months = createMonths(calendarDate, selectedDates, locale, dates);
 
-  const setMonthAndYear = useCallback((d: Date) => {
-    setCalendarDate(d);
-    setCurrentYear(getStartDecadePosition(getDateParts(d).Y));
-  }, []);
+  const setMonthAndYear = useCallback(
+    (d: Date) => {
+      setCalendarDate(d);
+      setCurrentYear(
+        YEARS_STRATEGY[years.mode](getDateParts(d).Y, years.numberOfYears),
+      );
+    },
+    [years.mode, years.numberOfYears],
+  );
 
   // Actions
   const onDayClick = useCallback(
@@ -93,11 +101,14 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
     [calendarDate, setMonthAndYear],
   );
 
-  const onNextYearsClick = useCallback(() => setCurrentYear((s) => s + 10), []);
+  const onNextYearsClick = useCallback(
+    () => setCurrentYear((s) => s + years.step),
+    [years.step],
+  );
 
   const onPreviousYearsClick = useCallback(
-    () => setCurrentYear((s) => s - 10),
-    [],
+    () => setCurrentYear((s) => s - years.step),
+    [years.step],
   );
 
   const onSetCalendarDate = useCallback((d: Date) => setCalendarDate(d), []);

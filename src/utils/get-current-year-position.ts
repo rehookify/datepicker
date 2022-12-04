@@ -5,14 +5,12 @@
  * 2020 2021 2022 👌
  * 2023 2024 2025
  * 2026 2027 2028
- * I think it is nicer to see future more ;)
+ * I think it is nicer to look at the future more ;)
  */
-export const getCenteredYearPosition = (
-  numberOfDisplayedYears: number,
+export const getFluidYearPosition = (
   year: number,
-): number =>
-  year -
-  (numberOfDisplayedYears / 2 - (numberOfDisplayedYears % 2 === 0 ? 1 : 0));
+  numberOfYears: number,
+): number => year - (numberOfYears / 2 - (numberOfYears % 2 === 0 ? 1 : 0));
 
 /*
  * Default behavior years collection
@@ -25,3 +23,8 @@ export const getCenteredYearPosition = (
  * 2028 2029 2030
  */
 export const getStartDecadePosition = (year: number) => year - (year % 10) - 1;
+
+export const YEARS_STRATEGY = {
+  decade: getStartDecadePosition,
+  fluid: getFluidYearPosition,
+};

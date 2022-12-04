@@ -66,8 +66,17 @@ export interface CalendarConfig {
   mode: CalendarMode;
   offsets: number[];
 }
-export interface YearsConfig {
-  numberOfYearsDisplayed: number;
+
+export type YearsMode = 'decade' | 'fluid';
+
+// @TODO remove after v2.0.0
+interface GeneralYearsConfig {
+  numberOfYearsDisplayed?: number;
+  mode: YearsMode;
+  step: number;
+}
+export interface YearsConfig extends GeneralYearsConfig {
+  numberOfYears: number;
 }
 
 export interface LocaleConfig {

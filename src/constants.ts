@@ -26,7 +26,8 @@ export const NOW: Date = getCleanDate(new Date());
 
 // Number of yearn by default to mimic number of month
 // It will be easy to reuse same layout for years picker
-export const NUMBER_OF_YEARS_DISPLAYED = 12;
+const DECADE_NUMBER_OF_YEARS = 12;
+export const DEFAULT_YEARS_STEP = 10;
 
 export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
   mode: 'static',
@@ -34,7 +35,9 @@ export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
 };
 
 export const DEFAULT_YEARS_CONFIG: YearsConfig = {
-  numberOfYearsDisplayed: NUMBER_OF_YEARS_DISPLAYED,
+  mode: 'decade',
+  numberOfYears: DECADE_NUMBER_OF_YEARS,
+  step: DEFAULT_YEARS_STEP,
 };
 
 export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {

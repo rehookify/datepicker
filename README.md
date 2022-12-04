@@ -435,7 +435,9 @@ It sets `CalendarDate.willBeInRange` property to true if date is between `select
     limit: undefined,
   },
   years: {
-    numberOfYearsDisplayed: 12;
+    mode: 'decade',
+    numberOfYears: 12;
+    step: 10,
   },
 }
 ```
@@ -549,9 +551,42 @@ interface DatesUserConfig {
 #### Years configuration
 
 ```ts
+type YearsMode = 'decade' | 'fluid';
+
 interface YearsConfig {
   numberOfYearsDisplayed: number;
+  mode: YearsMode,
+  numberOfYears: number;
+  step: number;
 },
 ```
 
-- `numberOfYearsDisplayed: number` - the number of years you want to show to a user.
+- `numberOfYearsDisplayed: number` - 🚫 deprecated, will be removed in v2.0.0, use `numberOfYears` instead.
+- `numberOfYears: number` - the number of years you want to show to a user.
+- `mode: 'decade' | 'fluid'` - it defines how current year will be centered;
+
+✏️ NOTE: difference between `decade` and `fluid` mode
+
+Years matrix for `decade` mode;
+
+It will count current decade (for 2022 is 2020-2029) and adds end of the previous and start of the next decade
+
+```text
+2019 2020 2021
+2022 2023 2024
+2025 2026 2027
+2028 2029 2030
+```
+
+Years matrix for `fluid` mode;
+
+It will place current year in the middle of the list -1 (we want to look at the future more) 😉
+
+```text
+2017 2018 2019
+2020 2021 2022
+2023 2024 2025
+2026 2027 2028
+```
+
+- `step: number` - it defines step for previous/nextYearsButton
