@@ -1,8 +1,8 @@
-import { DatesConfig } from '../types';
 import { maxDateAndAfter, minDateAndBefore } from './predicates';
 
 export const getCalendarStartDate = (
-  { maxDate, minDate }: DatesConfig,
+  minDate: Date | null,
+  maxDate: Date | null,
   NOW: Date,
 ): Date => {
   if (maxDateAndAfter(maxDate, NOW)) return maxDate as Date;

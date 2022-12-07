@@ -1,3 +1,5 @@
+import { YearsConfig } from '../types';
+
 /*
  * If number of the year is default = 12 and current year is 2022
  * It will show this matrix
@@ -24,7 +26,10 @@ export const getFluidYearPosition = (
  */
 export const getStartDecadePosition = (year: number) => year - (year % 10) - 1;
 
-export const YEARS_STRATEGY = {
-  decade: getStartDecadePosition,
-  fluid: getFluidYearPosition,
-};
+export const getCurrentYearPosition = (
+  year: number,
+  { mode, numberOfYears }: YearsConfig,
+) =>
+  mode === 'decade'
+    ? getStartDecadePosition(year)
+    : getFluidYearPosition(year, numberOfYears);

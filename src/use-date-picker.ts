@@ -1,6 +1,15 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useReducer, Reducer } from 'react';
 
 import { NOW } from './constants';
+import {
+  Action,
+  selectDates,
+  setOffset,
+  setRangeEnd,
+  setYear,
+  State,
+  stateReducer,
+} from './state-reducer';
 import {
   CalendarDay,
   CalendarMonth,
@@ -11,6 +20,7 @@ import {
 import { callAll, skipFirst, skipAll } from './utils/call-all';
 import { createCalendars } from './utils/create-calendars';
 import { createConfig } from './utils/create-config';
+import { createInitialState } from './utils/create-initial-state';
 import { createMonths } from './utils/create-months';
 import { createPropGetter } from './utils/create-prop-getter';
 import { createWeekdays } from './utils/create-weekdays';
@@ -20,11 +30,7 @@ import {
   subtractFromDate,
   getFirstDayOfTheMonth,
   formatDate,
-  getDateParts,
 } from './utils/date';
-import { getCalendarStartDate } from './utils/get-calendar-start-date';
-import { YEARS_STRATEGY } from './utils/get-current-year-position';
-import { getMultipleDates } from './utils/get-multiple-dates';
 import {
   minDateAndBefore,
   maxDateAndAfter,
@@ -32,27 +38,20 @@ import {
 } from './utils/predicates';
 
 export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
-  const { dates, calendar, locale, years } = createConfig(userConfig);
+  const config = createConfig(userConfig);
+  const { dates, calendar, locale, years } = config;
   const { minDate, maxDate, toggle: datesToggle, mode: datesMode } = dates;
+  const { step: yearsStep } = years;
 
-  const [rangeEnd, setRangeEnd] = useState<Date | null>(null);
-  const [selectedDates, setSelectedDates] = useState<Date[]>(
-    dates.selectedDates,
+  const [state, dispatch] = useReducer<Reducer<State, Action>>(
+    stateReducer,
+    createInitialState(config),
   );
-  const [calendarDate, setCalendarDate] = useState<Date>(
-    selectedDates.length > 0
-      ? selectedDates[selectedDates.length - 1]
-      : getCalendarStartDate(dates, NOW),
-  );
-  const [currentYear, setCurrentYear] = useState<number>(
-    YEARS_STRATEGY[years.mode](
-      getDateParts(calendarDate).Y,
-      years.numberOfYears,
-    ),
-  );
+
+  const { rangeEnd, selectedDates, offsetYear, offsetDate } = state;
 
   const calendars = createCalendars(
-    calendarDate,
+    offsetDate,
     selectedDates,
     rangeEnd,
     NOW,
@@ -64,54 +63,46 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
   const weekDays = createWeekdays(calendars[0], locale);
 
   const calendarYears = createYears(
-    currentYear,
-    calendarDate,
+    offsetYear,
+    offsetDate,
     selectedDates,
     years,
     dates,
   );
 
-  const months = createMonths(calendarDate, selectedDates, locale, dates);
+  const months = createMonths(offsetDate, selectedDates, locale, dates);
 
-  const setMonthAndYear = useCallback(
-    (d: Date) => {
-      setCalendarDate(d);
-      setCurrentYear(
-        YEARS_STRATEGY[years.mode](getDateParts(d).Y, years.numberOfYears),
-      );
-    },
-    [years.mode, years.numberOfYears],
-  );
+  const callSetOffset = useCallback((d: Date) => setOffset(dispatch, d), []);
 
   // Actions
-  const onDayClick = useCallback(
-    (d: Date) => {
-      setSelectedDates(getMultipleDates(selectedDates, d, dates));
-    },
-    [dates, selectedDates],
-  );
+  const onDayClick = useCallback((d: Date) => {
+    selectDates(dispatch, d);
+  }, []);
 
   const onNextMonthClick = useCallback(
-    () => setMonthAndYear(addToDate(calendarDate, 1, 'month')),
-    [calendarDate, setMonthAndYear],
+    () => callSetOffset(addToDate(offsetDate, 1, 'month')),
+    [offsetDate, callSetOffset],
   );
 
   const onPreviousMonthClick = useCallback(
-    () => setMonthAndYear(subtractFromDate(calendarDate, 1, 'month')),
-    [calendarDate, setMonthAndYear],
+    () => callSetOffset(subtractFromDate(offsetDate, 1, 'month')),
+    [offsetDate, callSetOffset],
   );
 
   const onNextYearsClick = useCallback(
-    () => setCurrentYear((s) => s + years.step),
-    [years.step],
+    () => setYear(dispatch, offsetYear + yearsStep),
+    [offsetYear, yearsStep],
   );
 
   const onPreviousYearsClick = useCallback(
-    () => setCurrentYear((s) => s - years.step),
-    [years.step],
+    () => setYear(dispatch, offsetYear - yearsStep),
+    [offsetYear, yearsStep],
   );
 
-  const onSetCalendarDate = useCallback((d: Date) => setCalendarDate(d), []);
+  const callSetRangeEnd = useCallback(
+    (d: Date | null) => setRangeEnd(dispatch, d),
+    [],
+  );
 
   // propsGetter
   const dayButton = useCallback(
@@ -124,7 +115,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
         (evt) => {
           if (isSelected && !datesToggle) return;
           if (datesMode === 'range' && selectedDates.length === 1)
-            setRangeEnd(null);
+            setRangeEnd(dispatch, null);
           callAll(onClick, skipFirst(onDayClick))(evt, $date);
         },
         {
@@ -132,7 +123,7 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
           ...(datesMode === 'range' &&
             selectedDates.length === 1 && {
               onMouseEnter() {
-                setRangeEnd($date);
+                setRangeEnd(dispatch, $date);
               },
             }),
         },
@@ -147,41 +138,41 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
-        (evt) => callAll(onClick, skipFirst(onSetCalendarDate))(evt, $date),
+        (evt) => callAll(onClick, skipFirst(callSetOffset))(evt, $date),
         rest,
       ),
-    [onSetCalendarDate],
+    [callSetOffset],
   );
 
   const nextMonthButton = useCallback(
     ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
-      const nextMonth = addToDate(calendarDate, 1, 'month');
+      const nextMonth = addToDate(offsetDate, 1, 'month');
       const isDisabled =
         !!disabled ||
         maxDateAndAfter(maxDate, getFirstDayOfTheMonth(nextMonth));
 
       return createPropGetter(
         isDisabled,
-        (evt) => callAll(onClick, skipFirst(setMonthAndYear))(evt, nextMonth),
+        (evt) => callAll(onClick, skipFirst(callSetOffset))(evt, nextMonth),
         rest,
       );
     },
-    [calendarDate, maxDate, setMonthAndYear],
+    [offsetDate, maxDate, callSetOffset],
   );
 
   const previousMonthButton = useCallback(
     ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
-      const nextMonth = subtractFromDate(calendarDate, 1, 'month');
+      const nextMonth = subtractFromDate(offsetDate, 1, 'month');
       const isDisabled =
         !!disabled || minDateAndBeforeFirstDay(minDate, nextMonth);
 
       return createPropGetter(
         isDisabled,
-        (evt) => callAll(onClick, skipFirst(setMonthAndYear))(evt, nextMonth),
+        (evt) => callAll(onClick, skipFirst(callSetOffset))(evt, nextMonth),
         rest,
       );
     },
-    [calendarDate, minDate, setMonthAndYear],
+    [offsetDate, minDate, callSetOffset],
   );
 
   const yearButton = useCallback(
@@ -191,10 +182,10 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
-        (evt) => callAll(onClick, skipFirst(setMonthAndYear))(evt, $date),
+        (evt) => callAll(onClick, skipFirst(callSetOffset))(evt, $date),
         rest,
       ),
-    [setMonthAndYear],
+    [callSetOffset],
   );
 
   const nextYearsButton = useCallback(
@@ -245,13 +236,13 @@ export const useDatePicker = (userConfig?: DatePickerUserConfig) => {
     },
     actions: {
       setDay: onDayClick,
-      setMonth: setCalendarDate,
+      setMonth: callSetOffset,
       setNextMonth: onNextMonthClick,
       setPreviousMonth: onPreviousMonthClick,
-      setYear: setMonthAndYear,
+      setYear: callSetOffset,
       setNextYears: onNextYearsClick,
       setPreviousYears: onPreviousYearsClick,
-      setRangeEnd,
+      setRangeEnd: callSetRangeEnd,
     },
   };
 };
