@@ -13,13 +13,7 @@ export interface CalendarDay {
   $date: Date;
   date: string;
   day: string;
-  currentDisplayedMonth: boolean;
-  isSelected: boolean;
   isToday: boolean;
-  inRange: boolean;
-  isRangeStart: boolean;
-  isRangeEnd: boolean;
-  willBeInRange: boolean;
   range: DayRange;
   disabled: boolean;
   selected: boolean;
@@ -29,8 +23,6 @@ export interface CalendarDay {
 export interface CalendarMonth {
   $date: Date;
   name: string;
-  isSelected: boolean;
-  isActive: boolean;
   disabled: boolean;
   active: boolean;
   selected: boolean;
@@ -39,8 +31,6 @@ export interface CalendarMonth {
 export interface CalendarYear {
   $date: Date;
   value: number;
-  isSelected: boolean;
-  isActive: boolean;
   selected: boolean;
   active: boolean;
   disabled: boolean;

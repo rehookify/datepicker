@@ -5,7 +5,7 @@ import { getCleanDate } from '../utils/date';
 import { TEST_CALENDAR } from '../__mock__/calendar';
 
 describe('createCalendars', () => {
-  test('createCalendars should create one calendar correctly with default configuration', () => {
+  test('createCalendars should create a calendar correctly with default configuration', () => {
     const calendarDate = getCleanDate(new Date(2022, 10, 20));
     const { locale, dates, calendar } = createConfig();
 

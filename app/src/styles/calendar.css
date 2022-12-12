@@ -6,9 +6,6 @@
   grid-template-columns: repeat(3, 224px);
   gap: 20px;
 }
-.dummy-button {
-  width: 20px;
-}
 
 .calendar {
   display: grid;
@@ -16,24 +13,28 @@
   row-gap: 4px;
 }
 
-.calendar__header {
-  height: 20px;
+.calendar-header {
+  height: var(--calendar-header-button-size);
   padding-bottom: 8px;
   font-size: 0.875rem;
   font-weight: 500;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: var(--calendar-header-button-size) 1fr var(--calendar-header-button-size);
   align-items: center;
 }
 
-.calendar__header-button {
+.calendar-header__button {
   width: 20px;
-  padding: 20px;
   padding: 0;
   cursor: pointer;
   background-color: transparent;
   border: 0;
   color: var(--main-text-color)
+}
+
+.calendar-header__title {
+  margin: 0;
+  text-align: center;
 }
 
 .weekday {
@@ -115,11 +116,16 @@ button.day.secondary {
   visibility: hidden;
 }
 
+.day.secondary.visible {
+  visibility: visible;
+}
+
 .months,
 .years {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 4px;
+  align-items: center;
 }
 
 .month,
@@ -149,6 +155,6 @@ button.day.secondary {
 button.day:disabled,
 button.month:disabled,
 button.year:disabled,
-.calendar__header-button:disabled {
+.calendar-header__button:disabled {
   opacity: 0.45;
 }

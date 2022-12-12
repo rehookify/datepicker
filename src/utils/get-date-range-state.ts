@@ -1,10 +1,13 @@
+import { DatesMode, DayRange } from '../types';
 import { isBefore, isBetween, isSame } from './predicates';
 
 export const getDateRangeState = (
   date: Date,
   rangeEnd: Date | null,
   selectedDates: Date[],
-) => {
+  mode: DatesMode,
+): DayRange => {
+  if (mode !== 'range') return '';
   // We have completed range
   if (selectedDates.length === 2) {
     if (isSame(date, selectedDates[0])) return 'range-start';

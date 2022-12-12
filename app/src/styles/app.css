@@ -20,6 +20,8 @@ body {
 
   --day-size: 32px;
 
+  --calendar-header-button-size: 20px;
+
   font-family: var(--font-family);
   color: var(--main-text-color);
   background-color: var(--body-background);

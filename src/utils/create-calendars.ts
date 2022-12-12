@@ -1,8 +1,8 @@
 import {
+  Calendar,
   CalendarConfig,
   CalendarMode,
   DatesConfig,
-  DayRange,
   LocaleConfig,
 } from '../types';
 
@@ -25,7 +25,7 @@ const createCalendar = (
   locale: LocaleConfig,
   { mode, minDate, maxDate }: DatesConfig,
   calendarMode: CalendarMode,
-) => {
+): Calendar => {
   const { locale: localeStr, day, year: localeYear } = locale;
   const { M, Y } = getDateParts(calendarDate);
   const { startOffset, numberOfDays } = getCalendarMonthParams(
@@ -38,32 +38,17 @@ const createCalendar = (
 
   for (let i = 1; i <= numberOfDays; i++) {
     const date = new Date(Y, M, i - startOffset);
-    const range: DayRange =
-      mode === 'range' ? getDateRangeState(date, rangeEnd, selectedDates) : '';
-    const disabled =
-      minDateAndBefore(minDate, date) || maxDateAndAfter(maxDate, date);
-    const selected = selectedDates.some((d) => isSame(d as Date, date));
-    const inCurrentMonth = getDateParts(date).M === M;
 
     days.push({
       $date: date,
       date: formatDate(date, locale),
       day: toLocaleDateString(date, localeStr, { day }),
-      currentDisplayedMonth: inCurrentMonth,
       isToday: isSame(NOW, date),
-      isSelected: selected,
-      inRange: range === 'in-range',
-      isRangeStart: range === 'range-start',
-      isRangeEnd: range === 'range-end',
-      willBeInRange: [
-        'will-be-in-range',
-        'will-be-range-start',
-        'will-be-range-end',
-      ].includes(range),
-      range,
-      disabled,
-      selected,
-      inCurrentMonth,
+      range: getDateRangeState(date, rangeEnd, selectedDates, mode),
+      disabled:
+        minDateAndBefore(minDate, date) || maxDateAndAfter(maxDate, date),
+      selected: selectedDates.some((d) => isSame(d as Date, date)),
+      inCurrentMonth: getDateParts(date).M === M,
     });
   }
 

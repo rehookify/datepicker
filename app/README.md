@@ -13,4 +13,5 @@
 ## Troubleshooting
 
 Sometimes you can't see any logs from linked date-picker.
-Maybe `npm run clean:link` will help you.
+
+Try to run `npm run clean:link`, it should help in 99% cases.

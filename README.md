@@ -17,10 +17,11 @@ Help us in our struggle, 💰  [United24](https://u24.gov.ua/), [KOLO](https://w
 
 ## Features
 
-- Small size and zero dependencies.
-- Easy customizable.
-- You have full power to manipulate the state with actions.
+- Small size.
+- Zero dependencies.
+- [Modular Hooks](#modular-hooks) will help you to use only what you need.
 - You can get accessible component props with prop-getters.
+- You have full power to manipulate the state with actions.
 - Available as a hook or context.
 - Support localization with `.toLocaleString`.
 
@@ -30,7 +31,84 @@ Help us in our struggle, 💰  [United24](https://u24.gov.ua/), [KOLO](https://w
 npm i -S @rehookify/datepicker
 ```
 
-## Quickstart
+## Quickstart: modular use
+
+### With modular hooks
+
+```tsx
+import { useDatePickerState } from '@rehookify/datepicker';
+
+const DatePicker = () => {
+  const config = { dates: { toggle: true, mode: 'multiple' }}
+  const [state, dispatch] = useDatePickerState(config);
+  const { calendars, weekDays } = useCalendars(state);
+
+  const { month, year, days } = calendars[0];
+
+  return (
+    <section>
+      <header>
+        <div>
+          <p>{month} {year}</p>
+        </div>
+        <ul>
+          {weekDays.map((day) => (<li key={`${month}-${day}`}>{day}</li>))}
+        </ul>
+      </header>
+      <ul>
+        {days.map((dpDay) => (
+          <li key={`${month}-${dpDay.date}`}>
+            <button>{dpDay.day}</button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+```
+
+### With modular context
+
+```tsx
+import {
+  DatePickerStateProvider,
+  useContextCalendars
+} from '@rehookify/datepicker';
+
+const DatePicker = () => {
+  const { calendars, weekDays } = useContextCalendars();
+
+  const { year, month, days } = calendars[0];
+
+  return (
+    <section>
+      <header>
+        <div>
+          <p>{month} {year}</p>
+        </div>
+        <ul>
+          {weekDays.map((day) => (<li key={`${month}-${day}`}>{day}</li>))}
+        </ul>
+      </header>
+      <ul>
+        {days.map((dpDay) => (
+          <li key={`${month}-${dpDay.date}`}>
+            <button>{dpDay.day}</button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+const App = () => {
+  <DatePickerStateProvider config={{ dates: { mode: 'multiple' }}}>
+    <DatePicker />
+  </DatePickerStateProvider>
+}
+```
+
+## Quickstart: everything in one place
 
 ### With hook
 
@@ -71,12 +149,12 @@ const DatePicker = () => {
           <button {...nextMonthButton()}>&gt;</button>
         </div>
         <ul>
-          {weekDays.map((day) => (<li>{day}</li>))}
+          {weekDays.map((day) => (<li key={`${month}-${day}`}>{day}</li>))}
         </ul>
       </header>
       <ul>
         {days.map((dpDay) => (
-          <li key={dpDay.date}>
+          <li key={`${month}-${dpDay.date}`}>
             <button {...dayButton(dpDay)}>{dpDay.day}</button>
           </li>
         ))}
@@ -89,10 +167,13 @@ const DatePicker = () => {
 ### With context
 
 ```tsx
-import { DatePickerProvider, useDatePickerContext } from '@rehookify/datepicker';
+import {
+  DatePickerProvider,
+  useDatePickerContext,
+} from '@rehookify/datepicker';
 
 const DatePicker = () => {
-  const { data: { weekdays, calendars, years, months } } = useDatePickerContext();
+  const { data: { weekDays, calendars, years, months } } = useDatePickerContext();
 
   const { year, month, days } = calendars[0];
 
@@ -116,10 +197,11 @@ const App = () => {
 - [State](#state)
   - [data](#data)
     - [calendars](#calendars)
-    - [weekdays](#weekdays)
+    - [weekDays](#weekdays)
     - [months](#months)
     - [years](#years)
     - [selectedDates](#selecteddates)
+    - [formattedDates](#formatteddates)
   - [propGetters](#prop-getters)
     - [dayButton](#daybutton)
     - [monthButton](#monthbutton)
@@ -143,6 +225,19 @@ const App = () => {
   - [Calendar configuration](#calendar-configuration)
   - [Dates configuration](#dates-configuration)
   - [Years configuration](#years-configuration)
+- [Modular Hooks](#modular-hooks)
+  - [useDatePickerState](#usedatepickerstate)
+  - [useCalendars](#usecalendars)
+  - [useDays](#usedays)
+  - [useDaysPropGetters](#usedayspropgetters)
+  - [useDaysActions](#usedaysactions)
+  - [useMonths](#usemonths)
+  - [useMonthsPropGetters](#usemonthspropgetters)
+  - [useMonthsActions](#usemonthsactions)
+  - [useYears](#useyears)
+  - [useYearsPropGetters](#useyearspropgetters)
+  - [useYearsActions](#useyearsactions)
+  - [Context Hooks](#context-hooks)
 
 ### State
 
@@ -150,12 +245,12 @@ The state consists of three parts: [data](#data), [propGetters](#prop-getters) a
 
 ### Data
 
-The data represents all entities that you could use in your date picker. It consists of [calendars](#calendars), [weekdays](#weekdays), [months](#months), [years](#years) and [selectedDates](#selecteddates)
+The data represents all entities that you could use in your date picker. It consists of [calendars](#calendars), [weekDays](#weekdays), [months](#months), [years](#years) and [selectedDates](#selecteddates)
 
 ```ts
 interface Data {
   calendars: Calendar[];
-  weekdays: string[],
+  weekDays: string[],
   months: CalendarMonth[],
   years: CalendarYears[],
   selectedDates: Date[],
@@ -181,13 +276,7 @@ interface CalendarDay {
   $date: Date;
   date: string;
   day: string;
-  currentDisplayedMonth: boolean; // deprecated use inCurrentMonth
-  isSelected: boolean; // deprecated use selected
   isToday: boolean;
-  inRange: boolean; // deprecated use range
-  isRangeStart: boolean; // deprecated use range
-  isRangeEnd: boolean; // deprecated use range
-  willBeInRange: boolean; // deprecated use range
   range: DayRange;
   disabled: boolean;
   selected: boolean;
@@ -201,7 +290,7 @@ interface Calendar {
 }
 ```
 
-#### weekdays
+#### weekDays
 
 Weekdays are an array of names [`Mon`, `Tue`, `Wed`, ...]. The name format can be changed by `locale.weekdays` property 👀 [Locale configuration](#locale-configuration)
 
@@ -217,17 +306,15 @@ Months are an array of objects with **$date**, **name**, **isSelected** and **is
 interface CalendarMonth {
   $date: Date;
   name: string;
-  isSelected: boolean; // deprecated use selected
-  isActive: boolean; // deprecated use active
   disabled: boolean;
   active: boolean;
   selected: boolean;
 }
 ```
 
-`isSelected` - shaws that we have a date selected for this month.
+`selected` - shaws that we have a date selected for this month.
 
-`isActive` - shows that a user sees this month as current.
+`active` - shows that a user sees this month as current.
 
 #### years
 
@@ -237,24 +324,30 @@ Years are an array of objects with **$date**, **value**, **isSelected**, and **i
 interface CalendarYear {
   $date: Date;
   value: number;
-  isSelected: boolean; // deprecated use selected
-  isActive: boolean; // deprecated use active
   disabled: boolean;
   active: boolean;
   selected: boolean;
 }
 ```
 
-`isSelected` - shows that we have a date selected for this year.
+`selected` - shows that we have a date selected for this year.
 
-`isActive` - shows that a user sees this year as current.
+`active` - shows that a user sees this year as current.
 
 #### selectedDates
+
+An array of raw dates
+
+```ts
+type SelectedDates = Date[];
+```
+
+#### formattedDates
 
 An array of formatted dates `date.toLocaleDateString(locale, options)` 👀 [Locale configuration](#locale-configuration)
 
 ```ts
-type SelectedDates = string[];
+type FormattedDates = string[];
 ```
 
 ### Prop-Getters
@@ -409,7 +502,7 @@ It sets `CalendarDate.willBeInRange` property to true if date is between `select
 
 ### Configuration
 
-`useDatePicker` and `DatePickerProvider` accepts same configuration object that consists of [locale](#locale-configuration), [calendar](#calendar-configuration), [dates](#dates-configuration) and [years](#years-configuration)
+`useDatePicker`, `DatePickerProvider`, `useDatePickerState` and `DatePickerStateProvider` accepts same configuration object that consists of [locale](#locale-configuration), [calendar](#calendar-configuration), [dates](#dates-configuration) and [years](#years-configuration)
 
 #### Default configuration
 
@@ -554,14 +647,12 @@ interface DatesUserConfig {
 type YearsMode = 'decade' | 'fluid';
 
 interface YearsConfig {
-  numberOfYearsDisplayed: number;
   mode: YearsMode,
   numberOfYears: number;
   step: number;
 },
 ```
 
-- `numberOfYearsDisplayed: number` - 🚫 deprecated, will be removed in v2.0.0, use `numberOfYears` instead.
 - `numberOfYears: number` - the number of years you want to show to a user.
 - `mode: 'decade' | 'fluid'` - it defines how current year will be centered;
 
@@ -590,3 +681,204 @@ It will place current year in the middle of the list -1 (we want to look at the 
 ```
 
 - `step: number` - it defines step for previous/nextYearsButton
+
+### Modular Hooks
+
+The main aim of modular hooks is to safe bundle size of your app.
+
+All entities are consists of 3 hooks: data, prop-getters and actions (for example `useDays`, `useDaysPropGetters` and `useDaysActions`).
+
+#### useDatePickerState
+
+```ts
+export interface State {
+  rangeEnd: Date | null;
+  selectedDates: Date[];
+  offsetDate: Date;
+  offsetYear: number;
+  config: DatePickerConfig;
+}
+
+export type Action =
+  | SelectDateAction
+  | SetOffsetDate
+  | SetYearAction
+  | SetRangeEndAction;
+
+type UseDatePickerState = (config: DatePickerConfig) =>
+  [State, Dispatch<Action>]
+```
+
+Under the hook, it uses `useReducer` to capture the entire date-picker state and provides `dispatch` for state manipulation.
+
+Modular hooks use state and dispatch to derive their entities and update the date-picker.
+
+`DatePickerStateProvider` uses this hook and propagates state and dispatch through context.
+
+```ts
+type DatePickerStateProviderValue = {
+  s: State;
+  d: Dispatch<Action>
+}
+```
+
+#### useCalendars
+
+```ts
+type UseCalendars = (state: State) => {
+  calendars: Calendar[];
+  weekDays: string[];
+}
+```
+
+- `calendars` - 👀 [calendars](#calendars)
+- `weekDays` - 👀 [weekDays](#weekdays)
+
+Basic entities to build UI without interactivity.
+
+#### useDays
+
+```ts
+type UseDays = (state: State) => {
+  selectedDates: Date[];
+  formattedDates: string[];
+};
+```
+
+Set of data with raw and formatted dates
+
+- `selectedDates` - 👀 [selecteDates](#selecteddates)
+- `formattedDates` - 👀 [formattedDates](#formatteddates)
+
+#### useDaysPropGetters
+
+```ts
+type UseDaysPropGetters = (state: State, dispatch: Dispatch<Action>) => {
+  dayButton(day: CalendarDay, config: PropsGetterConfig): void;
+};
+```
+
+Prop-getter for dates selection.
+
+- `dayButton` - propGetter 👀 [dayButton](#daybutton)
+
+#### useDaysActions
+
+```ts
+type UseDaysActions = (dispatch: Dispatch<Action>) => {
+  setDay(Date): void;
+  setRangeEnd(Date | null): void;
+};
+```
+
+Set of actions for dates manipulation.
+
+- `setDay` - action 👀 [setDay](#setday)
+- `setRangeEnd` - action 👀 [setRangeEnd](#setrangeend)
+
+#### useMonths
+
+```ts
+type UseMonths = (state: State, dispatch: Dispatch<Action>) => {
+  months: CalendarMonth[],
+};
+```
+
+Months data.
+
+- `months` - 👀 [months](#months)
+
+#### useMonthsPropGetters
+
+```ts
+type UseMonthsPropGetters = (state: State, dispatch: Dispatch<Action>) => {
+  monthButton(month: CalendarMonth, config: PropsGetterConfig): void,
+  nextMonthButton(config: PropsGetterConfig): void,
+  previousMonthButton(config: PropsGetterConfig): void,
+};
+```
+
+Prop-getters for month manipulation.
+
+- `monthButton` - propGetter 👀 [monthButton](#monthbutton)
+- `nextMonthButton` - propGetter 👀 [nextMonthButton](#nextmonthbutton)
+- `previousMonthButton` - propGetter 👀 [previousMonthButton](#previousmonthbutton)
+
+#### useMonthsActions
+
+```ts
+type UseMonthsActions = (state: State, dispatch: Dispatch<Action>) => {
+  setMonth(date: Date): void,
+  setNextMonth(): void,
+  setPreviousMonth(): void,
+};
+```
+
+Actions for month manipulation.
+
+- `setMonth` - action 👀 [setMonth](#setmonth)
+- `setNextMonth` - action 👀 [setNextMonth](#setnextmonth)
+- `setPreviousMonth` - action 👀 [setPreviousMonth](#setpreviousmonth)
+
+#### useYears
+
+```ts
+type UseYears = (state: State, dispatch: Dispatch<Action>) => {
+  years: CalendarYear[]
+};
+```
+
+Years data.
+
+- `years` - 👀 [years](#years)
+
+#### useYearsPropGetters
+
+```ts
+type UseYearsPropGetters = (state: State, dispatch: Dispatch<Action>) => {
+  yearButton(year: CalendarYear, config: PropsGetterConfig): void;
+  nextYearsButton(config: PropsGetterConfig): void;
+  previousYearsButton(config: PropsGetterConfig): void;
+};
+```
+
+Prop-getters for years manipulation.
+
+- `yearButton` - propGetter 👀 [yearButton](#yearbutton)
+- `nextYearsButton` - propGetter 👀 [nextYearsButton](#nextyearsbutton)
+- `previousYearsButton` - propGetter 👀 [previousYearsButton](#previousyearsbutton)
+
+#### useYearsActions
+
+```ts
+type UseYearsActions = (state: State, dispatch: Dispatch<Action>) => {
+  setYear(date: Date): void;
+  setNextYears(): void;
+  setPreviousYears(): void;
+};
+```
+
+Actions for years manipulation.
+
+- `setYear` - action 👀 [setYear](#setyear)
+- `setNextYears` - action 👀 [setNextYears](#setnextyears)
+- `setPreviousYears` - action 👀 [setPreviousYears](#setpreviousyears)
+
+#### Context Hooks
+
+We have set of context hooks that have similar API with regular one.
+
+- `useContextCalendars` - 👀 [useColendars](#usecalendars)
+- `useContextDays` - 👀 [useDay](#usedays)
+- `useContextDaysPropsGetters` - 👀 [useDayPropGetters](#usedayspropgetters)
+- `useContextDaysActions` - 👀 [useDayActions](#usedaysactions)
+- `useContextMonths` - 👀 [useMonths](#usemonths)
+- `useContextMonthsPropGetters` - 👀 [useMonthsPropGetters](#usemonthspropgetters)
+- `useContextMonthsActions` - 👀 [useMonthsActions](#usemonthsactions)
+- `useContextYears` - 👀 [useYears](#useyears)
+- `useContextYearsPropGetters` - 👀 [useYearsPropGetters](#useyearspropgetters)
+- `useContextYearsActions` - 👀 [useYearsActions](#useyearsactions)
+
+The main difference that they use context value from the `DatePickerStateProvider`. You don't need to pass any parameters to them.
+
+✏️ NOTE: You can use them only inside `DatePickerStateProvider`! 👀 [With modular context](#with-modular-context)

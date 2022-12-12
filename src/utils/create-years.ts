@@ -15,19 +15,15 @@ export const createYears = (
   for (let i = 0; i < numberOfYears; i++) {
     const value = currentYear + i;
     const date = new Date(value, M, D);
-    const active = Y === value;
-    const selected = selectedDates.some((d) => getDateParts(d).Y === value);
-    const disabled =
-      minDateAndBeforeFirstDay(minDate, date) ||
-      maxDateAndAfter(maxDate, getFirstDayOfTheMonth(date));
+
     years.push({
       $date: date,
       value,
-      isActive: active,
-      isSelected: selected,
-      active,
-      selected,
-      disabled,
+      active: Y === value,
+      selected: selectedDates.some((d) => getDateParts(d).Y === value),
+      disabled:
+        minDateAndBeforeFirstDay(minDate, date) ||
+        maxDateAndAfter(maxDate, getFirstDayOfTheMonth(date)),
     });
   }
 

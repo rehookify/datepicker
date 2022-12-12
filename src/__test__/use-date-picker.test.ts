@@ -1,6 +1,6 @@
 import { describe, test, expect } from '@jest/globals';
-import { useDatePicker } from '../use-date-picker';
 import { renderHook, act } from '@testing-library/react';
+import { useDatePicker } from '../use-date-picker';
 import { getDateParts } from '../utils/date';
 
 describe('useDatePicker', () => {
@@ -13,11 +13,11 @@ describe('useDatePicker', () => {
     // Test date selection by clicking from propGetter
     // @ts-ignore-next-line: we will have onClick here
     act(() => result.current.propGetters.dayButton(d1).onClick());
-    expect(result.current.data.selectedDates[0]).toBe(d1.date);
+    expect(result.current.data.selectedDates[0]).toBe(d1.$date);
 
     // Test date selection by clicking from action
     act(() => result.current.actions.setDay(d2.$date));
-    expect(result.current.data.selectedDates[0]).toBe(d2.date);
+    expect(result.current.data.selectedDates[0]).toBe(d2.$date);
   });
 
   test('useDatePicker return correct selectDates with multiple mode and toggle', () => {
@@ -36,81 +36,23 @@ describe('useDatePicker', () => {
     // Test date selection by clicking from propGetter
     // @ts-ignore-next-line: we will have onClick here
     act(() => result.current.propGetters.dayButton(d1).onClick());
-    expect(result.current.data.selectedDates).toEqual([d1.date]);
+    expect(result.current.data.selectedDates).toEqual([d1.$date]);
 
     // Test date selection by clicking from action
     act(() => result.current.actions.setDay(d2.$date));
-    expect(result.current.data.selectedDates).toEqual([d1.date, d2.date]);
+    expect(result.current.data.selectedDates).toEqual([d1.$date, d2.$date]);
 
     // Toggle first selected date
     // @ts-ignore-next-line: we will have onClick here
     act(() => result.current.propGetters.dayButton(d1).onClick());
-    expect(result.current.data.selectedDates).toEqual([d2.date]);
+    expect(result.current.data.selectedDates).toEqual([d2.$date]);
 
     // Toggle second selected date
     act(() => result.current.actions.setDay(d2.$date));
     expect(result.current.data.selectedDates).toEqual([]);
   });
 
-  test('useDatePicker month manipulation', () => {
-    const { result } = renderHook(() => useDatePicker());
-
-    const [month1] = result.current.data.months.filter(({ active }) => active);
-
-    // @ts-ignore-next-line: we will have onClick with default config
-    act(() => result.current.propGetters.nextMonthButton().onClick());
-
-    const [month2] = result.current.data.months.filter(({ active }) => active);
-
-    const { Y, M, D } = getDateParts(month1.$date);
-    const calculatedMonth = new Date(Y, M + 1, D);
-    expect(month2.$date.getMonth()).toBe(calculatedMonth.getMonth());
-
-    // @ts-ignore-next-line: we will have onClick with default config
-    act(() => result.current.propGetters.previousMonthButton().onClick());
-
-    const [month3] = result.current.data.months.filter(({ active }) => active);
-    expect(month1).toEqual(month3);
-
-    const month4 = result.current.data.months[4];
-    // @ts-ignore-next-line: we will have onClick with default config
-    act(() => result.current.propGetters.monthButton(month4).onClick());
-
-    const [activeMonth] = result.current.data.months.filter(
-      ({ active }) => active,
-    );
-
-    expect(activeMonth.$date).toEqual(month4.$date);
-  });
-
-  test('useDatePicker years manipulations', () => {
-    const { result } = renderHook(() => useDatePicker());
-
-    const [currentStartYear] = result.current.data.years;
-
-    // @ts-ignore-next-line: we will have onClick with default config
-    act(() => result.current.propGetters.nextYearsButton().onClick());
-    expect(result.current.data.years[0].value).toBe(
-      currentStartYear.value + 10,
-    );
-
-    // @ts-ignore-next-line: we will have onClick with default config
-    act(() => result.current.propGetters.previousYearsButton().onClick());
-    expect(result.current.data.years[0].value).toBe(currentStartYear.value);
-
-    act(() =>
-      // @ts-ignore-next-line: we will have onClick with default config
-      result.current.propGetters.yearButton(currentStartYear).onClick(),
-    );
-    expect(result.current.data.months[0].$date.getFullYear()).toBe(
-      currentStartYear.value,
-    );
-    expect(result.current.data.years[0].value).toBe(
-      currentStartYear.value - 10,
-    );
-  });
-
-  test('useDatePicker edges with minDate and maxDate', () => {
+  test('useDatePicker: test edges with minDate and maxDate', () => {
     // For this test we will set min and max dates in the middle of the month
     // Since 9 and 11 are my favorite digit and number it will be 9-11 :)
     const NOW = new Date();

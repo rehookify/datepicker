@@ -2,15 +2,15 @@ import React, { createContext, useContext, FC, ReactNode } from 'react';
 import { DatePickerUserConfig } from './types';
 import { useDatePicker } from './use-date-picker';
 
-export type DatePickerContextVale = ReturnType<typeof useDatePicker>;
+export type DatePickerContextValue = ReturnType<typeof useDatePicker>;
 
 export interface DatePickerProviderProps {
   children: ReactNode;
   config?: DatePickerUserConfig;
 }
 
-const DatePickerContext = createContext<DatePickerContextVale>(
-  {} as DatePickerContextVale,
+const DatePickerContext = createContext<DatePickerContextValue>(
+  {} as DatePickerContextValue,
 );
 
 export const useDatePickerContext = () => {

@@ -1,8 +1,18 @@
+import clsx from 'clsx';
 import React, { FC, PropsWithChildren } from 'react';
 
-export const HeaderButton: FC<PropsWithChildren> = ({ children, ...props }) => {
+interface HeaderButtonProps {
+  className?: string;
+}
+
+export const HeaderButton: FC<PropsWithChildren<HeaderButtonProps>> = ({
+  children,
+  className,
+  ...props
+}) => {
+  const buttonClassName = clsx('calendar-header__button', className);
   return (
-    <button className="calendar__header-button" {...props}>
+    <button className={buttonClassName} {...props}>
       {children}
     </button>
   );

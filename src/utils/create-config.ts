@@ -20,10 +20,6 @@ export const createConfig = ({
   if (minDate && maxDate) {
     [min, max] = [minDate, maxDate].sort(sortDatesAsc);
   }
-  // @TODO remove after version 2.0.0
-  if (years?.numberOfYearsDisplayed && !years?.numberOfYears) {
-    years.numberOfYears = years.numberOfYearsDisplayed;
-  }
 
   return {
     calendar: {
