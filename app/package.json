@@ -12,7 +12,7 @@
     "clean:link": "npm run clean && npm i && npm run link:dp"
   },
   "dependencies": {
-    "@rehookify/datepicker": "^1.4.0",
+    "@rehookify/datepicker": "^2.0.0",
     "clsx": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
