@@ -7,7 +7,7 @@ The tiny tool to create a date and range picker in your React applications.
 [![size](https://img.shields.io/bundlephobia/minzip/@rehookify/datepicker?label=MIN%20%2B%20GZIP&style=for-the-badge)](https://bundlephobia.com/package/@rehookify/datepicker)
 [![npm](https://img.shields.io/npm/dw/@rehookify/datepicker?style=for-the-badge)](https://www.npmjs.com/package/@rehookify/datepicker)
 [![twitter](https://img.shields.io/twitter/follow/rehookify?color=%231D9BF0&label=Follow&logo=twitter&style=for-the-badge
-)](https://twitter.com/intent/follow&user_id=1591019504389210114)
+)](https://twitter.com/rehookify)
 [![discord](https://img.shields.io/discord/1052153401712062474?color=%237289da&logo=discord&style=for-the-badge)](https://discord.gg/vyM2jhYa33)
 </div>
 
