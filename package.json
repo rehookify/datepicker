@@ -1,6 +1,6 @@
 {
   "name": "@rehookify/datepicker",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "The tiny tool to create a date and range picker in your React applications.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
