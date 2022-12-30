@@ -10,6 +10,7 @@ import {
   addToDate,
   formatDate,
   formatMonthName,
+  getCleanDate,
   getDateParts,
   toLocaleDateString,
 } from './date';
@@ -21,11 +22,11 @@ const createCalendar = (
   calendarDate: Date,
   selectedDates: Date[],
   rangeEnd: Date | null,
-  NOW: Date,
   locale: LocaleConfig,
   { mode, minDate, maxDate }: DatesConfig,
   calendarMode: CalendarMode,
 ): Calendar => {
+  const NOW = getCleanDate(new Date());
   const { locale: localeStr, day, year: localeYear } = locale;
   const { M, Y } = getDateParts(calendarDate);
   const { startOffset, numberOfDays } = getCalendarMonthParams(
@@ -63,7 +64,6 @@ export const createCalendars = (
   calendarDate: Date,
   selectedDates: Date[],
   rangeEnd: Date | null,
-  NOW: Date,
   locale: LocaleConfig,
   dates: DatesConfig,
   { mode, offsets }: CalendarConfig,
@@ -73,7 +73,6 @@ export const createCalendars = (
       addToDate(calendarDate, offset, 'month'),
       selectedDates,
       rangeEnd,
-      NOW,
       locale,
       dates,
       mode,

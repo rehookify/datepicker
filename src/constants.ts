@@ -4,7 +4,6 @@ import {
   LocaleConfig,
   YearsConfig,
 } from './types';
-import { getCleanDate } from './utils/date';
 
 /*
  * It is used for static 🗓 to cover all possible month start and end date combination
@@ -20,9 +19,6 @@ export const NUMBER_OF_STATIC_CALENDAR_DAYS = 42;
 
 export const DAYS_IN_WEEK = 7;
 export const NUMBER_OF_MONTHS = 12;
-
-// Nice to have it statically :)
-export const NOW: Date = getCleanDate(new Date());
 
 // Number of yearn by default to mimic number of month
 // It will be easy to reuse same layout for years picker

@@ -1,4 +1,3 @@
-import { NOW } from './constants';
 import { State } from './state-reducer';
 import { createCalendars } from './utils/create-calendars';
 
@@ -16,7 +15,6 @@ export const useCalendars = ({
     offsetDate,
     selectedDates,
     rangeEnd,
-    NOW,
     locale,
     dates,
     calendar,

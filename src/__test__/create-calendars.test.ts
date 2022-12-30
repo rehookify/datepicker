@@ -2,28 +2,28 @@ import { describe, expect, test } from '@jest/globals';
 import { createCalendars } from '../utils/create-calendars';
 import { createConfig } from '../utils/create-config';
 import { getCleanDate } from '../utils/date';
-import { TEST_CALENDAR } from '../__mock__/calendar';
 
 describe('createCalendars', () => {
   test('createCalendars should create a calendar correctly with default configuration', () => {
-    const calendarDate = getCleanDate(new Date(2022, 10, 20));
+    const now = getCleanDate(new Date());
     const { locale, dates, calendar } = createConfig();
 
     const testCalendar = createCalendars(
-      calendarDate,
+      now,
       [],
       null,
-      calendarDate,
       locale,
       dates,
       calendar,
     );
-    const [head] = testCalendar;
+    const { days } = testCalendar[0];
+
+    const today = days.filter(({ isToday }) => isToday);
 
     expect(testCalendar.length).toBe(1);
-    expect(head).toEqual(TEST_CALENDAR);
-    expect(head.days[20].isToday).toBeTruthy();
-    expect(head.days.length).toBe(42);
+    expect(today.length).toBe(1);
+    expect(today[0].$date).toEqual(now);
+    expect(days.length).toBe(42);
   });
 
   test('createCalendars should create correct number of calendars', () => {
@@ -36,7 +36,6 @@ describe('createCalendars', () => {
       calendarDate,
       [],
       null,
-      calendarDate,
       locale,
       dates,
       calendar,
@@ -58,7 +57,6 @@ describe('createCalendars', () => {
       calendarDate,
       [],
       null,
-      calendarDate,
       locale,
       dates,
       calendar,

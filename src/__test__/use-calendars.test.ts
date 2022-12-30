@@ -19,7 +19,6 @@ describe('useCalendars', () => {
       offsetDate,
       selectedDates,
       rangeEnd,
-      offsetDate,
       locale,
       dates,
       calendar,
