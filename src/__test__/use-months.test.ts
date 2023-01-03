@@ -96,9 +96,12 @@ describe('useMonthsAction', () => {
     const { setMonth } = mResult.current;
 
     const { Y, M, D } = getDateParts(new Date());
+    const nextDate = new Date(Y, M - 3, D);
 
-    act(() => setMonth(new Date(Y, M - 3, D)));
-    expect(stateResult.current[0].offsetDate.getMonth()).toBe(M - 3);
+    act(() => setMonth(nextDate));
+    expect(stateResult.current[0].offsetDate.getMonth()).toBe(
+      nextDate.getMonth(),
+    );
   });
 
   test('setPreviousMonth should set previous month', () => {

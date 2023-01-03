@@ -26,7 +26,6 @@ const createCalendar = (
   { mode, minDate, maxDate }: DatesConfig,
   calendarMode: CalendarMode,
 ): Calendar => {
-  const NOW = getCleanDate(new Date());
   const { locale: localeStr, day, year: localeYear } = locale;
   const { M, Y } = getDateParts(calendarDate);
   const { startOffset, numberOfDays } = getCalendarMonthParams(
@@ -44,7 +43,7 @@ const createCalendar = (
       $date: date,
       date: formatDate(date, locale),
       day: toLocaleDateString(date, localeStr, { day }),
-      isToday: isSame(NOW, date),
+      isToday: isSame(getCleanDate(new Date()), date),
       range: getDateRangeState(date, rangeEnd, selectedDates, mode),
       disabled:
         minDateAndBefore(minDate, date) || maxDateAndAfter(maxDate, date),
