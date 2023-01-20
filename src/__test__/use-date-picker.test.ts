@@ -1,11 +1,18 @@
 import { describe, test, expect } from '@jest/globals';
 import { renderHook, act } from '@testing-library/react';
+import { useState } from 'react';
 import { useDatePicker } from '../use-date-picker';
 import { getDateParts } from '../utils/date';
 
 describe('useDatePicker', () => {
   test('useDatePicker returns correct selectedDates with default config', () => {
-    const { result } = renderHook(() => useDatePicker());
+    const { result: state } = renderHook(() => useState<Date[]>([]));
+    const { result } = renderHook(() =>
+      useDatePicker({
+        selectedDates: state.current[0],
+        onDatesChange: state.current[1],
+      }),
+    );
 
     const d1 = result.current.data.calendars[0].days[1];
     const d2 = result.current.data.calendars[0].days[2];
@@ -13,16 +20,20 @@ describe('useDatePicker', () => {
     // Test date selection by clicking from propGetter
     // @ts-ignore-next-line: we will have onClick here
     act(() => result.current.propGetters.dayButton(d1).onClick());
-    expect(result.current.data.selectedDates[0]).toBe(d1.$date);
+    expect(state.current[0][0]).toBe(d1.$date);
 
-    // Test date selection by clicking from action
-    act(() => result.current.actions.setDay(d2.$date));
-    expect(result.current.data.selectedDates[0]).toBe(d2.$date);
+    // Test date selection by clicking from act
+    // @ts-ignore-next-line: we will have onClick here
+    act(() => result.current.propGetters.dayButton(d2).onClick());
+    expect(state.current[0][0]).toBe(d2.$date);
   });
 
   test('useDatePicker return correct selectDates with multiple mode and toggle', () => {
-    const { result } = renderHook(() =>
+    const { result: state } = renderHook(() => useState<Date[]>([]));
+    const { result, rerender } = renderHook(() =>
       useDatePicker({
+        selectedDates: state.current[0],
+        onDatesChange: state.current[1],
         dates: {
           mode: 'multiple',
           toggle: true,
@@ -36,20 +47,28 @@ describe('useDatePicker', () => {
     // Test date selection by clicking from propGetter
     // @ts-ignore-next-line: we will have onClick here
     act(() => result.current.propGetters.dayButton(d1).onClick());
-    expect(result.current.data.selectedDates).toEqual([d1.$date]);
+    expect(state.current[0]).toEqual([d1.$date]);
+
+    rerender();
 
     // Test date selection by clicking from action
-    act(() => result.current.actions.setDay(d2.$date));
-    expect(result.current.data.selectedDates).toEqual([d1.$date, d2.$date]);
+    // @ts-ignore-next-line: we will have onClick here
+    act(() => result.current.propGetters.dayButton(d2).onClick());
+    expect(state.current[0]).toEqual([d1.$date, d2.$date]);
+
+    rerender();
 
     // Toggle first selected date
     // @ts-ignore-next-line: we will have onClick here
     act(() => result.current.propGetters.dayButton(d1).onClick());
-    expect(result.current.data.selectedDates).toEqual([d2.$date]);
+    expect(state.current[0]).toEqual([d2.$date]);
+
+    rerender();
 
     // Toggle second selected date
-    act(() => result.current.actions.setDay(d2.$date));
-    expect(result.current.data.selectedDates).toEqual([]);
+    // @ts-ignore-next-line: we will have onClick here
+    act(() => result.current.propGetters.dayButton(d2).onClick());
+    expect(state.current[0]).toEqual([]);
   });
 
   test('useDatePicker: test edges with minDate and maxDate', () => {

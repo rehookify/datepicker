@@ -9,10 +9,12 @@ import { createWeekdays } from '../utils/create-weekdays';
 describe('useCalendars', () => {
   test('useCalendars should return correct calendars and weekDays', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const { result } = renderHook(() => useCalendars(stateResult.current[0]));
+    const { result } = renderHook(() => useCalendars(stateResult.current));
 
-    const { offsetDate, selectedDates, rangeEnd, config } =
-      stateResult.current[0];
+    const {
+      selectedDates,
+      state: { offsetDate, rangeEnd, config },
+    } = stateResult.current;
     const { locale, dates, calendar } = config;
 
     const calendars = createCalendars(

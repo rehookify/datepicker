@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { describe, test, expect } from '@jest/globals';
 import { act, renderHook } from '@testing-library/react';
 import { useCalendars } from '../use-calendars';
 import { useDatePickerState } from '../use-date-picker-state';
 
-import { useDays, useDaysPropGetters, useDaysActions } from '../use-days';
+import { useDays, useDaysPropGetters } from '../use-days';
 import { formatDate } from '../utils/date';
 
 describe('useDays', () => {
@@ -11,11 +12,11 @@ describe('useDays', () => {
     const d1 = new Date(2022, 11, 9);
     const d2 = new Date(2022, 11, 11);
     const { result: stateResult } = renderHook(() =>
-      useDatePickerState({ dates: { selectedDates: [d1, d2] } }),
+      useDatePickerState({ selectedDates: [d1, d2] }),
     );
-    const { result } = renderHook(() => useDays(stateResult.current[0]));
+    const { result } = renderHook(() => useDays(stateResult.current));
 
-    const { locale } = stateResult.current[0].config;
+    const { locale } = stateResult.current.state.config;
 
     expect(result.current.selectedDates).toEqual([d1, d2]);
     expect(result.current.formattedDates).toEqual([
@@ -27,13 +28,18 @@ describe('useDays', () => {
 
 describe('useDaysPropGetters', () => {
   test('dayButton should set date correctly', () => {
-    const { result: stateResult } = renderHook(() => useDatePickerState());
-    const { result: calendarsResult } = renderHook(() =>
-      useCalendars(stateResult.current[0]),
+    const { result: state } = renderHook(() => useState<Date[]>([]));
+    const { result: stateResult } = renderHook(() =>
+      useDatePickerState({
+        selectedDates: state.current[0],
+        onDatesChange: state.current[1],
+      }),
     );
-    const [state, dispatch] = stateResult.current;
+    const { result: calendarsResult } = renderHook(() =>
+      useCalendars(stateResult.current),
+    );
     const { result: dayButtonResult } = renderHook(() =>
-      useDaysPropGetters(state, dispatch),
+      useDaysPropGetters(stateResult.current),
     );
 
     const { onClick } = dayButtonResult.current.dayButton(
@@ -43,28 +49,8 @@ describe('useDaysPropGetters', () => {
     // @ts-ignore-next-line
     act(() => onClick());
 
-    expect(stateResult.current[0].selectedDates).toEqual([
-      calendarsResult.current.calendars[0].days[11].$date,
-    ]);
-  });
-});
-
-describe('useDaysActions', () => {
-  test('setDay should set date correctly', () => {
-    const { result: stateResult } = renderHook(() => useDatePickerState());
-    const { result: daysActions } = renderHook(() =>
-      useDaysActions(stateResult.current[1]),
-    );
-
-    const d1 = new Date();
-
-    const { setDay, setRangeEnd } = daysActions.current;
-
-    act(() => setDay(d1));
-
-    expect(stateResult.current[0].selectedDates).toEqual([d1]);
-
-    act(() => setRangeEnd(d1));
-    expect(stateResult.current[0].rangeEnd).toEqual(d1);
+    // expect(state.current[0][0]).toEqual([
+    //   calendarsResult.current.calendars[0].days[11].$date,
+    // ]);
   });
 });

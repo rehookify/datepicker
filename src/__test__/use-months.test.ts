@@ -15,10 +15,13 @@ describe('useMonths', () => {
   test('useMonths should return correct months list', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
     const { result: monthResult } = renderHook(() =>
-      useMonths(stateResult.current[0]),
+      useMonths(stateResult.current),
     );
 
-    const { offsetDate, selectedDates, config } = stateResult.current[0];
+    const {
+      selectedDates,
+      state: { offsetDate, config },
+    } = stateResult.current;
     const { locale, dates } = config;
 
     const months = createMonths(offsetDate, selectedDates, locale, dates);
@@ -31,10 +34,11 @@ describe('useMonths', () => {
 describe('useMonthPropGetters', () => {
   test('monthButton should set months correctly', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const [state, dispatch] = stateResult.current;
-    const { result: monthResult } = renderHook(() => useMonths(state));
+    const { result: monthResult } = renderHook(() =>
+      useMonths(stateResult.current),
+    );
     const { result: mResult } = renderHook(() =>
-      useMonthsPropGetters(state, dispatch),
+      useMonthsPropGetters(stateResult.current),
     );
 
     const { onClick } = mResult.current.monthButton(
@@ -43,43 +47,41 @@ describe('useMonthPropGetters', () => {
 
     // @ts-ignore-next-line
     act(() => onClick());
-    expect(stateResult.current[0].offsetDate.getMonth()).toEqual(
+    expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
       monthResult.current.months[0].$date.getMonth(),
     );
   });
 
   test('previousMonthButton should set previous month', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const [state, dispatch] = stateResult.current;
     const { result: mResult } = renderHook(() =>
-      useMonthsPropGetters(state, dispatch),
+      useMonthsPropGetters(stateResult.current),
     );
 
-    const { Y, M, D } = getDateParts(stateResult.current[0].offsetDate);
+    const { Y, M, D } = getDateParts(stateResult.current.state.offsetDate);
 
     const { onClick } = mResult.current.previousMonthButton();
 
     // @ts-ignore-next-line
     act(() => onClick());
-    expect(stateResult.current[0].offsetDate.getMonth()).toEqual(
+    expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
       new Date(Y, M - 1, D).getMonth(),
     );
   });
 
   test('nextMonthButton should set next month', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const [state, dispatch] = stateResult.current;
     const { result: mResult } = renderHook(() =>
-      useMonthsPropGetters(state, dispatch),
+      useMonthsPropGetters(stateResult.current),
     );
 
-    const { Y, M, D } = getDateParts(stateResult.current[0].offsetDate);
+    const { Y, M, D } = getDateParts(stateResult.current.state.offsetDate);
 
     const { onClick } = mResult.current.nextMonthButton();
 
     // @ts-ignore-next-line
     act(() => onClick());
-    expect(stateResult.current[0].offsetDate.getMonth()).toEqual(
+    expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
       new Date(Y, M + 1, D).getMonth(),
     );
   });
@@ -89,9 +91,8 @@ describe('useMonthPropGetters', () => {
 describe('useMonthsAction', () => {
   test('setMonth should set correct month', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const [state, dispatch] = stateResult.current;
     const { result: mResult } = renderHook(() =>
-      useMonthsActions(state, dispatch),
+      useMonthsActions(stateResult.current),
     );
     const { setMonth } = mResult.current;
 
@@ -99,39 +100,37 @@ describe('useMonthsAction', () => {
     const nextDate = new Date(Y, M - 3, D);
 
     act(() => setMonth(nextDate));
-    expect(stateResult.current[0].offsetDate.getMonth()).toBe(
+    expect(stateResult.current.state.offsetDate.getMonth()).toBe(
       nextDate.getMonth(),
     );
   });
 
   test('setPreviousMonth should set previous month', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const [state, dispatch] = stateResult.current;
     const { result: mResult } = renderHook(() =>
-      useMonthsActions(state, dispatch),
+      useMonthsActions(stateResult.current),
     );
     const { setPreviousMonth } = mResult.current;
 
-    const { Y, M, D } = getDateParts(stateResult.current[0].offsetDate);
+    const { Y, M, D } = getDateParts(stateResult.current.state.offsetDate);
 
     act(() => setPreviousMonth());
-    expect(stateResult.current[0].offsetDate.getMonth()).toBe(
+    expect(stateResult.current.state.offsetDate.getMonth()).toBe(
       new Date(Y, M - 1, D).getMonth(),
     );
   });
 
   test('setNextMonth should set next month', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const [state, dispatch] = stateResult.current;
     const { result: mResult } = renderHook(() =>
-      useMonthsActions(state, dispatch),
+      useMonthsActions(stateResult.current),
     );
     const { setNextMonth } = mResult.current;
 
-    const { Y, M, D } = getDateParts(stateResult.current[0].offsetDate);
+    const { Y, M, D } = getDateParts(stateResult.current.state.offsetDate);
 
     act(() => setNextMonth());
-    expect(stateResult.current[0].offsetDate.getMonth()).toBe(
+    expect(stateResult.current.state.offsetDate.getMonth()).toBe(
       new Date(Y, M + 1, D).getMonth(),
     );
   });

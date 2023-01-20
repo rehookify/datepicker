@@ -5,8 +5,16 @@ import { createConfig } from './utils/create-config';
 import { createInitialState } from './utils/create-initial-state';
 
 export const useDatePickerState = (config?: DatePickerUserConfig) => {
-  return useReducer<Reducer<State, Action>>(
+  const dpConfig = createConfig(config);
+
+  const [state, dispatch] = useReducer<Reducer<State, Action>>(
     stateReducer,
-    createInitialState(createConfig(config)),
+    createInitialState(dpConfig),
   );
+
+  return {
+    state,
+    dispatch,
+    selectedDates: dpConfig.selectedDates,
+  };
 };

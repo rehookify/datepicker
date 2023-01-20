@@ -1,4 +1,5 @@
 export const DEFAULT_CONFIG = {
+  selectedDates: [],
   calendar: { mode: 'static', offsets: [0] },
   years: {
     mode: 'decade',
@@ -10,7 +11,6 @@ export const DEFAULT_CONFIG = {
     toggle: false,
     minDate: null,
     maxDate: null,
-    selectedDates: [],
   },
   locale: {
     locale: 'en-GB',

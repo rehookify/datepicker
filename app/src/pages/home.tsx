@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
 import { useDatePicker } from '@rehookify/datepicker';
 
 import {
@@ -39,6 +38,7 @@ export const HomePage = () => {
     prefersDark.addEventListener('change', (mQ) => toggleDarkTheme(mQ.matches));
   }, []);
 
+  const [selectedDates, onDatesChange] = useState<Date[]>([]);
   const {
     data: { calendars, weekDays, months, years },
     propGetters: {
@@ -51,6 +51,8 @@ export const HomePage = () => {
       previousYearsButton,
     },
   } = useDatePicker({
+    selectedDates,
+    onDatesChange,
     dates: {
       mode: 'range',
       toggle: true,

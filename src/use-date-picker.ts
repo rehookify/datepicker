@@ -1,7 +1,7 @@
 import { DatePickerUserConfig } from './types';
 import { useCalendars } from './use-calendars';
 import { useDatePickerState } from './use-date-picker-state';
-import { useDays, useDaysActions, useDaysPropGetters } from './use-days';
+import { useDays, useDaysPropGetters } from './use-days';
 import {
   useMonthsActions,
   useMonthsPropGetters,
@@ -10,26 +10,20 @@ import {
 import { useYears, useYearsActions, useYearsPropGetters } from './use-years';
 
 export const useDatePicker = (config?: DatePickerUserConfig) => {
-  const [state, dispatch] = useDatePickerState(config);
+  const dpState = useDatePickerState(config);
 
-  const { calendars, weekDays } = useCalendars(state);
-  const { selectedDates, formattedDates } = useDays(state);
-  const { dayButton } = useDaysPropGetters(state, dispatch);
-  const { setDay, setRangeEnd } = useDaysActions(dispatch);
-  const { months } = useMonths(state);
+  const { calendars, weekDays } = useCalendars(dpState);
+  const { selectedDates, formattedDates } = useDays(dpState);
+  const { dayButton } = useDaysPropGetters(dpState);
+  const { months } = useMonths(dpState);
   const { monthButton, nextMonthButton, previousMonthButton } =
-    useMonthsPropGetters(state, dispatch);
-  const { setMonth, setNextMonth, setPreviousMonth } = useMonthsActions(
-    state,
-    dispatch,
-  );
-  const { years } = useYears(state);
+    useMonthsPropGetters(dpState);
+  const { setMonth, setNextMonth, setPreviousMonth } =
+    useMonthsActions(dpState);
+  const { years } = useYears(dpState);
   const { yearButton, nextYearsButton, previousYearsButton } =
-    useYearsPropGetters(state, dispatch);
-  const { setYear, setNextYears, setPreviousYears } = useYearsActions(
-    state,
-    dispatch,
-  );
+    useYearsPropGetters(dpState);
+  const { setYear, setNextYears, setPreviousYears } = useYearsActions(dpState);
 
   return {
     data: {
@@ -50,14 +44,12 @@ export const useDatePicker = (config?: DatePickerUserConfig) => {
       previousYearsButton,
     },
     actions: {
-      setDay,
       setMonth,
       setNextMonth,
       setPreviousMonth,
       setYear,
       setNextYears,
       setPreviousYears,
-      setRangeEnd,
     },
   };
 };

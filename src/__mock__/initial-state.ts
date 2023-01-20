@@ -6,7 +6,6 @@ const config = createConfig({});
 
 export const INITIAL_STATE = {
   rangeEnd: null,
-  selectedDates: [],
   config,
   offsetDate: getCleanDate(new Date()),
   offsetYear: getCurrentYearPosition(

@@ -1,6 +1,6 @@
 import { useDatePickerStateContext } from './date-picker-state-provider';
 import { useCalendars } from './use-calendars';
-import { useDays, useDaysActions, useDaysPropGetters } from './use-days';
+import { useDays, useDaysPropGetters } from './use-days';
 import {
   useMonths,
   useMonthsActions,
@@ -9,61 +9,55 @@ import {
 import { useYears, useYearsActions, useYearsPropGetters } from './use-years';
 
 export const useContextCalendars = () => {
-  const { s } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
   return useCalendars(s);
 };
 
 export const useContextDays = () => {
-  const { s } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
   return useDays(s);
 };
 
 export const useContextDaysPropGetters = () => {
-  const { s, d } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
-  return useDaysPropGetters(s, d);
-};
-
-export const useContextDaysActions = () => {
-  const { d } = useDatePickerStateContext();
-
-  return useDaysActions(d);
+  return useDaysPropGetters(s);
 };
 
 export const useContextMonths = () => {
-  const { s } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
   return useMonths(s);
 };
 
 export const useContextMonthsPropGetters = () => {
-  const { s, d } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
-  return useMonthsPropGetters(s, d);
+  return useMonthsPropGetters(s);
 };
 
 export const useContextMonthsActions = () => {
-  const { s, d } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
-  return useMonthsActions(s, d);
+  return useMonthsActions(s);
 };
 
 export const useContextYears = () => {
-  const { s } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
   return useYears(s);
 };
 
 export const useContextYearsPropGetters = () => {
-  const { s, d } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
-  return useYearsPropGetters(s, d);
+  return useYearsPropGetters(s);
 };
 
 export const useContextYearsActions = () => {
-  const { s, d } = useDatePickerStateContext();
+  const s = useDatePickerStateContext();
 
-  return useYearsActions(s, d);
+  return useYearsActions(s);
 };

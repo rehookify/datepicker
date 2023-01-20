@@ -2,26 +2,17 @@ import { Dispatch } from 'react';
 import { DatePickerConfig } from './types';
 import { getDateParts } from './utils/date';
 import { getCurrentYearPosition } from './utils/get-current-year-position';
-import { getMultipleDates } from './utils/get-multiple-dates';
 
 export interface State {
   rangeEnd: Date | null;
-  selectedDates: Date[];
   offsetDate: Date;
   offsetYear: number;
   config: DatePickerConfig;
 }
 
-const SELECT_DATE_ACTION = 'SELECT_DATE';
 const SET_OFFSET_DATE_ACTION = 'SET_OFFSET_DATE';
 const SET_YEAR_ACTION = 'SET_YEAR';
 const SET_RANGE_END_ACTION = 'SET_RANGE_END';
-
-interface SelectDateAction {
-  type: 'SELECT_DATE';
-  date: Date;
-}
-
 interface SetOffsetDate {
   type: 'SET_OFFSET_DATE';
   date: State['offsetDate'];
@@ -37,11 +28,7 @@ interface SetRangeEndAction {
   date: State['rangeEnd'];
 }
 
-export type Action =
-  | SelectDateAction
-  | SetOffsetDate
-  | SetYearAction
-  | SetRangeEndAction;
+export type Action = SetOffsetDate | SetYearAction | SetRangeEndAction;
 
 export const stateReducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -49,15 +36,6 @@ export const stateReducer = (state: State, action: Action) => {
       return {
         ...state,
         rangeEnd: action.date,
-      };
-    case SELECT_DATE_ACTION:
-      return {
-        ...state,
-        selectedDates: getMultipleDates(
-          state.selectedDates,
-          action.date,
-          state.config.dates,
-        ),
       };
     case SET_YEAR_ACTION:
       return {
@@ -77,9 +55,6 @@ export const stateReducer = (state: State, action: Action) => {
       return state;
   }
 };
-
-export const selectDates = (dispatch: Dispatch<SelectDateAction>, date: Date) =>
-  dispatch({ type: SELECT_DATE_ACTION, date });
 
 export const setOffset = (dispatch: Dispatch<SetOffsetDate>, date: Date) =>
   dispatch({ type: SET_OFFSET_DATE_ACTION, date });

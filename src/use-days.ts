@@ -1,25 +1,28 @@
-import { Dispatch, useCallback } from 'react';
-import {
-  Action,
-  selectDates,
-  setRangeEnd as setRangeEndAction,
-  State,
-} from './state-reducer';
-import { CalendarDay, PropsGetterConfig } from './types';
+import { useCallback } from 'react';
+import { setRangeEnd as setRangeEndAction } from './state-reducer';
+import { CalendarDay, DPState, PropsGetterConfig } from './types';
 import { callAll, skipFirst } from './utils/call-all';
 import { createPropGetter } from './utils/create-prop-getter';
 import { formatDate } from './utils/date';
+import { getMultipleDates } from './utils/get-multiple-dates';
 
-export const useDays = ({ selectedDates, config: { locale } }: State) => ({
+export const useDays = ({
+  selectedDates,
+  state: {
+    config: { locale },
+  },
+}: DPState) => ({
   selectedDates,
   formattedDates: selectedDates.map((d: Date) => formatDate(d, locale)),
 });
 
-export const useDaysPropGetters = (
-  { selectedDates, config }: State,
-  dispatch: Dispatch<Action>,
-) => {
+export const useDaysPropGetters = ({
+  selectedDates,
+  state: { config },
+  dispatch,
+}: DPState) => {
   const {
+    onDatesChange,
     dates: { mode, toggle },
   } = config;
 
@@ -36,7 +39,11 @@ export const useDaysPropGetters = (
             setRangeEndAction(dispatch, null);
           callAll(
             onClick,
-            skipFirst((d: Date) => selectDates(dispatch, d)),
+            skipFirst((d: Date) => {
+              if (onDatesChange && typeof onDatesChange === 'function') {
+                onDatesChange(getMultipleDates(selectedDates, d, config.dates));
+              }
+            }),
           )(evt, $date);
         },
         {
@@ -49,24 +56,8 @@ export const useDaysPropGetters = (
             }),
         },
       ),
-    [mode, toggle, selectedDates.length, dispatch],
+    [mode, toggle, config.dates, onDatesChange, selectedDates, dispatch],
   );
 
   return { dayButton };
-};
-
-export const useDaysActions = (dispatch: Dispatch<Action>) => {
-  const setDay = useCallback(
-    (d: Date) => {
-      selectDates(dispatch, d);
-    },
-    [dispatch],
-  );
-
-  const setRangeEnd = useCallback(
-    (d: Date | null) => setRangeEndAction(dispatch, d),
-    [dispatch],
-  );
-
-  return { setDay, setRangeEnd };
 };

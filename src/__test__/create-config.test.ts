@@ -30,13 +30,13 @@ describe('createConfig', () => {
   test('createConfig correctly composes dates', () => {
     const d = new Date();
     const { Y, M } = getDateParts(d);
-    const { dates } = createConfig({
+    const { dates, selectedDates } = createConfig({
+      selectedDates: [d],
       dates: {
         mode: 'multiple',
         toggle: true,
         minDate: new Date(Y, M - 1, 1),
         maxDate: new Date(Y, M + 1, 0),
-        selectedDates: d,
         limit: 2,
       },
     });
@@ -45,7 +45,7 @@ describe('createConfig', () => {
     expect(dates.toggle).toBeTruthy();
     expect(dates.minDate).toEqual(new Date(Y, M - 1, 1));
     expect(dates.maxDate).toEqual(new Date(Y, M + 1, 0));
-    expect(dates.selectedDates.length).toBe(1);
+    expect(selectedDates.length).toBe(1);
     expect(dates.limit).toBe(2);
   });
 

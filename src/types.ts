@@ -1,4 +1,5 @@
-import type { MouseEvent } from 'react';
+import type { MouseEvent, Dispatch } from 'react';
+import { Action, State } from './state-reducer';
 
 export type DayRange =
   | 'in-range'
@@ -79,6 +80,8 @@ export interface LocaleConfig {
 }
 
 export interface DatePickerUserConfig {
+  selectedDates?: Date[];
+  onDatesChange?(d: Date[]): void;
   locale?: Partial<LocaleConfig>;
   calendar?: Partial<CalendarConfig>;
   dates?: Partial<DatesUserConfig>;
@@ -89,12 +92,13 @@ export interface DatesConfig {
   mode: DatesMode;
   minDate: Date | null;
   maxDate: Date | null;
-  selectedDates: Date[];
   toggle: boolean;
   limit: number;
 }
 
 export interface DatePickerConfig {
+  selectedDates: Date[];
+  onDatesChange?(d: Date[]): void;
   locale: LocaleConfig;
   calendar: CalendarConfig;
   dates: DatesConfig;
@@ -107,4 +111,10 @@ export interface Calendar {
   year: string;
   month: string;
   days: CalendarDay[];
+}
+
+export interface DPState {
+  state: State;
+  dispatch: Dispatch<Action>;
+  selectedDates: Date[];
 }

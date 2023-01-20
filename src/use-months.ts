@@ -1,6 +1,6 @@
-import { Dispatch, useCallback } from 'react';
-import { Action, setOffset, State } from './state-reducer';
-import { CalendarMonth, PropsGetterConfig } from './types';
+import { useCallback } from 'react';
+import { setOffset } from './state-reducer';
+import { CalendarMonth, DPState, PropsGetterConfig } from './types';
 import { callAll, skipFirst } from './utils/call-all';
 import { createMonths } from './utils/create-months';
 import { createPropGetter } from './utils/create-prop-getter';
@@ -12,17 +12,22 @@ import {
 import { maxDateAndAfter, minDateAndBeforeFirstDay } from './utils/predicates';
 
 export const useMonths = ({
-  offsetDate,
   selectedDates,
-  config: { locale, dates },
-}: State) => ({
+  state: {
+    offsetDate,
+    config: { locale, dates },
+  },
+}: DPState) => ({
   months: createMonths(offsetDate, selectedDates, locale, dates),
 });
 
-export const useMonthsPropGetters = (
-  { offsetDate, config: { dates } }: State,
-  dispatch: Dispatch<Action>,
-) => {
+export const useMonthsPropGetters = ({
+  state: {
+    offsetDate,
+    config: { dates },
+  },
+  dispatch,
+}: DPState) => {
   const { minDate, maxDate } = dates;
 
   const callSetOffset = useCallback(
@@ -77,10 +82,10 @@ export const useMonthsPropGetters = (
   return { monthButton, nextMonthButton, previousMonthButton };
 };
 
-export const useMonthsActions = (
-  { offsetDate }: State,
-  dispatch: Dispatch<Action>,
-) => {
+export const useMonthsActions = ({
+  state: { offsetDate },
+  dispatch,
+}: DPState) => {
   const setMonth = useCallback((d: Date) => setOffset(dispatch, d), [dispatch]);
 
   const setNextMonth = useCallback(

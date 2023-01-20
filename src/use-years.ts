@@ -1,6 +1,6 @@
-import { Dispatch, useCallback } from 'react';
-import { Action, setOffset, setYear, State } from './state-reducer';
-import { CalendarYear, PropsGetterConfig } from './types';
+import { useCallback } from 'react';
+import { setOffset, setYear } from './state-reducer';
+import { CalendarYear, DPState, PropsGetterConfig } from './types';
 import { callAll, skipAll, skipFirst } from './utils/call-all';
 import { createPropGetter } from './utils/create-prop-getter';
 import { createYears } from './utils/create-years';
@@ -8,18 +8,24 @@ import { getDateParts } from './utils/date';
 import { maxDateAndAfter, minDateAndBefore } from './utils/predicates';
 
 export const useYears = ({
-  offsetDate,
   selectedDates,
-  offsetYear,
-  config: { years, dates },
-}: State) => ({
+  state: {
+    offsetDate,
+    offsetYear,
+    config: { years, dates },
+  },
+}: DPState) => ({
   years: createYears(offsetYear, offsetDate, selectedDates, years, dates),
 });
 
-export const useYearsPropGetters = (
-  { offsetYear, offsetDate, config: { dates, years: yearsConfig } }: State,
-  dispatch: Dispatch<Action>,
-) => {
+export const useYearsPropGetters = ({
+  state: {
+    offsetYear,
+    offsetDate,
+    config: { dates, years: yearsConfig },
+  },
+  dispatch,
+}: DPState) => {
   const { minDate, maxDate } = dates;
   const { step, numberOfYears } = yearsConfig;
   const { D, M } = getDateParts(offsetDate);
@@ -89,10 +95,13 @@ export const useYearsPropGetters = (
   };
 };
 
-export const useYearsActions = (
-  { offsetYear, config: { years } }: State,
-  dispatch: Dispatch<Action>,
-) => {
+export const useYearsActions = ({
+  state: {
+    offsetYear,
+    config: { years },
+  },
+  dispatch,
+}: DPState) => {
   const { step } = years;
   const setYearAction = useCallback(
     (d: Date) => setOffset(dispatch, d),

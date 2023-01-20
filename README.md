@@ -1,6 +1,6 @@
 # @rehookify/datepicker
 
-The tiny tool to create a date and range picker in your React applications.
+The ultimate tiny tool for creating date and range pickers in your React applications.
 
 <div align="center">
 
@@ -38,11 +38,16 @@ npm i -S @rehookify/datepicker
 ### With modular hooks
 
 ```tsx
+import { useState } from 'react';
 import { useDatePickerState } from '@rehookify/datepicker';
 
 const DatePicker = () => {
-  const config = { dates: { toggle: true, mode: 'multiple' }}
-  const [state, dispatch] = useDatePickerState(config);
+  const [selectedDates, onDatesChange] = useState<Date[]>([]);
+  const [state, dispatch] = useDatePickerState({
+    selectedDates,
+    onDatesChange,
+    dates: { toggle: true, mode: 'multiple' },
+  });
   const { calendars, weekDays } = useCalendars(state);
 
   const { month, year, days } = calendars[0];
@@ -72,6 +77,7 @@ const DatePicker = () => {
 ### With modular context
 
 ```tsx
+import { useState } from 'react';
 import {
   DatePickerStateProvider,
   useContextCalendars
@@ -104,9 +110,18 @@ const DatePicker = () => {
 }
 
 const App = () => {
-  <DatePickerStateProvider config={{ dates: { mode: 'multiple' }}}>
-    <DatePicker />
-  </DatePickerStateProvider>
+  const [selectedDates, onDatesChange] = useState<Date[]>([]);
+  return (
+    <DatePickerStateProvider
+      config={{
+        selectedDates,
+        onDatesChange,
+        dates: { mode: 'multiple' },
+      }}
+    >
+      <DatePicker />
+    </DatePickerStateProvider>
+  );
 }
 ```
 
@@ -115,18 +130,22 @@ const App = () => {
 ### With hook
 
 ```tsx
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { useDatePicker } from '@rehookify/datepicker';
 
 const DatePicker = () => {
+  const [selectedDates, onDatesChange] = useState<Date[]>([]);
   const {
-    data: { weekDays, calendars, selectedDates },
+    data: { weekDays, calendars },
     propGetters: {
       dayButton,
       previousMonthButton,
       nextMonthButton,
     },
-  } = useDatePicker();
+  } = useDatePicker({
+    selectedDates,
+    onDatesChange,
+  });
 
   // calendars[0] is always present, this is an initial calendar
   const { year, month, days } = calendars[0];
@@ -157,7 +176,11 @@ const DatePicker = () => {
       <ul>
         {days.map((dpDay) => (
           <li key={`${month}-${dpDay.date}`}>
-            <button {...dayButton(dpDay)}>{dpDay.day}</button>
+            <button
+              {...dayButton(dpDay, { onClick: onDayClick })}
+            >
+              {dpDay.day}
+            </button>
           </li>
         ))}
       </ul>
@@ -169,6 +192,7 @@ const DatePicker = () => {
 ### With context
 
 ```tsx
+import { useState } from 'react';
 import {
   DatePickerProvider,
   useDatePickerContext,
@@ -188,9 +212,19 @@ const DatePicker = () => {
 }
 
 const App = () => {
-  <DatePickerProvider config={{ dates: { mode: 'range' }}}>
-    <DatePicker />
-  </DatePickerProvider>
+  const [selectedDates, onDatesChange] = useState<Date[]>([]);
+
+  return (
+    <DatePickerProvider
+      config={{
+        selectedDates,
+        onDatesChange,
+        dates: { mode: 'range' },
+      }}
+    >
+      <DatePicker />
+    </DatePickerProvider>
+  );
 }
 ```
 
@@ -213,16 +247,15 @@ const App = () => {
     - [nextYearsButton](#nextyearsbutton)
     - [previousYearsButton](#previousyearsbutton)
   - [actions](#actions)
-    - [setDay](#setday)
     - [setMonth](#setmonth)
     - [setYear](#setyear)
     - [setNextYears](#setnextyears)
     - [setPreviousYears](#setpreviousyears)
     - [setNextMonth](#setnextmonth)
     - [setPreviousMonth](#setpreviousmonth)
-    - [setRangeEnd](#setrangeend)
 - [Configuration](#configuration)
   - [Default configuration](#default-configuration)
+  - [General configuration](#general-configuration)
   - [Locale configuration](#locale-configuration)
   - [Calendar configuration](#calendar-configuration)
   - [Dates configuration](#dates-configuration)
@@ -454,14 +487,6 @@ Params:
 
 Actions allow you to control the date picker's state. They don't have any additional logic. You need to check the state of days, months and years or disable the months and years pagination buttons.
 
-#### setDay
-
-`setDay` - adds date to `selectedDates`.
-
-Params:
-
-- `date: Date` - javascript Date object, you could get it from the `day.$date` 👆 [Calendars](#calendars), or create `new Date(2022, 10, 18)`
-
 #### setMonth
 
 `setMonth` - set the month that a user sees.
@@ -494,14 +519,6 @@ Params:
 
 `setPreviousYears` moves years pagination one step backward
 
-#### setRangeEnd
-
-`setRangeEnd` - it will temporary set Date outside of `selectedDates`.
-
-`setRangeEnd` is used inside `dayButton` 👆 [dayButton](#daybutton) prop-getter with `dates.mode === 'range'` 👀 [Dates configuration](#dates-configuration).
-
-It sets `CalendarDate.willBeInRange` property to true if date is between `selectedDate` and `rangeEndDate`
-
 ### Configuration
 
 `useDatePicker`, `DatePickerProvider`, `useDatePickerState` and `DatePickerStateProvider` accepts same configuration object that consists of [locale](#locale-configuration), [calendar](#calendar-configuration), [dates](#dates-configuration) and [years](#years-configuration)
@@ -510,6 +527,8 @@ It sets `CalendarDate.willBeInRange` property to true if date is between `select
 
 ```ts
 {
+  selectedDates: [],
+  onDatesChange: undefined,
   locale: {
     locale: 'en-GB',
     day: '2-digit',
@@ -535,6 +554,26 @@ It sets `CalendarDate.willBeInRange` property to true if date is between `select
     step: 10,
   },
 }
+```
+
+#### General configuration
+
+```ts
+selectedDates: Date[];
+onDatesChange(d: Date[]): void;
+```
+
+The date-picker is a controlled component that utilizes the `selectedDates` property to create all entities and display the user's selection. If you don't provide a `selectedDates` value, it will default to an empty array, but the selection won't be visible. Every time a date is selected, it will be passed to the `onDatesChange` function.
+
+A typical setup is to use the `useState` hook to handle updates.
+
+```ts
+const [selectedDates, onDatesChange] = useState<Date[]>([]);
+const { data } = useDatePicker({
+  selectedDates,
+  onDatesChange,
+})
+
 ```
 
 #### Locale configuration

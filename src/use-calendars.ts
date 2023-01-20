@@ -1,14 +1,12 @@
-import { State } from './state-reducer';
+import { DPState } from './types';
 import { createCalendars } from './utils/create-calendars';
 
 import { createWeekdays } from './utils/create-weekdays';
 
 export const useCalendars = ({
-  offsetDate,
   selectedDates,
-  rangeEnd,
-  config,
-}: State) => {
+  state: { offsetDate, rangeEnd, config },
+}: DPState) => {
   const { locale, dates, calendar } = config;
 
   const calendars = createCalendars(
