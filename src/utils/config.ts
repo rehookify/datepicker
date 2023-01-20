@@ -3,6 +3,7 @@ import {
   DEFAULT_YEARS_CONFIG,
   DEFAULT_DATES_CONFIG,
   DEFAULT_LOCALE_CONFIG,
+  DEFAULT_TIME_CONFIG,
 } from '../constants';
 import { DatePickerConfig, DatePickerUserConfig, DatesMode } from '../types';
 import { getCleanDate, sortDatesAsc } from './date';
@@ -14,6 +15,7 @@ export const createConfig = ({
   years,
   dates,
   locale,
+  time,
 }: DatePickerUserConfig = {}) => {
   const { minDate, maxDate, ...restDates } = dates || {};
   const { offsets = [], ...restCalendarParams } = calendar || {};
@@ -40,6 +42,10 @@ export const createConfig = ({
     locale: {
       ...DEFAULT_LOCALE_CONFIG,
       ...locale,
+    },
+    time: {
+      ...DEFAULT_TIME_CONFIG,
+      ...time,
     },
   } as DatePickerConfig;
 };

@@ -23,4 +23,7 @@ export const DEFAULT_CONFIG = {
     weekday: 'short',
     monthName: 'long',
   },
+  time: {
+    interval: 30,
+  },
 };

@@ -82,6 +82,14 @@ export interface LocaleConfig {
   year: Intl.DateTimeFormatOptions['year'];
   monthName: Intl.DateTimeFormatOptions['month'];
   weekday: Intl.DateTimeFormatOptions['weekday'];
+  hour: Intl.DateTimeFormatOptions['hour'];
+  minute: Intl.DateTimeFormatOptions['minute'];
+  second?: Intl.DateTimeFormatOptions['second'];
+  hour12?: Intl.DateTimeFormatOptions['hour12'];
+}
+
+export interface TimeConfig {
+  interval: number;
 }
 
 export interface DatePickerUserConfig {
@@ -91,6 +99,7 @@ export interface DatePickerUserConfig {
   calendar?: Partial<CalendarConfig>;
   dates?: Partial<DatesUserConfig>;
   years?: Partial<YearsConfig>;
+  time?: Partial<TimeConfig>;
 }
 
 export interface DatesConfig {
@@ -108,6 +117,7 @@ export interface DatePickerConfig {
   calendar: CalendarConfig;
   dates: DatesConfig;
   years: YearsConfig;
+  time: TimeConfig;
 }
 
 export type DatePart = 'year' | 'month' | 'date';
@@ -122,4 +132,11 @@ export interface DPState {
   state: State;
   dispatch: Dispatch<Action>;
   selectedDates: Date[];
+}
+
+export interface Time {
+  $date: Date;
+  time: string;
+  selected: boolean;
+  disabled: boolean;
 }

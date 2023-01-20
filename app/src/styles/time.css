@@ -1,0 +1,25 @@
+.time-container {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  column-gap: 24px;
+}
+
+.time {
+  padding: 24px;
+  border-radius: var(--border-radius);
+  background-color: var(--calendar-background);
+  max-height: 520px;
+  overflow-y: scroll;
+}
+
+.time-button {
+  border: 0;
+  background-color: transparent;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  color: var(--day-color);
+  height: var(--day-size);
+  width: 100%;
+  margin-bottom: 4px;
+  font-size: 0.75rem;
+}
