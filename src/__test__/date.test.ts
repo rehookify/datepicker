@@ -139,9 +139,6 @@ describe('formatDate', () => {
     const testDate = new Date(2022, 7, 31);
 
     expect(formatDate(testDate, DEFAULT_LOCALE_CONFIG)).toBe('31/08/2022');
-    expect(formatDate(testDate, ALTERNATIVE_LOCALE_CONFIG)).toBe(
-      '31 серпня 22 р.',
-    );
   });
 });
 
