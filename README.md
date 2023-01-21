@@ -43,12 +43,12 @@ import { useDatePickerState } from '@rehookify/datepicker';
 
 const DatePicker = () => {
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
-  const [state, dispatch] = useDatePickerState({
+  const dpState = useDatePickerState({
     selectedDates,
     onDatesChange,
     dates: { toggle: true, mode: 'multiple' },
   });
-  const { calendars, weekDays } = useCalendars(state);
+  const { calendars, weekDays } = useCalendars(dpState);
 
   const { month, year, days } = calendars[0];
 
@@ -199,7 +199,9 @@ import {
 } from '@rehookify/datepicker';
 
 const DatePicker = () => {
-  const { data: { weekDays, calendars, years, months } } = useDatePickerContext();
+  const {
+    data: { weekDays, calendars, years, months },
+  } = useDatePickerContext();
 
   const { year, month, days } = calendars[0];
 
