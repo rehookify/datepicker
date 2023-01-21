@@ -24,13 +24,13 @@ describe('createWeekdays', () => {
     const weekdays = createWeekdays(TEST_CALENDAR, locale);
 
     expect(weekdays.length).toBe(7);
-    expect(weekdays).toEqual(['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']);
+    expect(weekdays).toEqual(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']);
   });
 
   test('createWeekdays create weekdays correctly with alternative locale', () => {
     const weekdays = createWeekdays(TEST_CALENDAR, ALTERNATIVE_LOCALE_CONFIG);
 
     // Weekdays with Ukrainian locale and weekdays = 'short'
-    expect(weekdays).toEqual(['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'нд']);
+    expect(weekdays).toEqual(['нд', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб']);
   });
 });

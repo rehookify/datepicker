@@ -14,6 +14,10 @@ export const ModularContextProvider = () => {
       toggle: true,
       mode: 'multiple',
     },
+    calendar: {
+      startDay: 1,
+      mode: 'fluid',
+    },
   };
   return (
     <DatePickerStateProvider config={config}>

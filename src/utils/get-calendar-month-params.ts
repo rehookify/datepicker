@@ -1,26 +1,31 @@
-import { DAYS_IN_WEEK, NUMBER_OF_STATIC_CALENDAR_DAYS } from '../constants';
+import { NUMBER_OF_STATIC_CALENDAR_DAYS } from '../constants';
 import { CalendarMode } from '../types';
 import { daysInMonth, getDay } from './date';
 
+const getStartOffset = (d: Date, startDay: number) =>
+  (getDay(d) + 7 - startDay) % 7;
+
 export const getCalendarMonthParams = (
+  startDay: number,
   month: number,
   year: number,
   calendarMode: CalendarMode,
 ) => {
-  const firstDay = new Date(year, month, 1);
-  const lastDay = daysInMonth(firstDay);
+  const firstMonthDay = new Date(year, month, 1);
+  const lastDay = daysInMonth(firstMonthDay);
+
+  const startOffset = getStartOffset(firstMonthDay, startDay);
 
   const numberOfDays =
     calendarMode === 'static'
       ? NUMBER_OF_STATIC_CALENDAR_DAYS
-      : getDay(firstDay) +
+      : startOffset +
         lastDay +
-        DAYS_IN_WEEK -
-        getDay(new Date(year, month, lastDay)) -
-        1;
+        6 -
+        getStartOffset(new Date(year, month, lastDay), startDay);
 
   return {
-    startOffset: getDay(firstDay),
+    startOffset,
     numberOfDays,
   };
 };

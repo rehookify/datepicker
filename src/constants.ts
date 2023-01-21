@@ -28,6 +28,7 @@ export const DEFAULT_YEARS_STEP = 10;
 export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
   mode: 'static',
   offsets: [0],
+  startDay: 0,
 };
 
 export const DEFAULT_YEARS_CONFIG: YearsConfig = {

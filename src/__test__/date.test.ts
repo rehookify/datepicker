@@ -160,15 +160,3 @@ describe('toLocaleDateString', () => {
     expect(toLocaleDateString(d1, 'en-GB')).toBe('25/11/2022');
   });
 });
-
-describe('getUTCDate', () => {
-  test('getUTCDate should return correct day', () => {
-    // The 1 of November 2022 is Tuesday
-    const d1 = new Date(2022, 10, 1);
-    // The 1 of January 2023 is Sunday
-    const d2 = new Date(2023, 0, 1);
-
-    expect(getDay(d1)).toBe(1);
-    expect(getDay(d2)).toBe(6);
-  });
-});

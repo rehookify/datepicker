@@ -56,6 +56,7 @@ export type CalendarMode = 'static' | 'fluid';
 export interface CalendarConfig {
   mode: CalendarMode;
   offsets: number[];
+  startDay: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 export type YearsMode = 'decade' | 'fluid';

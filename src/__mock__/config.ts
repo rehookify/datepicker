@@ -1,6 +1,10 @@
 export const DEFAULT_CONFIG = {
   selectedDates: [],
-  calendar: { mode: 'static', offsets: [0] },
+  calendar: {
+    mode: 'static',
+    offsets: [0],
+    startDay: 0,
+  },
   years: {
     mode: 'decade',
     numberOfYears: 12,

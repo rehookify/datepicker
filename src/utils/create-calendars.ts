@@ -1,10 +1,4 @@
-import {
-  Calendar,
-  CalendarConfig,
-  CalendarMode,
-  DatesConfig,
-  LocaleConfig,
-} from '../types';
+import { Calendar, CalendarConfig, DatesConfig, LocaleConfig } from '../types';
 
 import {
   addToDate,
@@ -24,11 +18,12 @@ const createCalendar = (
   rangeEnd: Date | null,
   locale: LocaleConfig,
   { mode, minDate, maxDate }: DatesConfig,
-  calendarMode: CalendarMode,
+  { mode: calendarMode, startDay }: CalendarConfig,
 ): Calendar => {
   const { locale: localeStr, day, year: localeYear } = locale;
   const { M, Y } = getDateParts(calendarDate);
   const { startOffset, numberOfDays } = getCalendarMonthParams(
+    startDay,
     M,
     Y,
     calendarMode,
@@ -65,15 +60,15 @@ export const createCalendars = (
   rangeEnd: Date | null,
   locale: LocaleConfig,
   dates: DatesConfig,
-  { mode, offsets }: CalendarConfig,
+  calendar: CalendarConfig,
 ) =>
-  offsets.map((offset) =>
+  calendar.offsets.map((offset) =>
     createCalendar(
       addToDate(calendarDate, offset, 'month'),
       selectedDates,
       rangeEnd,
       locale,
       dates,
-      mode,
+      calendar,
     ),
   );

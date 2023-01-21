@@ -606,6 +606,7 @@ interface LocaleConfig {
 interface CalendarConfig {
   mode?: 'static' | 'fluid';
   offsets?: number[];
+  startDay: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 ```
 
@@ -643,6 +644,8 @@ The first calendar is always `[0]` - offsets comes next.
 The values of offsets could be negative, `-1`, this will add month before current.
 
 `offsets: [-1, 1]` gives you 3 calendars `November, October, December` (today is November 2022).
+
+`startDay` - The day of the week that will be the first in the calendar. It accepts a number in the range of 0-6, where 0 represents Sunday and 6 represents Saturday.
 
 #### Dates configuration
 

@@ -6,8 +6,8 @@ export const getDateParts = (d: Date) => ({
   Y: d.getFullYear(),
 });
 
-// Days in order mon = 0 ... sun = 6
-export const getDay = (d: Date) => (d.getDay() || 7) - 1;
+// Days in order sun = 0 ... sat = 6
+export const getDay = (d: Date) => d.getDay();
 
 /*
  * We need this function to eliminate time from the comparison.
