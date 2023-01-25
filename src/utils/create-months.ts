@@ -19,7 +19,10 @@ export const createMonths = (
     months.push({
       $date: date,
       name: formatMonthName(date, locale),
-      selected: selectedDates.some((d) => getDateParts(d).M === i),
+      selected: selectedDates.some((d) => {
+        const { M: dM, Y: dY } = getDateParts(d);
+        return dY === Y && dM === i;
+      }),
       active: M === i,
       disabled:
         minDateAndBeforeFirstDay(minDate, date) ||

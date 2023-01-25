@@ -152,6 +152,11 @@ button.day.secondary {
   background-color: var(--selected-range);
 }
 
+.month.selected,
+.year.selected {
+  background-color: var(--selected-day);
+}
+
 button.day:disabled,
 button.month:disabled,
 button.year:disabled,

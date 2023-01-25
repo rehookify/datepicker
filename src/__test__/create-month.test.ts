@@ -6,7 +6,12 @@ import { TEST_MONTHS } from '../__mock__/months';
 describe('createMonth', () => {
   test('createMonth should generate months correctly', () => {
     const { locale, dates } = createConfig();
-    const months = createMonths(new Date(2022, 10, 20), [], locale, dates);
+    const months = createMonths(
+      new Date(2022, 10, 20),
+      [new Date(2021, 6, 4)],
+      locale,
+      dates,
+    );
 
     expect(months).toEqual(TEST_MONTHS);
   });
