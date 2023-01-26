@@ -5,6 +5,7 @@ export type DayRange =
   | 'in-range'
   | 'range-start'
   | 'range-end'
+  | 'range-start range-end'
   | 'will-be-in-range'
   | 'will-be-range-start'
   | 'will-be-range-end'

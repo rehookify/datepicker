@@ -1,5 +1,5 @@
 import { describe, test, expect } from '@jest/globals';
-import { createConfig } from '../utils/create-config';
+import { createConfig } from '../utils/config';
 import { getDateParts } from '../utils/date';
 import { isBefore } from '../utils/predicates';
 import { DEFAULT_CONFIG } from '../__mock__/config';

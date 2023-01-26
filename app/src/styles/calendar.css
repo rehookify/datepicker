@@ -50,14 +50,14 @@
   row-gap: 4px;
 }
 
-.day {
+.day-cell {
   width: var(--day-size);
   height: var(--day-size);
   font-size: 0.75rem;
   font-weight: 400;
 }
 
-button.day {
+.day {
   border: 0;
   background-color: transparent;
   border-radius: var(--border-radius);
@@ -65,54 +65,55 @@ button.day {
   color: var(--day-color);
 }
 
-button.day.today {
+.day.today {
   font-weight: 600;
   color: var(--today-color);
 }
 
-button.day.secondary {
+.day.secondary {
   color: var(--secondary-day-color);
 }
 
-button.day.will-be-in-range,
-button.day.will-be-range-end,
-button.day.will-be-range-start,
-button.day.in-range {
+.day.will-be-in-range,
+.day.will-be-range-end,
+.day.will-be-range-start,
+.day.in-range {
   background-color: var(--selected-range);
 }
 
-button.day.will-be-in-range,
-button.day.in-range {
+.day.will-be-in-range,
+.day.in-range {
   border-radius: 0;
 }
 
-button.day.selected {
+.day.selected {
   color: white;
   background-color: var(--selected-day);
 }
 
-button.day.will-be-in-range:nth-child(7n),
-button.day.in-range:nth-child(7n),
-button.day.range-end,
-button.day.will-be-range-end {
+.day.will-be-in-range:nth-child(7n),
+.day.in-range:nth-child(7n),
+.day.range-end,
+.day.will-be-range-end {
   border-radius: 0 var(--border-radius) var(--border-radius) 0;
 }
 
-button.day.will-be-in-range:nth-child(7n+1),
-button.day.in-range:nth-child(7n+1),
-button.day.range-start,
-button.day.will-be-range-start {
+.day.will-be-in-range:nth-child(7n+1),
+.day.in-range:nth-child(7n+1),
+.day.range-start,
+.day.will-be-range-start {
   border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
-button.day.range-start:nth-child(7n),
-button.day.range-end:nth-child(7n+1),
-button.day.will-be-range-start:nth-child(7n),
-button.day.will-be-range-end:nth-child(7n+1) {
+.day.range-start:nth-child(7n),
+.day.range-end:nth-child(7n+1),
+.day.will-be-range-start:nth-child(7n),
+.day.will-be-range-end:nth-child(7n+1),
+.day.range-end.range-start {
   border-radius: var(--border-radius);
 }
 
-button.day.secondary {
+.day.secondary {
   visibility: hidden;
 }
 
@@ -158,9 +159,9 @@ button.day.secondary {
   background-color: var(--selected-day);
 }
 
-button.day:disabled,
-button.month:disabled,
-button.year:disabled,
+.day:disabled,
+.month:disabled,
+.year:disabled,
 .calendar-header__button:disabled {
   opacity: 0.45;
 }

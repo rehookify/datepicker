@@ -1,4 +1,4 @@
-import { createConfig } from '../utils/create-config';
+import { createConfig } from '../utils/config';
 import { getCleanDate, getDateParts } from '../utils/date';
 import { getCurrentYearPosition } from '../utils/get-current-year-position';
 

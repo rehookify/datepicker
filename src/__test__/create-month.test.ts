@@ -1,5 +1,5 @@
 import { describe, test, expect } from '@jest/globals';
-import { createConfig } from '../utils/create-config';
+import { createConfig } from '../utils/config';
 import { createMonths } from '../utils/create-months';
 import { TEST_MONTHS } from '../__mock__/months';
 

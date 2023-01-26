@@ -1,5 +1,5 @@
 import { describe, test, expect } from '@jest/globals';
-import { createConfig } from '../utils/create-config';
+import { createConfig } from '../utils/config';
 import { createYears } from '../utils/create-years';
 import { getStartDecadePosition } from '../utils/get-current-year-position';
 import { TEST_YEARS } from '../__mock__/years';

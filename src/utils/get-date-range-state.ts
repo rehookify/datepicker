@@ -10,7 +10,11 @@ export const getDateRangeState = (
   if (mode !== 'range') return '';
   // We have completed range
   if (selectedDates.length === 2) {
-    if (isSame(date, selectedDates[0])) return 'range-start';
+    if (isSame(date, selectedDates[0])) {
+      return isSame(selectedDates[0], selectedDates[1])
+        ? 'range-start range-end'
+        : 'range-start';
+    }
     if (isSame(date, selectedDates[1])) return 'range-end';
     if (isBetween(selectedDates[0], date, selectedDates[1])) return 'in-range';
     return '';

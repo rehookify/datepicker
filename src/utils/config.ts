@@ -4,7 +4,7 @@ import {
   DEFAULT_DATES_CONFIG,
   DEFAULT_LOCALE_CONFIG,
 } from '../constants';
-import { DatePickerConfig, DatePickerUserConfig } from '../types';
+import { DatePickerConfig, DatePickerUserConfig, DatesMode } from '../types';
 import { getCleanDate, sortDatesAsc } from './date';
 
 export const createConfig = ({
@@ -43,3 +43,5 @@ export const createConfig = ({
     },
   } as DatePickerConfig;
 };
+
+export const isRange = (mode: DatesMode) => mode === 'range';

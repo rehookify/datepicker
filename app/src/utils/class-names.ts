@@ -6,6 +6,7 @@ export const getDayClassName = (
   ...classNames: string[]
 ) =>
   clsx(
+    'day-cell',
     'day',
     range,
     {

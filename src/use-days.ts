@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { setRangeEnd as setRangeEndAction } from './state-reducer';
 import { CalendarDay, DPState, PropsGetterConfig } from './types';
 import { callAll, skipFirst } from './utils/call-all';
+import { isRange } from './utils/config';
 import { createPropGetter } from './utils/create-prop-getter';
 import { formatDate } from './utils/date';
 import { getMultipleDates } from './utils/get-multiple-dates';
@@ -34,8 +35,8 @@ export const useDaysPropGetters = ({
       createPropGetter(
         disabled || !!disabledProps,
         (evt) => {
-          if (selected && !toggle) return;
-          if (mode === 'range' && selectedDates.length === 1)
+          if (selected && !toggle && !isRange(mode)) return;
+          if (isRange(mode) && selectedDates.length === 1)
             setRangeEndAction(dispatch, null);
           callAll(
             onClick,
@@ -48,7 +49,7 @@ export const useDaysPropGetters = ({
         },
         {
           ...rest,
-          ...(mode === 'range' &&
+          ...(isRange(mode) &&
             selectedDates.length === 1 && {
               onMouseEnter() {
                 setRangeEndAction(dispatch, $date);

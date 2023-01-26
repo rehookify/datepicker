@@ -10,7 +10,7 @@ export const Weekdays: FC<WeekdaysProps> = ({ weekDays, prefix }) => {
   return (
     <Days>
       {weekDays.map((day) => (
-        <div className="day weekday" key={`${prefix}-${day}`}>
+        <div className="day-cell weekday" key={`${prefix}-${day}`}>
           {day}
         </div>
       ))}

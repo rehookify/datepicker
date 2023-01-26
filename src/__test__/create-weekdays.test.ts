@@ -1,6 +1,6 @@
 import { describe, test, expect } from '@jest/globals';
 import { createCalendars } from '../utils/create-calendars';
-import { createConfig } from '../utils/create-config';
+import { createConfig } from '../utils/config';
 import { createWeekdays } from '../utils/create-weekdays';
 import { getCleanDate } from '../utils/date';
 
