@@ -154,6 +154,7 @@ button.day.secondary {
 
 .month.selected,
 .year.selected {
+  color: white;
   background-color: var(--selected-day);
 }
 
