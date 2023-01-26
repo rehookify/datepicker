@@ -75,7 +75,7 @@ export const ModularContext = () => {
         <div className="months">
           {months.map((month) => (
             <button
-              className={getMonthClassName(month.active)}
+              className={getMonthClassName(month.active, month.selected)}
               key={month.name}
               {...monthButton(month)}
             >
@@ -104,7 +104,7 @@ export const ModularContext = () => {
         <div className="years">
           {years.map((year) => (
             <button
-              className={getYearsClassName(year.active)}
+              className={getYearsClassName(year.active, year.selected)}
               key={year.value}
               {...yearButton(year)}
             >

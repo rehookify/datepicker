@@ -16,6 +16,8 @@ export const getDayClassName = (
     ...classNames,
   );
 
-export const getMonthClassName = (active: boolean) => clsx('month', { active });
+export const getMonthClassName = (active: boolean, selected: boolean) =>
+  clsx('month', { active, selected });
 
-export const getYearsClassName = (active: boolean) => clsx('year', { active });
+export const getYearsClassName = (active: boolean, selected: boolean) =>
+  clsx('year', { active, selected });
