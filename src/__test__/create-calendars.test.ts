@@ -18,7 +18,7 @@ describe('createCalendars', () => {
     );
     const { days } = testCalendar[0];
 
-    const today = days.filter(({ isToday }) => isToday);
+    const today = days.filter(({ now }) => now);
 
     expect(testCalendar.length).toBe(1);
     expect(today.length).toBe(1);
@@ -27,13 +27,13 @@ describe('createCalendars', () => {
   });
 
   test('createCalendars should create correct number of calendars', () => {
-    const calendarDate = getCleanDate(new Date(2022, 10, 20));
+    const offsetDate = getCleanDate(new Date(2022, 10, 20));
     const { locale, dates, calendar } = createConfig({
       calendar: { offsets: [-1, 1] },
     });
 
     const testCalendar = createCalendars(
-      calendarDate,
+      offsetDate,
       [],
       null,
       locale,
@@ -48,13 +48,13 @@ describe('createCalendars', () => {
   });
 
   test('createCalendars should create correct fluid calendar', () => {
-    const calendarDate = getCleanDate(new Date(2022, 10, 20));
+    const offsetDate = getCleanDate(new Date(2022, 10, 20));
     const { locale, dates, calendar } = createConfig({
       calendar: { mode: 'fluid' },
     });
 
     const [testCalendar] = createCalendars(
-      calendarDate,
+      offsetDate,
       [],
       null,
       locale,

@@ -1,8 +1,12 @@
-import { CalendarDay } from '@rehookify/datepicker';
+import {
+  CalendarDay,
+  CalendarMonth,
+  CalendarYear,
+} from '@rehookify/datepicker';
 import clsx from 'clsx';
 
 export const getDayClassName = (
-  { isToday, selected, inCurrentMonth, range }: CalendarDay,
+  { selected, inCurrentMonth, range, now }: CalendarDay,
   ...classNames: string[]
 ) =>
   clsx(
@@ -10,15 +14,15 @@ export const getDayClassName = (
     'day',
     range,
     {
-      selected: selected,
-      today: isToday,
+      now,
+      selected,
       secondary: !inCurrentMonth,
     },
     ...classNames,
   );
 
-export const getMonthClassName = (active: boolean, selected: boolean) =>
-  clsx('month', { active, selected });
+export const getMonthClassName = ({ active, selected, now }: CalendarMonth) =>
+  clsx('month', { active, selected, now });
 
-export const getYearsClassName = (active: boolean, selected: boolean) =>
-  clsx('year', { active, selected });
+export const getYearsClassName = ({ active, selected, now }: CalendarYear) =>
+  clsx('year', { active, selected, now });

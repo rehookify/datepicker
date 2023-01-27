@@ -15,27 +15,30 @@ export interface CalendarDay {
   $date: Date;
   date: string;
   day: string;
-  isToday: boolean;
-  range: DayRange;
   disabled: boolean;
-  selected: boolean;
   inCurrentMonth: boolean;
+  isToday: boolean;
+  now: boolean;
+  range: DayRange;
+  selected: boolean;
 }
 
 export interface CalendarMonth {
   $date: Date;
-  name: string;
-  disabled: boolean;
   active: boolean;
+  disabled: boolean;
+  name: string;
+  now: boolean;
   selected: boolean;
 }
 
 export interface CalendarYear {
   $date: Date;
-  value: number;
-  selected: boolean;
   active: boolean;
   disabled: boolean;
+  now: boolean;
+  selected: boolean;
+  value: number;
 }
 
 export interface PropsGetterConfig extends Record<string, unknown> {

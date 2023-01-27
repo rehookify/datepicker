@@ -4,12 +4,12 @@ import { maxDateAndAfter, minDateAndBeforeFirstDay } from './predicates';
 
 export const createYears = (
   currentYear: number,
-  calendarDate: Date,
+  offsetDate: Date,
   selectedDates: Date[],
   { numberOfYears }: YearsConfig,
   { minDate, maxDate }: DatesConfig,
 ): CalendarYear[] => {
-  const { Y, M, D } = getDateParts(calendarDate);
+  const { Y, M, D } = getDateParts(offsetDate);
   const years = [];
 
   for (let i = 0; i < numberOfYears; i++) {
@@ -17,13 +17,14 @@ export const createYears = (
     const date = new Date(value, M, D);
 
     years.push({
-      $date: date,
-      value,
       active: Y === value,
-      selected: selectedDates.some((d) => getDateParts(d).Y === value),
+      $date: date,
       disabled:
         minDateAndBeforeFirstDay(minDate, date) ||
         maxDateAndAfter(maxDate, getFirstDayOfTheMonth(date)),
+      now: value === getDateParts(new Date()).Y,
+      selected: selectedDates.some((d) => getDateParts(d).Y === value),
+      value,
     });
   }
 

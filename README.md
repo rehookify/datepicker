@@ -314,17 +314,18 @@ interface CalendarDay {
   $date: Date;
   date: string;
   day: string;
-  isToday: boolean;
-  range: DayRange;
   disabled: boolean;
-  selected: boolean;
   inCurrentMonth: boolean;
+  isToday: boolean; // is deprecated and will be removed in v4.0.0
+  now: boolean;
+  range: DayRange;
+  selected: boolean;
 }
 
 interface Calendar {
-  year: string;
-  month: string;
   days: CalendarDay[];
+  month: string;
+  year: string;
 }
 ```
 
@@ -343,9 +344,10 @@ Months are an array of objects with **$date**, **name**, **isSelected** and **is
 ```ts
 interface CalendarMonth {
   $date: Date;
-  name: string;
-  disabled: boolean;
   active: boolean;
+  disabled: boolean;
+  name: string;
+  now: boolean;
   selected: boolean;
 }
 ```
@@ -361,10 +363,10 @@ Years are an array of objects with **$date**, **value**, **isSelected**, and **i
 ```ts
 interface CalendarYear {
   $date: Date;
-  value: number;
-  disabled: boolean;
   active: boolean;
+  disabled: boolean;
   selected: boolean;
+  value: number;
 }
 ```
 

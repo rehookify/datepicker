@@ -4,17 +4,18 @@ import { formatMonthName, getDateParts, getFirstDayOfTheMonth } from './date';
 import { maxDateAndAfter, minDateAndBeforeFirstDay } from './predicates';
 
 export const createMonths = (
-  calendarDate: Date,
+  offsetDate: Date,
   selectedDates: Date[],
   locale: LocaleConfig,
   { minDate, maxDate }: DatesConfig,
 ): CalendarMonth[] => {
   const months = [];
-  const { M, Y } = getDateParts(calendarDate);
+  const { M, Y } = getDateParts(offsetDate);
 
   // Months in Date has values 0 - 11
   for (let i = 0; i < NUMBER_OF_MONTHS; i++) {
     const date = new Date(Y, i, 1);
+    const { Y: nY, M: nM } = getDateParts(new Date());
 
     months.push({
       $date: date,
@@ -24,6 +25,7 @@ export const createMonths = (
         return dY === Y && dM === i;
       }),
       active: M === i,
+      now: i === nM && Y === nY,
       disabled:
         minDateAndBeforeFirstDay(minDate, date) ||
         maxDateAndAfter(maxDate, getFirstDayOfTheMonth(date)),

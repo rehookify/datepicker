@@ -1,4 +1,10 @@
-import { Calendar, CalendarConfig, DatesConfig, LocaleConfig } from '../types';
+import {
+  Calendar,
+  CalendarConfig,
+  CalendarDay,
+  DatesConfig,
+  LocaleConfig,
+} from '../types';
 
 import {
   addToDate,
@@ -13,7 +19,7 @@ import { getDateRangeState } from './get-date-range-state';
 import { isSame, maxDateAndAfter, minDateAndBefore } from './predicates';
 
 const createCalendar = (
-  calendarDate: Date,
+  offsetDate: Date,
   selectedDates: Date[],
   rangeEnd: Date | null,
   locale: LocaleConfig,
@@ -21,7 +27,7 @@ const createCalendar = (
   { mode: calendarMode, startDay }: CalendarConfig,
 ): Calendar => {
   const { locale: localeStr, day, year: localeYear } = locale;
-  const { M, Y } = getDateParts(calendarDate);
+  const { M, Y } = getDateParts(offsetDate);
   const { startOffset, numberOfDays } = getCalendarMonthParams(
     startDay,
     M,
@@ -29,16 +35,19 @@ const createCalendar = (
     calendarMode,
   );
 
-  const days = [];
+  const days: CalendarDay[] = [];
 
   for (let i = 1; i <= numberOfDays; i++) {
     const date = new Date(Y, M, i - startOffset);
+    // @TODO move it to the object in v4.0.0
+    const now = isSame(getCleanDate(new Date()), date);
 
     days.push({
       $date: date,
       date: formatDate(date, locale),
       day: toLocaleDateString(date, localeStr, { day }),
-      isToday: isSame(getCleanDate(new Date()), date),
+      isToday: now,
+      now,
       range: getDateRangeState(date, rangeEnd, selectedDates, mode),
       disabled:
         minDateAndBefore(minDate, date) || maxDateAndAfter(maxDate, date),
@@ -48,14 +57,14 @@ const createCalendar = (
   }
 
   return {
-    year: toLocaleDateString(calendarDate, localeStr, { year: localeYear }),
-    month: formatMonthName(calendarDate, locale),
+    year: toLocaleDateString(offsetDate, localeStr, { year: localeYear }),
+    month: formatMonthName(offsetDate, locale),
     days,
   };
 };
 
 export const createCalendars = (
-  calendarDate: Date,
+  offsetDate: Date,
   selectedDates: Date[],
   rangeEnd: Date | null,
   locale: LocaleConfig,
@@ -64,7 +73,7 @@ export const createCalendars = (
 ) =>
   calendar.offsets.map((offset) =>
     createCalendar(
-      addToDate(calendarDate, offset, 'month'),
+      addToDate(offsetDate, offset, 'month'),
       selectedDates,
       rangeEnd,
       locale,

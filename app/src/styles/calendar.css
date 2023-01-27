@@ -66,7 +66,6 @@
 }
 
 .day.today {
-  font-weight: 600;
   color: var(--today-color);
 }
 
@@ -164,4 +163,10 @@
 .year:disabled,
 .calendar-header__button:disabled {
   opacity: 0.45;
+}
+
+.day.now,
+.month.now,
+.year.now {
+  font-weight: 600;
 }

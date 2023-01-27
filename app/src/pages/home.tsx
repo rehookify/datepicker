@@ -161,7 +161,7 @@ export const HomePage = () => {
         <div className="months">
           {months.map((month) => (
             <button
-              className={getMonthClassName(month.active, month.selected)}
+              className={getMonthClassName(month)}
               key={month.name}
               {...monthButton(month)}
             >
@@ -190,7 +190,7 @@ export const HomePage = () => {
         <div className="years">
           {years.map((year) => (
             <button
-              className={getYearsClassName(year.active, year.selected)}
+              className={getYearsClassName(year)}
               key={year.value}
               {...yearButton(year)}
             >
