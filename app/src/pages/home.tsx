@@ -43,7 +43,7 @@ export const HomePage = () => {
 
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
   const {
-    data: { calendars, weekDays, months, years, time },
+    data: { calendars, weekDays, months, years },
     propGetters: {
       dayButton,
       previousMonthButton,
@@ -72,159 +72,143 @@ export const HomePage = () => {
     calendar: {
       offsets: [-1, 1],
     },
-    locale: {
-      hour12: true,
-    },
   });
 
   return (
-    <div className="time-container">
-      <Container>
-        <Calendar>
-          <CalendarHeader
-            leftButton={
-              <HeaderButton
-                {...previousMonthButton()}
-                data-testid="previous-month-button"
-              >
-                <ChevronLeft />
-              </HeaderButton>
-            }
-          >
-            <CalendarHeaderTitle>
-              {calendars[1].month} {calendars[1].year}
-            </CalendarHeaderTitle>
-          </CalendarHeader>
-          <Weekdays weekDays={weekDays} prefix={calendars[1].month} />
-          <Days>
-            {calendars[1].days.map((dpDay) => (
-              <button
-                className={getDayClassName(dpDay)}
-                key={dpDay.date}
-                {...dayButton(dpDay)}
-              >
-                {dpDay.day}
-              </button>
-            ))}
-          </Days>
-        </Calendar>
-        <Calendar>
-          <CalendarHeader>
-            <div />
-            <CalendarHeaderTitle data-testid="main-calendar-title">
-              {calendars[0].month} {calendars[0].year}
-            </CalendarHeaderTitle>
-          </CalendarHeader>
-          <Weekdays weekDays={weekDays} prefix={calendars[0].month} />
-          <Days>
-            {calendars[0].days.map((dpDay) => (
-              <button
-                className={getDayClassName(dpDay)}
-                key={dpDay.date}
-                {...dayButton(dpDay)}
-              >
-                {dpDay.day}
-              </button>
-            ))}
-          </Days>
-        </Calendar>
-        <Calendar>
-          <CalendarHeader
-            rightButton={
-              <HeaderButton
-                {...nextMonthButton()}
-                data-testid="next-month-button"
-              >
-                <ChevronRight />
-              </HeaderButton>
-            }
-          >
-            <div />
-            <CalendarHeaderTitle>
-              {calendars[2].month} {calendars[2].year}
-            </CalendarHeaderTitle>
-          </CalendarHeader>
-          <Weekdays weekDays={weekDays} prefix={calendars[2].month} />
-          <Days>
-            {calendars[2].days.map((dpDay) => (
-              <button
-                className={getDayClassName(dpDay)}
-                key={dpDay.date}
-                {...dayButton(dpDay)}
-              >
-                {dpDay.day}
-              </button>
-            ))}
-          </Days>
-        </Calendar>
-        <Calendar>
-          <CalendarHeader
-            leftButton={
-              <HeaderButton {...previousMonthButton()}>
-                <ChevronLeft />
-              </HeaderButton>
-            }
-            rightButton={
-              <HeaderButton {...nextMonthButton()}>
-                <ChevronRight />
-              </HeaderButton>
-            }
-          >
-            <CalendarHeaderTitle>{calendars[0].month}</CalendarHeaderTitle>
-          </CalendarHeader>
-          <div className="months">
-            {months.map((month) => (
-              <button
-                className={getMonthClassName(month)}
-                key={month.name}
-                {...monthButton(month)}
-              >
-                {month.name}
-              </button>
-            ))}
-          </div>
-        </Calendar>
-        <Calendar>
-          <CalendarHeader
-            leftButton={
-              <HeaderButton {...previousYearsButton()}>
-                <ChevronLeft />
-              </HeaderButton>
-            }
-            rightButton={
-              <HeaderButton {...nextYearsButton()}>
-                <ChevronRight />
-              </HeaderButton>
-            }
-          >
-            <CalendarHeaderTitle>
-              {years[0].value}-{years[years.length - 1].value}
-            </CalendarHeaderTitle>
-          </CalendarHeader>
-          <div className="years">
-            {years.map((year) => (
-              <button
-                className={getYearsClassName(year)}
-                key={year.value}
-                {...yearButton(year)}
-              >
-                {year.value}
-              </button>
-            ))}
-          </div>
-        </Calendar>
-      </Container>
-      <div className="time">
-        {(time as Time[]).map((t) => (
-          <button
-            className={getTimeClassName(t)}
-            key={t.time}
-            {...timeButton(t)}
-          >
-            {t.time}
-          </button>
-        ))}
-      </div>
-    </div>
+    <Container>
+      <Calendar>
+        <CalendarHeader
+          leftButton={
+            <HeaderButton
+              {...previousMonthButton()}
+              data-testid="previous-month-button"
+            >
+              <ChevronLeft />
+            </HeaderButton>
+          }
+        >
+          <CalendarHeaderTitle>
+            {calendars[1].month} {calendars[1].year}
+          </CalendarHeaderTitle>
+        </CalendarHeader>
+        <Weekdays weekDays={weekDays} prefix={calendars[1].month} />
+        <Days>
+          {calendars[1].days.map((dpDay) => (
+            <button
+              className={getDayClassName(dpDay)}
+              key={dpDay.date}
+              {...dayButton(dpDay)}
+            >
+              {dpDay.day}
+            </button>
+          ))}
+        </Days>
+      </Calendar>
+      <Calendar>
+        <CalendarHeader>
+          <div />
+          <CalendarHeaderTitle data-testid="main-calendar-title">
+            {calendars[0].month} {calendars[0].year}
+          </CalendarHeaderTitle>
+        </CalendarHeader>
+        <Weekdays weekDays={weekDays} prefix={calendars[0].month} />
+        <Days>
+          {calendars[0].days.map((dpDay) => (
+            <button
+              className={getDayClassName(dpDay)}
+              key={dpDay.date}
+              {...dayButton(dpDay)}
+            >
+              {dpDay.day}
+            </button>
+          ))}
+        </Days>
+      </Calendar>
+      <Calendar>
+        <CalendarHeader
+          rightButton={
+            <HeaderButton
+              {...nextMonthButton()}
+              data-testid="next-month-button"
+            >
+              <ChevronRight />
+            </HeaderButton>
+          }
+        >
+          <div />
+          <CalendarHeaderTitle>
+            {calendars[2].month} {calendars[2].year}
+          </CalendarHeaderTitle>
+        </CalendarHeader>
+        <Weekdays weekDays={weekDays} prefix={calendars[2].month} />
+        <Days>
+          {calendars[2].days.map((dpDay) => (
+            <button
+              className={getDayClassName(dpDay)}
+              key={dpDay.date}
+              {...dayButton(dpDay)}
+            >
+              {dpDay.day}
+            </button>
+          ))}
+        </Days>
+      </Calendar>
+      <Calendar>
+        <CalendarHeader
+          leftButton={
+            <HeaderButton {...previousMonthButton()}>
+              <ChevronLeft />
+            </HeaderButton>
+          }
+          rightButton={
+            <HeaderButton {...nextMonthButton()}>
+              <ChevronRight />
+            </HeaderButton>
+          }
+        >
+          <CalendarHeaderTitle>{calendars[0].month}</CalendarHeaderTitle>
+        </CalendarHeader>
+        <div className="months">
+          {months.map((month) => (
+            <button
+              className={getMonthClassName(month)}
+              key={month.name}
+              {...monthButton(month)}
+            >
+              {month.name}
+            </button>
+          ))}
+        </div>
+      </Calendar>
+      <Calendar>
+        <CalendarHeader
+          leftButton={
+            <HeaderButton {...previousYearsButton()}>
+              <ChevronLeft />
+            </HeaderButton>
+          }
+          rightButton={
+            <HeaderButton {...nextYearsButton()}>
+              <ChevronRight />
+            </HeaderButton>
+          }
+        >
+          <CalendarHeaderTitle>
+            {years[0].value}-{years[years.length - 1].value}
+          </CalendarHeaderTitle>
+        </CalendarHeader>
+        <div className="years">
+          {years.map((year) => (
+            <button
+              className={getYearsClassName(year)}
+              key={year.value}
+              {...yearButton(year)}
+            >
+              {year.value}
+            </button>
+          ))}
+        </div>
+      </Calendar>
+    </Container>
   );
 };
