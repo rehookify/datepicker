@@ -4,11 +4,11 @@ import { getDateParts } from './utils/date';
 import { getCurrentYearPosition } from './utils/get-current-year-position';
 
 export interface State {
+  config: DatePickerConfig;
   focusDate: Date | null;
   rangeEnd: Date | null;
   offsetDate: Date;
   offsetYear: number;
-  config: DatePickerConfig;
 }
 
 const SET_FOCUS_DATE_ACTION = 'SET_FOCUS_DATE';

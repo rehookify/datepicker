@@ -13,7 +13,6 @@ export type DayRange =
 
 export interface CalendarDay {
   $date: Date;
-  date: string;
   day: string;
   disabled: boolean;
   inCurrentMonth: boolean;
@@ -26,7 +25,7 @@ export interface CalendarMonth {
   $date: Date;
   active: boolean;
   disabled: boolean;
-  name: string;
+  month: string;
   now: boolean;
   selected: boolean;
 }
@@ -37,7 +36,7 @@ export interface CalendarYear {
   disabled: boolean;
   now: boolean;
   selected: boolean;
-  value: number;
+  year: number;
 }
 
 export interface PropsGetterConfig extends Record<string, unknown> {
@@ -138,14 +137,14 @@ export interface Calendar {
 }
 
 export interface DPState {
-  state: State;
   dispatch: Dispatch<Action>;
+  state: State;
   selectedDates: Date[];
 }
 
 export interface Time {
   $date: Date;
-  time: string;
-  selected: boolean;
   disabled: boolean;
+  selected: boolean;
+  time: string;
 }

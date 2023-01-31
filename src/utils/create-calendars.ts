@@ -42,7 +42,6 @@ const createCalendar = (
 
     days.push({
       $date: date,
-      date: formatDate(date, locale),
       day: toLocaleDateString(date, localeStr, { day }),
       now: isSame(getCleanDate(new Date()), date),
       range: getDateRangeState(date, rangeEnd, selectedDates, mode),
