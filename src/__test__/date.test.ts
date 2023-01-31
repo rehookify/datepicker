@@ -184,6 +184,10 @@ describe('formatTime', () => {
   test('should return time in 12h mode', () => {
     const LOCALE_CONFIG = { ...DEFAULT_LOCALE_CONFIG, hour12: true };
 
-    expect(formatTime(d, LOCALE_CONFIG)).toBe('10:22 pm');
+    const formatted = formatTime(d, LOCALE_CONFIG);
+
+    // We need to test like this because we have different space symbol here and CI
+    expect(formatted.slice(0, 5)).toBe('10:22');
+    expect(formatted.slice(6)).toBe('pm');
   });
 });
