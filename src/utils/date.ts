@@ -53,3 +53,14 @@ export const getTimeDate = (
   t?: TimeLimit,
 ): Date | null =>
   t && t.h != null && t.m != null ? new Date(Y, M, D, t.h, t.m) : null;
+
+export const formatTime = (
+  d: Date,
+  { locale, hour, minute, second, hour12 }: LocaleConfig,
+) =>
+  d.toLocaleTimeString(locale, {
+    hour,
+    minute,
+    second,
+    hour12,
+  });

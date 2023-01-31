@@ -99,4 +99,16 @@ describe('createConfig', () => {
     expect(c4.time.minTime).toEqual(minTime);
     expect(c4.time.maxTime).toEqual(maxTime);
   });
+
+  test('should set focusTime if it is present in selectedDates', () => {
+    const d1 = new Date();
+    const d2 = new Date(d1.setDate(33));
+    const c1 = createConfig({ selectedDates: [d1], focusDate: d2 });
+
+    expect(c1.focusDate).toBeNull();
+
+    const c2 = createConfig({ selectedDates: [d1, d2], focusDate: d1 });
+
+    expect(c2.focusDate).toEqual(d1);
+  });
 });

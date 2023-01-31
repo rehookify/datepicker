@@ -10,6 +10,7 @@ import { getCleanDate, sortDatesAsc } from './date';
 
 export const createConfig = ({
   selectedDates = [],
+  focusDate = null,
   onDatesChange,
   calendar,
   years,
@@ -20,9 +21,9 @@ export const createConfig = ({
   const { minDate, maxDate, ...restDates } = dates || {};
   const { offsets = [], ...restCalendarParams } = calendar || {};
   const { minTime, maxTime, ...restTime } = time || {};
-  let min, max;
+  let minD, maxD;
   if (minDate && maxDate) {
-    [min, max] = [minDate, maxDate].sort(sortDatesAsc);
+    [minD, maxD] = [minDate, maxDate].sort(sortDatesAsc);
   }
 
   let minT, maxT;
@@ -30,8 +31,12 @@ export const createConfig = ({
     [minT, maxT] = [minTime, maxTime].sort((a, b) => a.h - b.h);
   }
 
+  const focus =
+    focusDate && selectedDates.includes(focusDate) ? focusDate : null;
+
   return {
     selectedDates,
+    focusDate: focus,
     onDatesChange,
     calendar: {
       ...DEFAULT_CALENDAR_CONFIG,
@@ -42,8 +47,8 @@ export const createConfig = ({
     dates: {
       ...DEFAULT_DATES_CONFIG,
       ...restDates,
-      minDate: minDate ? getCleanDate(min || minDate) : null,
-      maxDate: maxDate ? getCleanDate(max || maxDate) : null,
+      minDate: minDate ? getCleanDate(minD || minDate) : null,
+      maxDate: maxDate ? getCleanDate(maxD || maxDate) : null,
     },
     locale: {
       ...DEFAULT_LOCALE_CONFIG,

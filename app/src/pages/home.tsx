@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Time, useDatePicker } from '@rehookify/datepicker';
+import { useDatePicker } from '@rehookify/datepicker';
 
 import {
   Calendar,
@@ -15,7 +15,6 @@ import {
 import {
   getDayClassName,
   getMonthClassName,
-  getTimeClassName,
   getYearsClassName,
 } from '../utils/class-names';
 
@@ -52,7 +51,6 @@ export const HomePage = () => {
       yearButton,
       nextYearsButton,
       previousYearsButton,
-      timeButton,
     },
   } = useDatePicker({
     selectedDates,

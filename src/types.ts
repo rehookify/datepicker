@@ -100,6 +100,7 @@ export interface TimeConfig {
 
 export interface DatePickerUserConfig {
   selectedDates?: Date[];
+  focusDate?: Date | null;
   onDatesChange?(d: Date[]): void;
   locale?: Partial<LocaleConfig>;
   calendar?: Partial<CalendarConfig>;
@@ -119,6 +120,7 @@ export interface DatesConfig {
 
 export interface DatePickerConfig {
   selectedDates: Date[];
+  focusDate: Date | null;
   onDatesChange?(d: Date[]): void;
   locale: LocaleConfig;
   calendar: CalendarConfig;
