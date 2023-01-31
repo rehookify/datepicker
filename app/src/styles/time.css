@@ -1,6 +1,6 @@
 .time-container {
   display: grid;
-  grid-template-columns: 1fr min-content;
+  grid-template-columns: 1fr 8rem;
   column-gap: 24px;
 }
 
@@ -22,4 +22,16 @@
   width: 100%;
   margin-bottom: 4px;
   font-size: 0.75rem;
+}
+
+.time-button:disabled {
+  /* cursor: not-allowed;
+  opacity: var(--disabled-opacity); */
+  display: none;
+}
+
+.time-button.selected {
+  color: white;
+  background-color: var(--selected-day);
+  border-radius: var(--border-radius);
 }

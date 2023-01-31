@@ -17,7 +17,6 @@ export interface CalendarDay {
   day: string;
   disabled: boolean;
   inCurrentMonth: boolean;
-  isToday: boolean;
   now: boolean;
   range: DayRange;
   selected: boolean;
@@ -54,6 +53,7 @@ export interface DatesUserConfig {
   selectedDates: Date | Date[];
   toggle?: boolean;
   limit?: number;
+  selectSameDate: boolean;
 }
 
 export type CalendarMode = 'static' | 'fluid';
@@ -88,8 +88,14 @@ export interface LocaleConfig {
   hour12?: Intl.DateTimeFormatOptions['hour12'];
 }
 
+export interface TimeLimit {
+  h: number;
+  m: number;
+}
 export interface TimeConfig {
   interval: number;
+  minTime: TimeLimit;
+  maxTime: TimeLimit;
 }
 
 export interface DatePickerUserConfig {
@@ -108,6 +114,7 @@ export interface DatesConfig {
   maxDate: Date | null;
   toggle: boolean;
   limit: number;
+  selectSameDate: boolean;
 }
 
 export interface DatePickerConfig {

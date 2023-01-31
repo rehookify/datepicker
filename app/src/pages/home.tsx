@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDatePicker } from '@rehookify/datepicker';
+import { Time, useDatePicker } from '@rehookify/datepicker';
 
 import {
   Calendar,
@@ -15,6 +15,7 @@ import {
 import {
   getDayClassName,
   getMonthClassName,
+  getTimeClassName,
   getYearsClassName,
 } from '../utils/class-names';
 
@@ -51,22 +52,30 @@ export const HomePage = () => {
       yearButton,
       nextYearsButton,
       previousYearsButton,
+      timeButton,
     },
   } = useDatePicker({
     selectedDates,
     onDatesChange,
     dates: {
-      // mode: 'range',
+      mode: 'range',
       // toggle: true,
-      // minDate: new Date(2000, 0, 1),
-      // maxDate: new Date(),
+      // selectSameDate: true,
+      minDate: new Date(2000, 0, 1),
+      maxDate: new Date(),
+    },
+    time: {
+      interval: 30,
+      minTime: { h: 9, m: 0 },
+      maxTime: { h: 18, m: 0 },
     },
     calendar: {
       offsets: [-1, 1],
     },
+    locale: {
+      hour12: true,
+    },
   });
-
-  console.log('TIME IS: ', time);
 
   return (
     <div className="time-container">
@@ -206,8 +215,12 @@ export const HomePage = () => {
         </Calendar>
       </Container>
       <div className="time">
-        {time.map((t) => (
-          <button className="time-button" key={t.time}>
+        {(time as Time[]).map((t) => (
+          <button
+            className={getTimeClassName(t)}
+            key={t.time}
+            {...timeButton(t)}
+          >
             {t.time}
           </button>
         ))}

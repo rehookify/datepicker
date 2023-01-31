@@ -19,13 +19,19 @@ export const createConfig = ({
 }: DatePickerUserConfig = {}) => {
   const { minDate, maxDate, ...restDates } = dates || {};
   const { offsets = [], ...restCalendarParams } = calendar || {};
+  const { minTime, maxTime, ...restTime } = time || {};
   let min, max;
   if (minDate && maxDate) {
     [min, max] = [minDate, maxDate].sort(sortDatesAsc);
   }
 
+  let minT, maxT;
+  if (minTime && maxTime) {
+    [minT, maxT] = [minTime, maxTime].sort((a, b) => a.h - b.h);
+  }
+
   return {
-    selectedDates: selectedDates.map((d) => getCleanDate(d as Date)),
+    selectedDates,
     onDatesChange,
     calendar: {
       ...DEFAULT_CALENDAR_CONFIG,
@@ -45,7 +51,9 @@ export const createConfig = ({
     },
     time: {
       ...DEFAULT_TIME_CONFIG,
-      ...time,
+      minTime: minT || minTime || null,
+      maxTime: maxT || maxTime || null,
+      ...restTime,
     },
   } as DatePickerConfig;
 };

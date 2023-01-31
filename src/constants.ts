@@ -42,6 +42,7 @@ export const DEFAULT_YEARS_CONFIG: YearsConfig = {
 export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
   mode: 'single',
   toggle: false,
+  selectSameDate: false,
 };
 
 export const DEFAULT_TIME_CONFIG: Partial<TimeConfig> = {

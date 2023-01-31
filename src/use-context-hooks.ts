@@ -6,6 +6,7 @@ import {
   useMonthsActions,
   useMonthsPropGetters,
 } from './use-months';
+import { useTime, useTimePropGetter } from './use-time';
 import { useYears, useYearsActions, useYearsPropGetters } from './use-years';
 
 export const useContextCalendars = () => {
@@ -60,4 +61,16 @@ export const useContextYearsActions = () => {
   const s = useDatePickerStateContext();
 
   return useYearsActions(s);
+};
+
+export const useContextTime = () => {
+  const s = useDatePickerStateContext();
+
+  return useTime(s);
+};
+
+export const useContextTimePropGetters = () => {
+  const s = useDatePickerStateContext();
+
+  return useTimePropGetter(s);
 };

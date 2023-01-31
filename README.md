@@ -1,6 +1,6 @@
 # @rehookify/datepicker
 
-The ultimate tiny tool for creating date and range pickers in your React applications.
+The ultimate tiny tool for creating date, range and time pickers in your React applications.
 
 <div align="center">
 
@@ -240,6 +240,7 @@ const App = () => {
     - [years](#years)
     - [selectedDates](#selecteddates)
     - [formattedDates](#formatteddates)
+    - [time](#time)
   - [propGetters](#prop-getters)
     - [dayButton](#daybutton)
     - [monthButton](#monthbutton)
@@ -248,6 +249,7 @@ const App = () => {
     - [yearButton](#yearbutton)
     - [nextYearsButton](#nextyearsbutton)
     - [previousYearsButton](#previousyearsbutton)
+    - [timeButton](#timeButton)
   - [actions](#actions)
     - [setMonth](#setmonth)
     - [setYear](#setyear)
@@ -262,6 +264,7 @@ const App = () => {
   - [Calendar configuration](#calendar-configuration)
   - [Dates configuration](#dates-configuration)
   - [Years configuration](#years-configuration)
+  - [Time configuration](#time-configuration)
 - [Modular Hooks](#modular-hooks)
   - [useDatePickerState](#usedatepickerstate)
   - [useCalendars](#usecalendars)
@@ -287,17 +290,19 @@ The data represents all entities that you could use in your date picker. It cons
 ```ts
 interface Data {
   calendars: Calendar[];
-  weekDays: string[],
-  months: CalendarMonth[],
-  years: CalendarYears[],
-  selectedDates: Date[],
+  weekDays: string[];
+  months: CalendarMonth[];
+  years: CalendarYears[];
+  selectedDates: Date[];
+  formattedDates: Date[];
+  time: Time[];
 }
 
 ```
 
 #### calendars
 
-`calendars` are an array of objects with **year**, **month** and **days** properties. The `calendars` array always has at least one member.It always has at least one member - an initial calendar `calendars[0]`. For calendars configuration 👀 [Calendar config](#calendar-configuration)
+`calendars` are an array of objects with **year**, **month** and **days** properties. It always has at least one member - an initial calendar `calendars[0]`. For calendars configuration 👀 [Calendar config](#calendar-configuration)
 
 ```ts
 export type DayRange =
@@ -358,7 +363,7 @@ interface CalendarMonth {
 
 #### years
 
-Years are an array of objects with **$date**, **value**, **isSelected**, and **isActive** properties.
+Years are an array of objects with **$date**, **value**, **selected**, and **active** properties.
 
 ```ts
 interface CalendarYear {
@@ -389,6 +394,10 @@ An array of formatted dates `date.toLocaleDateString(locale, options)` 👀 [Loc
 ```ts
 type FormattedDates = string[];
 ```
+
+#### formattedDates
+
+An array of
 
 ### Prop-Getters
 

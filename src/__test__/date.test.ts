@@ -11,6 +11,7 @@ import {
   getDateParts,
   toLocaleDateString,
   getDay,
+  getTimeDate,
 } from '../utils/date';
 import { DEFAULT_LOCALE_CONFIG } from '../constants';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
@@ -158,5 +159,17 @@ describe('toLocaleDateString', () => {
   test('toLocaleDateString should format date correctly', () => {
     const d1 = new Date(2022, 10, 25);
     expect(toLocaleDateString(d1, 'en-GB')).toBe('25/11/2022');
+  });
+});
+
+describe('getTimeDate', () => {
+  const { Y, M, D } = getDateParts(new Date());
+  test('should return null', () => {
+    expect(getTimeDate(Y, M, D)).toBe(null);
+  });
+
+  test('should return date with limit', () => {
+    const timeLimit = new Date(Y, M, D, 11, 30);
+    expect(getTimeDate(Y, M, D, { h: 11, m: 30 })).toEqual(timeLimit);
   });
 });

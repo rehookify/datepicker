@@ -2,6 +2,7 @@ import {
   CalendarDay,
   CalendarMonth,
   CalendarYear,
+  Time,
 } from '@rehookify/datepicker';
 import clsx from 'clsx';
 
@@ -26,3 +27,6 @@ export const getMonthClassName = ({ active, selected, now }: CalendarMonth) =>
 
 export const getYearsClassName = ({ active, selected, now }: CalendarYear) =>
   clsx('year', { active, selected, now });
+
+export const getTimeClassName = ({ selected }: Time) =>
+  clsx('time-button', { selected });

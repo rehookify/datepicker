@@ -72,15 +72,17 @@ export const stateReducer = (state: State, action: Action) => {
   }
 };
 
-export const setFocus = (dispatch: Dispatch<SetFocusDate>, date: Date) =>
-  dispatch({ type: SET_FOCUS_DATE_ACTION, date });
+export const setFocus = (
+  dispatch: Dispatch<SetFocusDate>,
+  date: State['focusDate'],
+) => dispatch({ type: SET_FOCUS_DATE_ACTION, date });
 
 export const setOffset = (dispatch: Dispatch<SetOffsetDate>, date: Date) =>
   dispatch({ type: SET_OFFSET_DATE_ACTION, date });
 
 export const setRangeEnd = (
   dispatch: Dispatch<SetRangeEndAction>,
-  date: Date | null,
+  date: State['rangeEnd'],
 ) => dispatch({ type: SET_RANGE_END_ACTION, date });
 
 export const setYear = (dispatch: Dispatch<SetYearAction>, year: number) =>
