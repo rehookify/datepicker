@@ -11,6 +11,8 @@ import {
   getDateParts,
   toLocaleDateString,
   getDay,
+  getTimeDate,
+  formatTime,
 } from '../utils/date';
 import { DEFAULT_LOCALE_CONFIG } from '../constants';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
@@ -158,5 +160,34 @@ describe('toLocaleDateString', () => {
   test('toLocaleDateString should format date correctly', () => {
     const d1 = new Date(2022, 10, 25);
     expect(toLocaleDateString(d1, 'en-GB')).toBe('25/11/2022');
+  });
+});
+
+describe('getTimeDate', () => {
+  const { Y, M, D } = getDateParts(new Date());
+  test('should return null', () => {
+    expect(getTimeDate(Y, M, D)).toBe(null);
+  });
+
+  test('should return date with limit', () => {
+    const timeLimit = new Date(Y, M, D, 11, 30);
+    expect(getTimeDate(Y, M, D, { h: 11, m: 30 })).toEqual(timeLimit);
+  });
+});
+
+describe('formatTime', () => {
+  const d = new Date(2023, 0, 31, 22, 22);
+  test('should return time in 24h mode', () => {
+    expect(formatTime(d, DEFAULT_LOCALE_CONFIG)).toBe('22:22');
+  });
+
+  test('should return time in 12h mode', () => {
+    const LOCALE_CONFIG = { ...DEFAULT_LOCALE_CONFIG, hour12: true };
+
+    const formatted = formatTime(d, LOCALE_CONFIG);
+
+    // We need to test like this because we have different space symbol here and CI
+    expect(formatted.slice(0, 5)).toBe('10:22');
+    expect(formatted.slice(6)).toBe('pm');
   });
 });

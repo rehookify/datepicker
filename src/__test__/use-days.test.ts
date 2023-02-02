@@ -49,8 +49,8 @@ describe('useDaysPropGetters', () => {
     // @ts-ignore-next-line
     act(() => onClick());
 
-    // expect(state.current[0][0]).toEqual([
-    //   calendarsResult.current.calendars[0].days[11].$date,
-    // ]);
+    expect(state.current[0]).toEqual([
+      calendarsResult.current.calendars[0].days[11].$date,
+    ]);
   });
 });

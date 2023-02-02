@@ -1,4 +1,4 @@
-import { DatePart, LocaleConfig } from '../types';
+import { DatePart, LocaleConfig, TimeLimit } from '../types';
 
 export const getDateParts = (d: Date) => ({
   D: d.getDate(),
@@ -45,3 +45,22 @@ export const formatMonthName = (d: Date, { locale, monthName }: LocaleConfig) =>
 
 export const formatDate = (d: Date, { locale, options }: LocaleConfig) =>
   toLocaleDateString(d, locale, options);
+
+export const getTimeDate = (
+  Y: number,
+  M: number,
+  D: number,
+  t?: TimeLimit,
+): Date | null =>
+  t && t.h != null && t.m != null ? new Date(Y, M, D, t.h, t.m) : null;
+
+export const formatTime = (
+  d: Date,
+  { locale, hour, minute, second, hour12 }: LocaleConfig,
+) =>
+  d.toLocaleTimeString(locale, {
+    hour,
+    minute,
+    second,
+    hour12,
+  });

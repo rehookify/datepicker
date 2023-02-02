@@ -1,12 +1,12 @@
 # @rehookify/datepicker
 
-The ultimate tiny tool for creating date and range pickers in your React applications.
+The ultimate tiny tool for creating date, range and time pickers in your React applications.
 
 <div align="center">
 
 [![size](https://img.shields.io/bundlephobia/minzip/@rehookify/datepicker?label=MIN%20%2B%20GZIP&style=for-the-badge)](https://bundlephobia.com/package/@rehookify/datepicker)
 [![npm](https://img.shields.io/npm/dw/@rehookify/datepicker?style=for-the-badge)](https://www.npmjs.com/package/@rehookify/datepicker)
-[![twitter](https://img.shields.io/twitter/follow/rehookify?color=%231D9BF0&label=Follow&logo=twitter&style=for-the-badge
+[![twitter](https://img.shields.io/twitter/follow/rehookify?color=rgb%2829%2C%20155%2C%20240%29&label=Follow&logo=twitter&style=for-the-badge
 )](https://twitter.com/rehookify)
 [![discord](https://img.shields.io/discord/1052153401712062474?color=%237289da&logo=discord&style=for-the-badge)](https://discord.gg/vyM2jhYa33)
 </div>
@@ -25,7 +25,7 @@ Help us in our struggle, 💰  [United24](https://u24.gov.ua/), [KOLO](https://w
 - You can get accessible component props with prop-getters.
 - You have full power to manipulate the state with actions.
 - Available as a hook or context.
-- Support localization with `.toLocaleString`.
+- Support localization with `.toLocaleString`, `.toLocalTimeString`
 
 ## Install
 
@@ -39,7 +39,7 @@ npm i -S @rehookify/datepicker
 
 ```tsx
 import { useState } from 'react';
-import { useDatePickerState } from '@rehookify/datepicker';
+import { useDatePickerState, useCalendars } from '@rehookify/datepicker';
 
 const DatePicker = () => {
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
@@ -59,12 +59,14 @@ const DatePicker = () => {
           <p>{month} {year}</p>
         </div>
         <ul>
-          {weekDays.map((day) => (<li key={`${month}-${day}`}>{day}</li>))}
+          {weekDays.map((day) => (
+            <li key={`${month}-${day}`}>{day}</li>
+          ))}
         </ul>
       </header>
       <ul>
         {days.map((dpDay) => (
-          <li key={`${month}-${dpDay.date}`}>
+          <li key={`${month}-${dpDay.day}`}>
             <button>{dpDay.day}</button>
           </li>
         ))}
@@ -80,46 +82,72 @@ const DatePicker = () => {
 import { useState } from 'react';
 import {
   DatePickerStateProvider,
-  useContextCalendars
+  useContextCalendars,
+  useContextDaysPropGetters,
+  useContextTime,
+  useContextTimePropGetters,
 } from '@rehookify/datepicker';
 
 const DatePicker = () => {
   const { calendars, weekDays } = useContextCalendars();
+  const { dayButton } = useContextDaysPropGetters();
 
   const { year, month, days } = calendars[0];
 
   return (
-    <section>
+    <main>
       <header>
         <div>
           <p>{month} {year}</p>
         </div>
         <ul>
-          {weekDays.map((day) => (<li key={`${month}-${day}`}>{day}</li>))}
+          {weekDays.map((day) => (
+            <li key={`${month}-${day}`}>{day}</li>
+          ))}
         </ul>
       </header>
       <ul>
         {days.map((dpDay) => (
-          <li key={`${month}-${dpDay.date}`}>
-            <button>{dpDay.day}</button>
+          <li key={`${month}-${dpDay.day}`}>
+            <button {...dayButton(dpDay)}>{dpDay.day}</button>
           </li>
         ))}
       </ul>
-    </section>
+    </main>
+  )
+}
+
+const TimePicker = () => {
+  const { time } = useContextTime();
+  const { timeButton } = useContextTimePropGetters();
+
+  return (
+    <ul>
+      {time.map((t) => (
+        <li key={t.$date.toString()}>
+          <button {...timeButton(t)}>{t.time}</>
+        </li>
+      ))}
+    </ul>
   )
 }
 
 const App = () => {
-  const [selectedDates, onDatesChange] = useState<Date[]>([]);
+  const d = new Date();
+  const [selectedDates, onDatesChange] = useState<Date[]>([d]);
   return (
     <DatePickerStateProvider
       config={{
         selectedDates,
+        focusDate: d,
         onDatesChange,
         dates: { mode: 'multiple' },
       }}
     >
-      <DatePicker />
+      <section>
+        <DatePicker />
+        <TimePicker />
+      </section>
     </DatePickerStateProvider>
   );
 }
@@ -130,7 +158,7 @@ const App = () => {
 ### With hook
 
 ```tsx
-import React, { MouseEvent, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useDatePicker } from '@rehookify/datepicker';
 
 const DatePicker = () => {
@@ -170,12 +198,14 @@ const DatePicker = () => {
           <button {...nextMonthButton()}>&gt;</button>
         </div>
         <ul>
-          {weekDays.map((day) => (<li key={`${month}-${day}`}>{day}</li>))}
+          {weekDays.map((day) => (
+            <li key={`${month}-${day}`}>{day}</li>
+          ))}
         </ul>
       </header>
       <ul>
         {days.map((dpDay) => (
-          <li key={`${month}-${dpDay.date}`}>
+          <li key={`${month}-${dpDay.day}`}>
             <button
               {...dayButton(dpDay, { onClick: onDayClick })}
             >
@@ -240,6 +270,7 @@ const App = () => {
     - [years](#years)
     - [selectedDates](#selecteddates)
     - [formattedDates](#formatteddates)
+    - [time](#time)
   - [propGetters](#prop-getters)
     - [dayButton](#daybutton)
     - [monthButton](#monthbutton)
@@ -248,6 +279,7 @@ const App = () => {
     - [yearButton](#yearbutton)
     - [nextYearsButton](#nextyearsbutton)
     - [previousYearsButton](#previousyearsbutton)
+    - [timeButton](#timebutton)
   - [actions](#actions)
     - [setMonth](#setmonth)
     - [setYear](#setyear)
@@ -262,15 +294,17 @@ const App = () => {
   - [Calendar configuration](#calendar-configuration)
   - [Dates configuration](#dates-configuration)
   - [Years configuration](#years-configuration)
+  - [Time configuration](#time-configuration)
 - [Modular Hooks](#modular-hooks)
   - [useDatePickerState](#usedatepickerstate)
   - [useCalendars](#usecalendars)
   - [useDays](#usedays)
   - [useDaysPropGetters](#usedayspropgetters)
-  - [useDaysActions](#usedaysactions)
   - [useMonths](#usemonths)
   - [useMonthsPropGetters](#usemonthspropgetters)
   - [useMonthsActions](#usemonthsactions)
+  - [useTime](#usetime)
+  - [useTimePropGetters](#usetimepropgetters)
   - [useYears](#useyears)
   - [useYearsPropGetters](#useyearspropgetters)
   - [useYearsActions](#useyearsactions)
@@ -278,26 +312,28 @@ const App = () => {
 
 ### State
 
-The state consists of three parts: [data](#data), [propGetters](#prop-getters) and [actions](#actions).
+The state consists of three main parts: [data](#data), [propGetters](#prop-getters) and [actions](#actions).
 
 ### Data
 
-The data represents all entities that you could use in your date picker. It consists of [calendars](#calendars), [weekDays](#weekdays), [months](#months), [years](#years) and [selectedDates](#selecteddates)
+The data represents all entities that you could use in your date picker. It consists of [calendars](#calendars), [weekDays](#weekdays), [months](#months), [years](#years), [selectedDates](#selecteddates) and [time](#time)
 
 ```ts
 interface Data {
   calendars: Calendar[];
-  weekDays: string[],
-  months: CalendarMonth[],
-  years: CalendarYears[],
-  selectedDates: Date[],
+  formattedDates: Date[];
+  months: CalendarMonth[];
+  selectedDates: Date[];
+  time: Time[];
+  weekDays: string[];
+  years: CalendarYears[];
 }
 
 ```
 
 #### calendars
 
-`calendars` are an array of objects with **year**, **month** and **days** properties. The `calendars` array always has at least one member.It always has at least one member - an initial calendar `calendars[0]`. For calendars configuration 👀 [Calendar config](#calendar-configuration)
+`calendars` are an array of objects with **year**, **month** and **days** properties. It always has at least one member - an initial calendar `calendars[0]`. For calendars configuration 👀 [Calendar config](#calendar-configuration)
 
 ```ts
 export type DayRange =
@@ -312,11 +348,9 @@ export type DayRange =
 
 interface CalendarDay {
   $date: Date;
-  date: string;
   day: string;
   disabled: boolean;
   inCurrentMonth: boolean;
-  isToday: boolean; // is deprecated and will be removed in v4.0.0
   now: boolean;
   range: DayRange;
   selected: boolean;
@@ -331,7 +365,7 @@ interface Calendar {
 
 #### weekDays
 
-Weekdays are an array of names [`Mon`, `Tue`, `Wed`, ...]. The name format can be changed by `locale.weekdays` property 👀 [Locale configuration](#locale-configuration)
+Weekdays are an array of day names [`Mon`, `Tue`, `Wed`, ...]. The name format can be changed by `locale.weekdays` property 👀 [Locale configuration](#locale-configuration)
 
 ```ts
 type Weekdays = string[]
@@ -339,40 +373,49 @@ type Weekdays = string[]
 
 #### months
 
-Months are an array of objects with **$date**, **name**, **isSelected** and **isActive** properties. The name format could be changed by `locale.monthName` property 👀 [Locale configuration](#locale-configuration).
+Months are an array of objects with **$date**, **active**, **disabled**, **month**, **now** and **selected** properties. The month name format could be changed by `locale.monthName` property 👀 [Locale configuration](#locale-configuration).
 
 ```ts
 interface CalendarMonth {
   $date: Date;
   active: boolean;
   disabled: boolean;
-  name: string;
+  month: string;
   now: boolean;
   selected: boolean;
 }
 ```
 
-`selected` - shaws that we have a date selected for this month.
-
 `active` - shows that a user sees this month as current.
+
+`month` - month name e.g 'December'
+
+`now` - shows that this month is current in real life
+
+`selected` - shaws that we have a date selected for this month.
 
 #### years
 
-Years are an array of objects with **$date**, **value**, **isSelected**, and **isActive** properties.
+Years are an array of objects with **$date**, **active**, **disabled**, **now**, **selected** and **year** properties.
 
 ```ts
 interface CalendarYear {
   $date: Date;
   active: boolean;
   disabled: boolean;
+  now: boolean;
   selected: boolean;
-  value: number;
+  year: number;
 }
 ```
 
+`active` - shows that a user sees this year as current.
+
+`now` - shows that this year is current in real life
+
 `selected` - shows that we have a date selected for this year.
 
-`active` - shows that a user sees this year as current.
+`year` - year value e.g 2023
 
 #### selectedDates
 
@@ -389,6 +432,21 @@ An array of formatted dates `date.toLocaleDateString(locale, options)` 👀 [Loc
 ```ts
 type FormattedDates = string[];
 ```
+
+#### time
+
+Time is an array of objects with **$date**, **disabled**, **now**, **selected** and **value** properties. You can change **time** format with `hour12`, `hour` and `minute` options 👀 [Locale configuration](#locale-configuration)
+
+```ts
+export interface Time {
+  $date: Date;
+  disabled: boolean;
+  selected: boolean;
+  time: string;
+}
+```
+
+`time` - time value e.g `15:30` or `3:30 pm`
 
 ### Prop-Getters
 
@@ -488,6 +546,22 @@ Params:
 
 ✏️ NOTE: `onClick` - callback function doesn't get `date` as a second parameter.
 
+#### timeButton
+
+`timeButton` produces properties for time button and changes corresponding `selectedDate` and `focusDate`.
+
+Params:
+
+- `time: Time` - you could get it from the years 👆 [Time](#time)
+- `props?: PropsGetterConfig`
+
+Params:
+
+- `props?: PropsGetterConfig`
+
+✏️ NOTE: `onClick` - callback function doesn't get `date` as a second parameter.
+
+
 ### Actions
 
 Actions allow you to control the date picker's state. They don't have any additional logic. You need to check the state of days, months and years or disable the months and years pagination buttons.
@@ -533,18 +607,8 @@ Params:
 ```ts
 {
   selectedDates: [],
+  focusDate: null,
   onDatesChange: undefined,
-  locale: {
-    locale: 'en-GB',
-    day: '2-digit',
-    year: 'numeric',
-    weekday: 'short',
-    monthName: 'long',
-  },
-  calendar: {
-    mode: 'static',
-    offsets: [0],
-  },
   dates: {
     mode: 'single',
     selectedDates: [],
@@ -552,6 +616,26 @@ Params:
     maxDate: null,
     toggle: false,
     limit: undefined,
+  },
+  calendar: {
+    mode: 'static',
+    offsets: [0],
+  },
+  locale: {
+    locale: 'en-GB',
+    day: '2-digit',
+    year: 'numeric',
+    weekday: 'short',
+    monthName: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: undefined,
+    second: undefined,
+  },
+  time: {
+    interval: 30,
+    minTime: null,
+    maxTime: null,
   },
   years: {
     mode: 'decade',
@@ -565,6 +649,7 @@ Params:
 
 ```ts
 selectedDates: Date[];
+focusDate: Date | null;
 onDatesChange(d: Date[]): void;
 ```
 
@@ -581,6 +666,8 @@ const { data } = useDatePicker({
 
 ```
 
+`focusDate` is initial value for the time-picker, if it is **null** or not present in the `selectedDates` array all time buttons will be disabled.
+
 #### Locale configuration
 
 Locale configuration consists of values compatible with `date.toLocaleString()`.
@@ -595,6 +682,10 @@ interface LocaleConfig {
   year?: Intl.DateTimeFormatOptions['year'];
   monthName?: Intl.DateTimeFormatOptions['month'];
   weekday?: Intl.DateTimeFormatOptions['weekday'];
+  hour: Intl.DateTimeFormatOptions['hour'];
+  minute: Intl.DateTimeFormatOptions['minute'];
+  second?: Intl.DateTimeFormatOptions['second'];
+  hour12?: Intl.DateTimeFormatOptions['hour12'];
 }
 ```
 
@@ -604,6 +695,10 @@ interface LocaleConfig {
 - `year: "numeric" | "2-digit" | undefined` - defines the year's format in [Years](#years)
 - `monthName: "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined` - defines the moths format in [Months](#months)
 - `weekday: "long" | "short" | "narrow" | undefined` - defines weekday's format in [Weekdays](#weekdays)
+- `hour: "numeric" | "2-digit" | undefined` - defines hours format in [Time](#time)
+- `minute: "numeric" | "2-digit" | undefined` - defines minutes format in [Time](#time)
+- `second: "numeric" | "2-digit" | undefined` - defines seconds format in [Time](#time)
+- `hour12: boolean | undefined` - defines time format in general `12:12` or `12:12 pm`
 
 #### Calendar configuration
 
@@ -690,6 +785,28 @@ interface DatesUserConfig {
 
 ✏️ NOTE: works only with `mode: 'multiple'`
 
+#### Time configuration
+
+```ts
+export interface TimeLimit {
+  h: number;
+  m: number;
+}
+export interface TimeConfig {
+  interval: number;
+  minTime: TimeLimit;
+  maxTime: TimeLimit;
+}
+```
+
+- `interval` - time segments value in minutes for example, interval 30 is 48 segments 2 for each hour
+
+- `minTime` - all times in prop-getters before the `minTime` will be marked as disabled
+
+- `maxTime` - all times in prop-getters after the `maxTime` will be marked as disabled
+
+✏️ NOTE: config will sort `minTime` and `maxTime` if both present.
+
 #### Years configuration
 
 ```ts
@@ -740,41 +857,44 @@ All entities are consists of 3 hooks: data, prop-getters and actions (for exampl
 #### useDatePickerState
 
 ```ts
-export interface State {
-  rangeEnd: Date | null;
-  selectedDates: Date[];
+interface State {
+  config: DatePickerConfig;
+  focusDate: Date | null;
   offsetDate: Date;
   offsetYear: number;
-  config: DatePickerConfig;
+  rangeEnd: Date | null;
 }
 
-export type Action =
-  | SelectDateAction
+type Action =
+  | SetFocusDate
   | SetOffsetDate
   | SetYearAction
   | SetRangeEndAction;
 
+type DPState = {
+  dispatch: Dispatch<Action>;
+  selectedDates: Date[];
+  state: State;
+}
+
 type UseDatePickerState = (config: DatePickerConfig) =>
-  [State, Dispatch<Action>]
+  DPState;
 ```
 
-Under the hook, it uses `useReducer` to capture the entire date-picker state and provides `dispatch` for state manipulation.
+Under the hook, it uses `useReducer` to capture date-picker state and provides `dispatch` for state manipulation.
 
 Modular hooks use state and dispatch to derive their entities and update the date-picker.
 
 `DatePickerStateProvider` uses this hook and propagates state and dispatch through context.
 
 ```ts
-type DatePickerStateProviderValue = {
-  s: State;
-  d: Dispatch<Action>
-}
+type DatePickerStateProviderValue = DPState;
 ```
 
 #### useCalendars
 
 ```ts
-type UseCalendars = (state: State) => {
+type UseCalendars = (state: DPState) => {
   calendars: Calendar[];
   weekDays: string[];
 }
@@ -788,7 +908,7 @@ Basic entities to build UI without interactivity.
 #### useDays
 
 ```ts
-type UseDays = (state: State) => {
+type UseDays = (state: DPState) => {
   selectedDates: Date[];
   formattedDates: string[];
 };
@@ -802,7 +922,7 @@ Set of data with raw and formatted dates
 #### useDaysPropGetters
 
 ```ts
-type UseDaysPropGetters = (state: State, dispatch: Dispatch<Action>) => {
+type UseDaysPropGetters = (state: DPState) => {
   dayButton(day: CalendarDay, config: PropsGetterConfig): void;
 };
 ```
@@ -811,24 +931,10 @@ Prop-getter for dates selection.
 
 - `dayButton` - propGetter 👀 [dayButton](#daybutton)
 
-#### useDaysActions
-
-```ts
-type UseDaysActions = (dispatch: Dispatch<Action>) => {
-  setDay(Date): void;
-  setRangeEnd(Date | null): void;
-};
-```
-
-Set of actions for dates manipulation.
-
-- `setDay` - action 👀 [setDay](#setday)
-- `setRangeEnd` - action 👀 [setRangeEnd](#setrangeend)
-
 #### useMonths
 
 ```ts
-type UseMonths = (state: State, dispatch: Dispatch<Action>) => {
+type UseMonths = (state: DPState) => {
   months: CalendarMonth[],
 };
 ```
@@ -840,7 +946,7 @@ Months data.
 #### useMonthsPropGetters
 
 ```ts
-type UseMonthsPropGetters = (state: State, dispatch: Dispatch<Action>) => {
+type UseMonthsPropGetters = (state: DPState) => {
   monthButton(month: CalendarMonth, config: PropsGetterConfig): void,
   nextMonthButton(config: PropsGetterConfig): void,
   previousMonthButton(config: PropsGetterConfig): void,
@@ -856,7 +962,7 @@ Prop-getters for month manipulation.
 #### useMonthsActions
 
 ```ts
-type UseMonthsActions = (state: State, dispatch: Dispatch<Action>) => {
+type UseMonthsActions = (state: DPState) => {
   setMonth(date: Date): void,
   setNextMonth(): void,
   setPreviousMonth(): void,
@@ -869,10 +975,34 @@ Actions for month manipulation.
 - `setNextMonth` - action 👀 [setNextMonth](#setnextmonth)
 - `setPreviousMonth` - action 👀 [setPreviousMonth](#setpreviousmonth)
 
+#### useTime
+
+```ts
+type UseTime = (state: DPState) => {
+  time: Time[]
+};
+```
+
+Years data.
+
+- `time` - 👀 [Time](#time)
+
+#### useTimePropGetters
+
+```ts
+type UseTimePropGetters = (state: DPState) => {
+  timeButton(time: Time, config: PropsGetterConfig): void,
+};
+```
+
+Prop-getters for time manipulation.
+
+- `timeButton` - propGetter 👀 [timeButton](#timebutton)
+
 #### useYears
 
 ```ts
-type UseYears = (state: State, dispatch: Dispatch<Action>) => {
+type UseYears = (state: DPState) => {
   years: CalendarYear[]
 };
 ```
@@ -884,7 +1014,7 @@ Years data.
 #### useYearsPropGetters
 
 ```ts
-type UseYearsPropGetters = (state: State, dispatch: Dispatch<Action>) => {
+type UseYearsPropGetters = (state: DPState) => {
   yearButton(year: CalendarYear, config: PropsGetterConfig): void;
   nextYearsButton(config: PropsGetterConfig): void;
   previousYearsButton(config: PropsGetterConfig): void;
@@ -900,7 +1030,7 @@ Prop-getters for years manipulation.
 #### useYearsActions
 
 ```ts
-type UseYearsActions = (state: State, dispatch: Dispatch<Action>) => {
+type UseYearsActions = (state: DPState) => {
   setYear(date: Date): void;
   setNextYears(): void;
   setPreviousYears(): void;
@@ -920,10 +1050,11 @@ We have set of context hooks that have similar API with regular one.
 - `useContextCalendars` - 👀 [useColendars](#usecalendars)
 - `useContextDays` - 👀 [useDay](#usedays)
 - `useContextDaysPropsGetters` - 👀 [useDayPropGetters](#usedayspropgetters)
-- `useContextDaysActions` - 👀 [useDayActions](#usedaysactions)
 - `useContextMonths` - 👀 [useMonths](#usemonths)
 - `useContextMonthsPropGetters` - 👀 [useMonthsPropGetters](#usemonthspropgetters)
 - `useContextMonthsActions` - 👀 [useMonthsActions](#usemonthsactions)
+- `useContextTime` - 👀 [useTime](#usetime)
+- `useContextTimePropGetters` - 👀 [useTimePropGetters](#usetimepropgetters)
 - `useContextYears` - 👀 [useYears](#useyears)
 - `useContextYearsPropGetters` - 👀 [useYearsPropGetters](#useyearspropgetters)
 - `useContextYearsActions` - 👀 [useYearsActions](#useyearsactions)

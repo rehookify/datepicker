@@ -8,7 +8,6 @@ import {
 
 import {
   addToDate,
-  formatDate,
   formatMonthName,
   getCleanDate,
   getDateParts,
@@ -39,19 +38,17 @@ const createCalendar = (
 
   for (let i = 1; i <= numberOfDays; i++) {
     const date = new Date(Y, M, i - startOffset);
-    // @TODO move it to the object in v4.0.0
-    const now = isSame(getCleanDate(new Date()), date);
 
     days.push({
       $date: date,
-      date: formatDate(date, locale),
       day: toLocaleDateString(date, localeStr, { day }),
-      isToday: now,
-      now,
+      now: isSame(getCleanDate(new Date()), date),
       range: getDateRangeState(date, rangeEnd, selectedDates, mode),
       disabled:
         minDateAndBefore(minDate, date) || maxDateAndAfter(maxDate, date),
-      selected: selectedDates.some((d) => isSame(d as Date, date)),
+      selected: selectedDates.some((d) =>
+        isSame(getCleanDate(d as Date), date),
+      ),
       inCurrentMonth: getDateParts(date).M === M,
     });
   }

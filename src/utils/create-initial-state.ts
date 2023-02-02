@@ -6,6 +6,7 @@ import { getCurrentYearPosition } from './get-current-year-position';
 export const createInitialState = (config: DatePickerConfig) => {
   const {
     selectedDates,
+    focusDate,
     dates: { minDate, maxDate },
     years,
   } = config;
@@ -16,6 +17,7 @@ export const createInitialState = (config: DatePickerConfig) => {
       : getCalendarStartDate(minDate, maxDate, getCleanDate(new Date()));
 
   return {
+    focusDate,
     rangeEnd: null,
     offsetDate,
     offsetYear: getCurrentYearPosition(getDateParts(offsetDate).Y, years),

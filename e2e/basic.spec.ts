@@ -1,9 +1,5 @@
 import { test, expect } from '@playwright/test';
-import {
-  formatMonthName,
-  getDateParts,
-  subtractFromDate,
-} from '../src/utils/date';
+import { formatMonthName, subtractFromDate } from '../src/utils/date';
 import { DEFAULT_LOCALE_CONFIG } from '../src/constants';
 
 test('test basic month navigation', async ({ page }) => {

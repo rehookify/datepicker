@@ -162,7 +162,8 @@
 .month:disabled,
 .year:disabled,
 .calendar-header__button:disabled {
-  opacity: 0.45;
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
 }
 
 .day.now,

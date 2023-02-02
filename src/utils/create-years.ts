@@ -13,18 +13,18 @@ export const createYears = (
   const years = [];
 
   for (let i = 0; i < numberOfYears; i++) {
-    const value = currentYear + i;
-    const date = new Date(value, M, D);
+    const year = currentYear + i;
+    const date = new Date(year, M, D);
 
     years.push({
-      active: Y === value,
+      active: Y === year,
       $date: date,
       disabled:
         minDateAndBeforeFirstDay(minDate, date) ||
         maxDateAndAfter(maxDate, getFirstDayOfTheMonth(date)),
-      now: value === getDateParts(new Date()).Y,
-      selected: selectedDates.some((d) => getDateParts(d).Y === value),
-      value,
+      now: year === getDateParts(new Date()).Y,
+      selected: selectedDates.some((d) => getDateParts(d).Y === year),
+      year,
     });
   }
 

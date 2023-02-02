@@ -2,6 +2,7 @@ import {
   CalendarConfig,
   DatesConfig,
   LocaleConfig,
+  TimeConfig,
   YearsConfig,
 } from './types';
 
@@ -19,6 +20,7 @@ export const NUMBER_OF_STATIC_CALENDAR_DAYS = 42;
 
 export const DAYS_IN_WEEK = 7;
 export const NUMBER_OF_MONTHS = 12;
+export const MINUTES_IN_THE_DAY = 60 * 24; // 1440 :)
 
 // Number of yearn by default to mimic number of month
 // It will be easy to reuse same layout for years picker
@@ -40,6 +42,11 @@ export const DEFAULT_YEARS_CONFIG: YearsConfig = {
 export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
   mode: 'single',
   toggle: false,
+  selectSameDate: false,
+};
+
+export const DEFAULT_TIME_CONFIG: Partial<TimeConfig> = {
+  interval: 30,
 };
 
 export const DEFAULT_LOCALE_CONFIG: LocaleConfig = {
@@ -48,4 +55,8 @@ export const DEFAULT_LOCALE_CONFIG: LocaleConfig = {
   year: 'numeric',
   weekday: 'short',
   monthName: 'long',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: undefined,
+  second: undefined,
 };

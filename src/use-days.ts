@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
-import { setRangeEnd as setRangeEndAction } from './state-reducer';
+import { setFocus, setRangeEnd as setRangeEndAction } from './state-reducer';
 import { CalendarDay, DPState, PropsGetterConfig } from './types';
 import { callAll, skipFirst } from './utils/call-all';
 import { isRange } from './utils/config';
 import { createPropGetter } from './utils/create-prop-getter';
-import { formatDate } from './utils/date';
+import { formatDate, getCleanDate } from './utils/date';
 import { getMultipleDates } from './utils/get-multiple-dates';
+import { isSame } from './utils/predicates';
 
 export const useDays = ({
   selectedDates,
@@ -24,7 +25,7 @@ export const useDaysPropGetters = ({
 }: DPState) => {
   const {
     onDatesChange,
-    dates: { mode, toggle },
+    dates: { mode, toggle, selectSameDate },
   } = config;
 
   const dayButton = useCallback(
@@ -35,14 +36,28 @@ export const useDaysPropGetters = ({
       createPropGetter(
         disabled || !!disabledProps,
         (evt) => {
-          if (selected && !toggle && !isRange(mode)) return;
-          if (isRange(mode) && selectedDates.length === 1)
+          if (selected && !toggle) {
+            selectedDates.forEach((d) => {
+              if (isSame(getCleanDate(d), $date)) setFocus(dispatch, d);
+            });
+
+            // Handle case when user could select same date in range mode
+            if (!isRange(mode) || !selectSameDate) return;
+          }
+          if (isRange(mode) && selectedDates.length === 1) {
             setRangeEndAction(dispatch, null);
+          }
           callAll(
             onClick,
             skipFirst((d: Date) => {
               if (onDatesChange && typeof onDatesChange === 'function') {
-                onDatesChange(getMultipleDates(selectedDates, d, config.dates));
+                const nextSelectedDates = getMultipleDates(
+                  selectedDates,
+                  d,
+                  config.dates,
+                );
+                setFocus(dispatch, nextSelectedDates.includes(d) ? d : null);
+                onDatesChange(nextSelectedDates);
               }
             }),
           )(evt, $date);
@@ -57,7 +72,15 @@ export const useDaysPropGetters = ({
             }),
         },
       ),
-    [mode, toggle, config.dates, onDatesChange, selectedDates, dispatch],
+    [
+      mode,
+      toggle,
+      config.dates,
+      onDatesChange,
+      selectedDates,
+      dispatch,
+      selectSameDate,
+    ],
   );
 
   return { dayButton };

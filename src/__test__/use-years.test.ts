@@ -41,7 +41,7 @@ describe('useYearsPropGetters', () => {
       useYearsPropGetters(stateResult.current),
     );
 
-    const nextYear = yearsResult.current.years[0].value;
+    const nextYear = yearsResult.current.years[0].year;
     const { onClick } = yResult.current.yearButton(
       yearsResult.current.years[0],
     );

@@ -13,11 +13,9 @@ export type DayRange =
 
 export interface CalendarDay {
   $date: Date;
-  date: string;
   day: string;
   disabled: boolean;
   inCurrentMonth: boolean;
-  isToday: boolean;
   now: boolean;
   range: DayRange;
   selected: boolean;
@@ -27,7 +25,7 @@ export interface CalendarMonth {
   $date: Date;
   active: boolean;
   disabled: boolean;
-  name: string;
+  month: string;
   now: boolean;
   selected: boolean;
 }
@@ -38,7 +36,7 @@ export interface CalendarYear {
   disabled: boolean;
   now: boolean;
   selected: boolean;
-  value: number;
+  year: number;
 }
 
 export interface PropsGetterConfig extends Record<string, unknown> {
@@ -54,6 +52,7 @@ export interface DatesUserConfig {
   selectedDates: Date | Date[];
   toggle?: boolean;
   limit?: number;
+  selectSameDate: boolean;
 }
 
 export type CalendarMode = 'static' | 'fluid';
@@ -82,15 +81,31 @@ export interface LocaleConfig {
   year: Intl.DateTimeFormatOptions['year'];
   monthName: Intl.DateTimeFormatOptions['month'];
   weekday: Intl.DateTimeFormatOptions['weekday'];
+  hour: Intl.DateTimeFormatOptions['hour'];
+  minute: Intl.DateTimeFormatOptions['minute'];
+  second?: Intl.DateTimeFormatOptions['second'];
+  hour12?: Intl.DateTimeFormatOptions['hour12'];
+}
+
+export interface TimeLimit {
+  h: number;
+  m: number;
+}
+export interface TimeConfig {
+  interval: number;
+  minTime: TimeLimit;
+  maxTime: TimeLimit;
 }
 
 export interface DatePickerUserConfig {
   selectedDates?: Date[];
+  focusDate?: Date | null;
   onDatesChange?(d: Date[]): void;
   locale?: Partial<LocaleConfig>;
   calendar?: Partial<CalendarConfig>;
   dates?: Partial<DatesUserConfig>;
   years?: Partial<YearsConfig>;
+  time?: Partial<TimeConfig>;
 }
 
 export interface DatesConfig {
@@ -99,15 +114,18 @@ export interface DatesConfig {
   maxDate: Date | null;
   toggle: boolean;
   limit: number;
+  selectSameDate: boolean;
 }
 
 export interface DatePickerConfig {
   selectedDates: Date[];
+  focusDate: Date | null;
   onDatesChange?(d: Date[]): void;
   locale: LocaleConfig;
   calendar: CalendarConfig;
   dates: DatesConfig;
   years: YearsConfig;
+  time: TimeConfig;
 }
 
 export type DatePart = 'year' | 'month' | 'date';
@@ -119,7 +137,14 @@ export interface Calendar {
 }
 
 export interface DPState {
-  state: State;
   dispatch: Dispatch<Action>;
+  state: State;
   selectedDates: Date[];
+}
+
+export interface Time {
+  $date: Date;
+  disabled: boolean;
+  selected: boolean;
+  time: string;
 }

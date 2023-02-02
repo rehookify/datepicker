@@ -18,6 +18,8 @@ import {
   getYearsClassName,
 } from '../utils/class-names';
 
+import '../styles/time.css';
+
 const BODY = document.body;
 
 export const HomePage = () => {
@@ -55,9 +57,15 @@ export const HomePage = () => {
     onDatesChange,
     dates: {
       mode: 'range',
-      toggle: true,
+      // toggle: true,
+      // selectSameDate: true,
       minDate: new Date(2000, 0, 1),
       maxDate: new Date(),
+    },
+    time: {
+      interval: 30,
+      minTime: { h: 9, m: 0 },
+      maxTime: { h: 18, m: 0 },
     },
     calendar: {
       offsets: [-1, 1],

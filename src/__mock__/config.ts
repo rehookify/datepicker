@@ -1,5 +1,6 @@
 export const DEFAULT_CONFIG = {
   selectedDates: [],
+  focusDate: null,
   calendar: {
     mode: 'static',
     offsets: [0],
@@ -15,12 +16,22 @@ export const DEFAULT_CONFIG = {
     toggle: false,
     minDate: null,
     maxDate: null,
+    selectSameDate: false,
   },
   locale: {
-    locale: 'en-GB',
     day: '2-digit',
-    year: 'numeric',
-    weekday: 'short',
+    hour: '2-digit',
+    hour12: undefined,
+    locale: 'en-GB',
+    minute: '2-digit',
     monthName: 'long',
+    second: undefined,
+    weekday: 'short',
+    year: 'numeric',
+  },
+  time: {
+    interval: 30,
+    minTime: null,
+    maxTime: null,
   },
 };

@@ -19,7 +19,7 @@ export const createMonths = (
 
     months.push({
       $date: date,
-      name: formatMonthName(date, locale),
+      month: formatMonthName(date, locale),
       selected: selectedDates.some((d) => {
         const { M: dM, Y: dY } = getDateParts(d);
         return dY === Y && dM === i;

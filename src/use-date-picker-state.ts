@@ -13,8 +13,8 @@ export const useDatePickerState = (config?: DatePickerUserConfig) => {
   );
 
   return {
-    state,
     dispatch,
     selectedDates: dpConfig.selectedDates,
+    state,
   };
 };

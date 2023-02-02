@@ -7,6 +7,7 @@ import {
   useMonthsPropGetters,
   useMonths,
 } from './use-months';
+import { useTime, useTimePropGetter } from './use-time';
 import { useYears, useYearsActions, useYearsPropGetters } from './use-years';
 
 export const useDatePicker = (config?: DatePickerUserConfig) => {
@@ -24,6 +25,8 @@ export const useDatePicker = (config?: DatePickerUserConfig) => {
   const { yearButton, nextYearsButton, previousYearsButton } =
     useYearsPropGetters(dpState);
   const { setYear, setNextYears, setPreviousYears } = useYearsActions(dpState);
+  const { time } = useTime(dpState);
+  const { timeButton } = useTimePropGetter(dpState);
 
   return {
     data: {
@@ -33,6 +36,7 @@ export const useDatePicker = (config?: DatePickerUserConfig) => {
       years,
       selectedDates,
       formattedDates,
+      time,
     },
     propGetters: {
       nextMonthButton,
@@ -42,6 +46,7 @@ export const useDatePicker = (config?: DatePickerUserConfig) => {
       yearButton,
       nextYearsButton,
       previousYearsButton,
+      timeButton,
     },
     actions: {
       setMonth,
