@@ -46,13 +46,13 @@ export const ModularContext = () => {
         </CalendarHeader>
         <Weekdays weekDays={weekDays} prefix={calendars[0].month} />
         <Days>
-          {calendars[0].days.map((dpDay) => (
+          {calendars[0].days.map((d) => (
             <button
-              className={getDayClassName(dpDay, 'visible')}
-              key={dpDay.date}
-              {...dayButton(dpDay)}
+              className={getDayClassName(d, 'visible')}
+              key={d.$date.toString()}
+              {...dayButton(d)}
             >
-              {dpDay.day}
+              {d.day}
             </button>
           ))}
         </Days>
@@ -73,13 +73,13 @@ export const ModularContext = () => {
           <CalendarHeaderTitle>{calendars[0].month}</CalendarHeaderTitle>
         </CalendarHeader>
         <div className="months">
-          {months.map((month) => (
+          {months.map((m) => (
             <button
-              className={getMonthClassName(month.active, month.selected)}
-              key={month.name}
-              {...monthButton(month)}
+              className={getMonthClassName(m)}
+              key={m.month}
+              {...monthButton(m)}
             >
-              {month.name}
+              {m.month}
             </button>
           ))}
         </div>
@@ -98,17 +98,17 @@ export const ModularContext = () => {
           }
         >
           <CalendarHeaderTitle>
-            {years[0].value}-{years[years.length - 1].value}
+            {years[0].year}-{years[years.length - 1].year}
           </CalendarHeaderTitle>
         </CalendarHeader>
         <div className="years">
-          {years.map((year) => (
+          {years.map((y) => (
             <button
-              className={getYearsClassName(year.active, year.selected)}
-              key={year.value}
-              {...yearButton(year)}
+              className={getYearsClassName(y)}
+              key={y.year}
+              {...yearButton(y)}
             >
-              {year.value}
+              {y.year}
             </button>
           ))}
         </div>

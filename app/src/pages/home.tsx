@@ -91,13 +91,13 @@ export const HomePage = () => {
         </CalendarHeader>
         <Weekdays weekDays={weekDays} prefix={calendars[1].month} />
         <Days>
-          {calendars[1].days.map((dpDay) => (
+          {calendars[1].days.map((d) => (
             <button
-              className={getDayClassName(dpDay)}
-              key={dpDay.date}
-              {...dayButton(dpDay)}
+              className={getDayClassName(d)}
+              key={`${1}/${d.$date.toString()}`}
+              {...dayButton(d)}
             >
-              {dpDay.day}
+              {d.day}
             </button>
           ))}
         </Days>
@@ -111,13 +111,13 @@ export const HomePage = () => {
         </CalendarHeader>
         <Weekdays weekDays={weekDays} prefix={calendars[0].month} />
         <Days>
-          {calendars[0].days.map((dpDay) => (
+          {calendars[0].days.map((d) => (
             <button
-              className={getDayClassName(dpDay)}
-              key={dpDay.date}
-              {...dayButton(dpDay)}
+              className={getDayClassName(d)}
+              key={`${0}/${d.$date.toString()}`}
+              {...dayButton(d)}
             >
-              {dpDay.day}
+              {d.day}
             </button>
           ))}
         </Days>
@@ -140,13 +140,13 @@ export const HomePage = () => {
         </CalendarHeader>
         <Weekdays weekDays={weekDays} prefix={calendars[2].month} />
         <Days>
-          {calendars[2].days.map((dpDay) => (
+          {calendars[2].days.map((d) => (
             <button
-              className={getDayClassName(dpDay)}
-              key={dpDay.date}
-              {...dayButton(dpDay)}
+              className={getDayClassName(d)}
+              key={`${2}/${d.$date.toString()}`}
+              {...dayButton(d)}
             >
-              {dpDay.day}
+              {d.day}
             </button>
           ))}
         </Days>
@@ -170,10 +170,10 @@ export const HomePage = () => {
           {months.map((month) => (
             <button
               className={getMonthClassName(month)}
-              key={month.name}
+              key={month.month}
               {...monthButton(month)}
             >
-              {month.name}
+              {month.month}
             </button>
           ))}
         </div>
@@ -192,17 +192,17 @@ export const HomePage = () => {
           }
         >
           <CalendarHeaderTitle>
-            {years[0].value}-{years[years.length - 1].value}
+            {years[0].year}-{years[years.length - 1].year}
           </CalendarHeaderTitle>
         </CalendarHeader>
         <div className="years">
           {years.map((year) => (
             <button
               className={getYearsClassName(year)}
-              key={year.value}
+              key={year.year}
               {...yearButton(year)}
             >
-              {year.value}
+              {year.year}
             </button>
           ))}
         </div>
