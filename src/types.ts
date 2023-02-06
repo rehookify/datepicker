@@ -145,6 +145,7 @@ export interface DPState {
 export interface Time {
   $date: Date;
   disabled: boolean;
+  now: boolean;
   selected: boolean;
   time: string;
 }

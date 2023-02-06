@@ -1,7 +1,7 @@
-import { getFirstDayOfTheMonth } from './date';
+import { getCleanDate, getFirstDayOfTheMonth } from './date';
 
-export const isSame = (d1: Date, d2: Date): boolean =>
-  d1.toString() === d2.toString();
+// Converting Date to Number is equal of calling Date.getTime
+export const isSame = (d1: Date, d2: Date): boolean => +d1 === +d2;
 
 export const isBefore = (d1: Date, d2: Date): boolean => d1 < d2;
 
@@ -21,3 +21,6 @@ export const minDateAndBeforeFirstDay = (
   minDate: Date | null,
   date: Date,
 ): boolean => !!minDate && isBefore(date, getFirstDayOfTheMonth(minDate));
+
+export const includeDate = (dates: Date[], d: Date): boolean =>
+  dates.some((date) => isSame(getCleanDate(date), d));

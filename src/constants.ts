@@ -18,7 +18,8 @@ import {
  */
 export const NUMBER_OF_STATIC_CALENDAR_DAYS = 42;
 
-export const DAYS_IN_WEEK = 7;
+//Weekdays array template, each index mimics its position
+export const WEEK_DAYS = [0, 1, 2, 3, 4, 5, 6];
 export const NUMBER_OF_MONTHS = 12;
 export const MINUTES_IN_THE_DAY = 60 * 24; // 1440 :)
 

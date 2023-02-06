@@ -1,6 +1,7 @@
 import { describe, test, expect } from '@jest/globals';
 import { createConfig } from '../utils/config';
 import { createTime } from '../utils/create-time';
+import { newDate } from '../utils/date';
 
 describe('createTime', () => {
   test('should generate times correctly', () => {
@@ -13,7 +14,7 @@ describe('createTime', () => {
     expect(time.length).toBe(48);
 
     const config2 = createConfig({ time: { interval: 60 } });
-    const time2 = createTime(new Date(), config2);
+    const time2 = createTime(newDate(), config2);
 
     expect(time2.filter(({ disabled }) => disabled).length).toBe(0);
     // We have 1 segment for each hour
@@ -21,7 +22,7 @@ describe('createTime', () => {
   });
 
   test('should create times correctly with min and max dates', () => {
-    const d = new Date();
+    const d = newDate();
     const config = createConfig({
       time: { minTime: { h: 9, m: 0 }, maxTime: { h: 18, m: 0 } },
     });

@@ -15,18 +15,15 @@ describe('useCalendars', () => {
       selectedDates,
       state: { offsetDate, rangeEnd, config },
     } = stateResult.current;
-    const { locale, dates, calendar } = config;
 
     const calendars = createCalendars(
       offsetDate,
       selectedDates,
       rangeEnd,
-      locale,
-      dates,
-      calendar,
+      config,
     );
 
-    const weekDays = createWeekdays(calendars[0], locale);
+    const weekDays = createWeekdays(calendars[0], config);
 
     expect(result.current.calendars).toEqual(calendars);
     expect(result.current.weekDays).toEqual(weekDays);

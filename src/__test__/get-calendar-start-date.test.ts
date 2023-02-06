@@ -1,12 +1,12 @@
 import { describe, test, expect } from '@jest/globals';
-import { getCleanDate, getDateParts } from '../utils/date';
+import { getCleanDate, getDateParts, newDate } from '../utils/date';
 import { getCalendarStartDate } from '../utils/get-calendar-start-date';
 
 describe('getCalendarStartDate', () => {
   test('getCalendarStartDate returns minDate if minDate > now', () => {
-    const now = getCleanDate(new Date());
+    const now = getCleanDate(newDate());
     const { Y, M, D } = getDateParts(now);
-    const minDate = new Date(Y, M, D + 2);
+    const minDate = newDate(Y, M, D + 2);
 
     const currentDate = getCalendarStartDate(minDate, null, now);
 
@@ -14,9 +14,9 @@ describe('getCalendarStartDate', () => {
   });
 
   test('getCalendarStartDate returns maxDate if maxDate < now', () => {
-    const now = getCleanDate(new Date());
+    const now = getCleanDate(newDate());
     const { Y, M, D } = getDateParts(now);
-    const maxDate = new Date(Y, M, D - 2);
+    const maxDate = newDate(Y, M, D - 2);
 
     const currentDate = getCalendarStartDate(null, maxDate, now);
 
@@ -24,10 +24,10 @@ describe('getCalendarStartDate', () => {
   });
 
   test('getCalendarStartDate returns now if minDate < now < maxDate', () => {
-    const now = getCleanDate(new Date());
+    const now = getCleanDate(newDate());
     const { Y, M, D } = getDateParts(now);
-    const maxDate = new Date(Y + 1, M, D);
-    const minDate = new Date(Y - 1, M, D);
+    const maxDate = newDate(Y + 1, M, D);
+    const minDate = newDate(Y - 1, M, D);
 
     const currentDate = getCalendarStartDate(minDate, maxDate, now);
 

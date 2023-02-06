@@ -1,45 +1,28 @@
 import { DatesConfig } from '../types';
 import { isRange } from './config';
-import { sortDatesAsc } from './date';
-import { isSame } from './predicates';
-
-const addAndSort = (dates: Date[], d: Date) =>
-  dates.concat(d).sort(sortDatesAsc);
-
-const getFiltered = (dates: Date[], date: Date) =>
-  dates.filter((d) => !isSame(d, date));
-
-const exitFromRange = (dates: Date[], d: Date) =>
-  dates.length === 2 ? [d] : addAndSort(dates, d);
+import { addAndSortAsc } from './date';
+import { includeDate, isSame } from './predicates';
 
 export const getMultipleDates = (
   selectedDates: Date[],
   date: Date,
   { mode, toggle, limit }: DatesConfig,
 ): Date[] => {
-  if (mode === 'single') {
-    return toggle && selectedDates[0] && isSame(date, selectedDates[0])
-      ? []
-      : [date];
-  }
+  // If toggle is active and we have already selected this date
+  // Then filter it out in all modes
+  if (toggle && includeDate(selectedDates, date))
+    return selectedDates.filter((d) => !isSame(d, date));
 
-  if (mode === 'multiple') {
-    if (toggle) {
-      const filtered = getFiltered(selectedDates, date);
-      if (filtered.length < selectedDates.length) return filtered;
-    }
-
+  if (mode === 'multiple')
     return !limit || selectedDates.length < limit
-      ? addAndSort(selectedDates, date)
+      ? addAndSortAsc(selectedDates, date)
       : selectedDates;
-  }
 
-  if (isRange(mode) && toggle) {
-    const filtered = getFiltered(selectedDates, date);
-    return filtered.length < selectedDates.length
-      ? filtered
-      : exitFromRange(selectedDates, date);
-  }
+  if (isRange(mode))
+    return selectedDates.length === 2
+      ? [date]
+      : addAndSortAsc(selectedDates, date);
 
-  return exitFromRange(selectedDates, date);
+  // mode === 'single'
+  return [date];
 };

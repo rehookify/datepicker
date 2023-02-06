@@ -1,14 +1,13 @@
 import { describe, test, expect } from '@jest/globals';
 import { createConfig } from '../utils/config';
 import { createYears } from '../utils/create-years';
-import { getDateParts } from '../utils/date';
+import { getDateParts, newDate } from '../utils/date';
 import { getStartDecadePosition } from '../utils/get-current-year-position';
-// import { TEST_YEARS } from '../__mock__/years';
 
 describe('createYears', () => {
   test('createYears should create years correctly', () => {
     const { years: yearsConfig, dates } = createConfig();
-    const NOW = new Date();
+    const NOW = newDate();
     const { Y, M, D } = getDateParts(NOW);
 
     // Years with default config and without selection
@@ -32,7 +31,7 @@ describe('createYears', () => {
     years = createYears(
       getStartDecadePosition(Y),
       NOW,
-      [NOW, new Date(Y + 1, M, D)],
+      [NOW, newDate(Y + 1, M, D)],
 
       yearsConfig,
       dates,
@@ -44,7 +43,7 @@ describe('createYears', () => {
 
     years = createYears(
       getStartDecadePosition(Y + 20),
-      new Date(Y + 20, M, D),
+      newDate(Y + 20, M, D),
       [],
       yearsConfig,
       dates,
@@ -64,7 +63,7 @@ describe('createYears', () => {
 
     const years = createYears(
       getStartDecadePosition(2022),
-      new Date(2022, 10, 20),
+      newDate(2022, 10, 20),
       [],
       yearsConfig,
       dates,

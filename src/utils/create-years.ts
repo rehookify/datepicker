@@ -1,5 +1,5 @@
 import { CalendarYear, DatesConfig, YearsConfig } from '../types';
-import { getDateParts, getFirstDayOfTheMonth } from './date';
+import { getDateParts, getFirstDayOfTheMonth, newDate } from './date';
 import { maxDateAndAfter, minDateAndBeforeFirstDay } from './predicates';
 
 export const createYears = (
@@ -11,18 +11,19 @@ export const createYears = (
 ): CalendarYear[] => {
   const { Y, M, D } = getDateParts(offsetDate);
   const years = [];
+  const { Y: nY } = getDateParts(newDate());
 
   for (let i = 0; i < numberOfYears; i++) {
     const year = currentYear + i;
-    const date = new Date(year, M, D);
+    const $date = newDate(year, M, D);
 
     years.push({
+      $date,
       active: Y === year,
-      $date: date,
       disabled:
-        minDateAndBeforeFirstDay(minDate, date) ||
-        maxDateAndAfter(maxDate, getFirstDayOfTheMonth(date)),
-      now: year === getDateParts(new Date()).Y,
+        minDateAndBeforeFirstDay(minDate, $date) ||
+        maxDateAndAfter(maxDate, getFirstDayOfTheMonth($date)),
+      now: year === nY,
       selected: selectedDates.some((d) => getDateParts(d).Y === year),
       year,
     });

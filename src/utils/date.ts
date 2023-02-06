@@ -1,50 +1,68 @@
 import { DatePart, LocaleConfig, TimeLimit } from '../types';
 
-export const getDateParts = (d: Date) => ({
+// Year and Month is a minimum required arguments for creating a date
+// == null is intentional to check also for undefined
+export const newDate = (Y?: number, M?: number, ...rest: number[]) =>
+  !Y || M == null ? new Date() : new Date(Y, M, ...rest);
+
+interface DateParts {
+  D: number;
+  M: number;
+  Y: number;
+}
+
+export const getDateParts = (d: Date): DateParts => ({
   D: d.getDate(),
   M: d.getMonth(),
   Y: d.getFullYear(),
 });
 
 // Days in order sun = 0 ... sat = 6
-export const getDay = (d: Date) => d.getDay();
+export const getDay = (d: Date): number => d.getDay();
 
 /*
  * We need this function to eliminate time from the comparison.
  * All date that comes to DP should go through this function.
  */
 export const getCleanDate = (d: Date): Date =>
-  new Date(getDateParts(d).Y, getDateParts(d).M, getDateParts(d).D);
+  newDate(getDateParts(d).Y, getDateParts(d).M, getDateParts(d).D);
 
 export const daysInMonth = (d: Date): number =>
-  new Date(getDateParts(d).Y, getDateParts(d).M + 1, 0).getDate();
+  newDate(getDateParts(d).Y, getDateParts(d).M + 1, 0).getDate();
 
 export const getFirstDayOfTheMonth = (d: Date): Date =>
-  new Date(getDateParts(d).Y, getDateParts(d).M, 1);
+  newDate(getDateParts(d).Y, getDateParts(d).M, 1);
 
-export const addToDate = (d: Date, value: number, part: DatePart) =>
-  new Date(
+export const addToDate = (d: Date, value: number, part: DatePart): Date =>
+  newDate(
     getDateParts(d).Y + (part === 'year' ? value : 0),
     getDateParts(d).M + (part === 'month' ? value : 0),
     getDateParts(d).D + (part === 'date' ? value : 0),
   );
 
-export const subtractFromDate = (d: Date, value: number, part: DatePart) =>
-  addToDate(d, 0 - value, part);
+export const subtractFromDate = (
+  d: Date,
+  value: number,
+  part: DatePart,
+): Date => addToDate(d, 0 - value, part);
 
-export const sortDatesAsc = (a: Date, b: Date) => a.getTime() - b.getTime();
+export const sortDatesAsc = (a: Date, b: Date): number => +a - +b;
 
 export const toLocaleDateString = (
   d: Date,
   locale?: Intl.LocalesArgument,
   options?: Intl.DateTimeFormatOptions,
-) => d.toLocaleDateString(locale, options);
+): string => d.toLocaleDateString(locale, options);
 
-export const formatMonthName = (d: Date, { locale, monthName }: LocaleConfig) =>
-  toLocaleDateString(d, locale, { month: monthName });
+export const formatMonthName = (
+  d: Date,
+  { locale, monthName }: LocaleConfig,
+): string => toLocaleDateString(d, locale, { month: monthName });
 
-export const formatDate = (d: Date, { locale, options }: LocaleConfig) =>
-  toLocaleDateString(d, locale, options);
+export const formatDate = (
+  d: Date,
+  { locale, options }: LocaleConfig,
+): string => toLocaleDateString(d, locale, options);
 
 export const getTimeDate = (
   Y: number,
@@ -52,15 +70,18 @@ export const getTimeDate = (
   D: number,
   t?: TimeLimit,
 ): Date | null =>
-  t && t.h != null && t.m != null ? new Date(Y, M, D, t.h, t.m) : null;
+  t && t.h != null && t.m != null ? newDate(Y, M, D, t.h, t.m) : null;
 
 export const formatTime = (
   d: Date,
   { locale, hour, minute, second, hour12 }: LocaleConfig,
-) =>
+): string =>
   d.toLocaleTimeString(locale, {
     hour,
     minute,
     second,
     hour12,
   });
+
+export const addAndSortAsc = (dates: Date[], d: Date) =>
+  dates.concat(d).sort(sortDatesAsc);

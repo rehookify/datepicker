@@ -4,7 +4,7 @@ import { CalendarYear, DPState, PropsGetterConfig } from './types';
 import { callAll, skipAll, skipFirst } from './utils/call-all';
 import { createPropGetter } from './utils/create-prop-getter';
 import { createYears } from './utils/create-years';
-import { getDateParts } from './utils/date';
+import { newDate, getDateParts } from './utils/date';
 import { maxDateAndAfter, minDateAndBefore } from './utils/predicates';
 
 export const useYears = ({
@@ -52,10 +52,7 @@ export const useYearsPropGetters = ({
     ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
       const isDisabled =
         !!disabled ||
-        maxDateAndAfter(
-          maxDate,
-          new Date(offsetYear + numberOfYears - 1, M, D),
-        );
+        maxDateAndAfter(maxDate, newDate(offsetYear + numberOfYears - 1, M, D));
 
       return createPropGetter(
         isDisabled,
@@ -73,7 +70,7 @@ export const useYearsPropGetters = ({
   const previousYearsButton = useCallback(
     ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
       const isDisabled =
-        !!disabled || minDateAndBefore(minDate, new Date(offsetYear, M, D));
+        !!disabled || minDateAndBefore(minDate, newDate(offsetYear, M, D));
 
       return createPropGetter(
         isDisabled,

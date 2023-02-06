@@ -4,7 +4,7 @@ import { act, renderHook } from '@testing-library/react';
 import { useDatePickerState } from '../use-date-picker-state';
 import { useYears, useYearsPropGetters, useYearsActions } from '../use-years';
 import { createYears } from '../utils/create-years';
-import { getDateParts } from '../utils/date';
+import { getDateParts, newDate } from '../utils/date';
 
 describe('useYears', () => {
   test('useMonths should return correct years list', () => {
@@ -100,7 +100,7 @@ describe('useYearsAction', () => {
     const { Y, M, D } = getDateParts(stateResult.current.state.offsetDate);
     const { setYear } = yResult.current;
 
-    act(() => setYear(new Date(Y + 3, M, D)));
+    act(() => setYear(newDate(Y + 3, M, D)));
     expect(stateResult.current.state.offsetDate.getFullYear()).toBe(Y + 3);
   });
 

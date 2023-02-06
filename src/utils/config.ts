@@ -8,28 +8,35 @@ import {
 import { DatePickerConfig, DatePickerUserConfig, DatesMode } from '../types';
 import { getCleanDate, sortDatesAsc } from './date';
 
+const sortMinMax = <T>(
+  min: T | undefined,
+  max: T | undefined,
+  sortFunction: (a: T, b: T) => number,
+): (T | undefined)[] => {
+  let [mN, mX] = [min, max];
+  if (min && max) {
+    [mN, mX] = [min, max].sort(sortFunction);
+  }
+
+  return [mN, mX];
+};
+
 export const createConfig = ({
   selectedDates = [],
   focusDate = null,
   onDatesChange,
-  calendar,
-  years,
-  dates,
+  calendar = {},
+  dates = {},
   locale,
-  time,
+  time = {},
+  years,
 }: DatePickerUserConfig = {}) => {
-  const { minDate, maxDate, ...restDates } = dates || {};
-  const { offsets = [], ...restCalendarParams } = calendar || {};
-  const { minTime, maxTime, ...restTime } = time || {};
-  let minD, maxD;
-  if (minDate && maxDate) {
-    [minD, maxD] = [minDate, maxDate].sort(sortDatesAsc);
-  }
+  const { minDate, maxDate, ...restDates } = dates;
+  const { offsets = [], ...restCalendarParams } = calendar;
+  const { minTime, maxTime, ...restTime } = time;
 
-  let minT, maxT;
-  if (minTime && maxTime) {
-    [minT, maxT] = [minTime, maxTime].sort((a, b) => a.h - b.h);
-  }
+  const [minD, maxD] = sortMinMax(minDate, maxDate, sortDatesAsc);
+  const [minT, maxT] = sortMinMax(minTime, maxTime, (a, b) => a.h - b.h);
 
   const focus =
     focusDate && selectedDates.includes(focusDate) ? focusDate : null;
@@ -47,8 +54,8 @@ export const createConfig = ({
     dates: {
       ...DEFAULT_DATES_CONFIG,
       ...restDates,
-      minDate: minDate ? getCleanDate(minD || minDate) : null,
-      maxDate: maxDate ? getCleanDate(maxD || maxDate) : null,
+      minDate: minD ? getCleanDate(minD) : null,
+      maxDate: maxD ? getCleanDate(maxD) : null,
     },
     locale: {
       ...DEFAULT_LOCALE_CONFIG,
@@ -56,8 +63,8 @@ export const createConfig = ({
     },
     time: {
       ...DEFAULT_TIME_CONFIG,
-      minTime: minT || minTime || null,
-      maxTime: maxT || maxTime || null,
+      minTime: minT || null,
+      maxTime: maxT || null,
       ...restTime,
     },
   } as DatePickerConfig;

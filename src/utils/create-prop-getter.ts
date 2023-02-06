@@ -8,14 +8,15 @@ export const createPropGetter = (
 ) => ({
   role: 'button',
   tabIndex: 0,
-  ...(isDisabled && {
-    disabled: true,
-    'aria-disabled': true,
-  }),
-  ...(!isDisabled && {
-    onClick(evt: MouseEvent<HTMLElement>) {
-      action(evt);
-    },
-  }),
+  ...(isDisabled
+    ? {
+        disabled: true,
+        'aria-disabled': true,
+      }
+    : {
+        onClick(evt: MouseEvent<HTMLElement>) {
+          action(evt);
+        },
+      }),
   ...props,
 });

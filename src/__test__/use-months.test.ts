@@ -8,7 +8,7 @@ import {
   useMonthsActions,
 } from '../use-months';
 import { createMonths } from '../utils/create-months';
-import { getDateParts } from '../utils/date';
+import { getDateParts, newDate } from '../utils/date';
 
 // Test Month data
 describe('useMonths', () => {
@@ -65,7 +65,7 @@ describe('useMonthPropGetters', () => {
     // @ts-ignore-next-line
     act(() => onClick());
     expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
-      new Date(Y, M - 1, D).getMonth(),
+      newDate(Y, M - 1, D).getMonth(),
     );
   });
 
@@ -82,7 +82,7 @@ describe('useMonthPropGetters', () => {
     // @ts-ignore-next-line
     act(() => onClick());
     expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
-      new Date(Y, M + 1, D).getMonth(),
+      newDate(Y, M + 1, D).getMonth(),
     );
   });
 });
@@ -96,8 +96,8 @@ describe('useMonthsAction', () => {
     );
     const { setMonth } = mResult.current;
 
-    const { Y, M, D } = getDateParts(new Date());
-    const nextDate = new Date(Y, M - 3, D);
+    const { Y, M, D } = getDateParts(newDate());
+    const nextDate = newDate(Y, M - 3, D);
 
     act(() => setMonth(nextDate));
     expect(stateResult.current.state.offsetDate.getMonth()).toBe(
@@ -116,7 +116,7 @@ describe('useMonthsAction', () => {
 
     act(() => setPreviousMonth());
     expect(stateResult.current.state.offsetDate.getMonth()).toBe(
-      new Date(Y, M - 1, D).getMonth(),
+      newDate(Y, M - 1, D).getMonth(),
     );
   });
 
@@ -131,7 +131,7 @@ describe('useMonthsAction', () => {
 
     act(() => setNextMonth());
     expect(stateResult.current.state.offsetDate.getMonth()).toBe(
-      new Date(Y, M + 1, D).getMonth(),
+      newDate(Y, M + 1, D).getMonth(),
     );
   });
 });

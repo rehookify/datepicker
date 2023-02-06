@@ -5,12 +5,12 @@ import { useCalendars } from '../use-calendars';
 import { useDatePickerState } from '../use-date-picker-state';
 
 import { useDays, useDaysPropGetters } from '../use-days';
-import { formatDate } from '../utils/date';
+import { formatDate, newDate } from '../utils/date';
 
 describe('useDays', () => {
   test('useDays should return correct selected and formatted dates', () => {
-    const d1 = new Date(2022, 11, 9);
-    const d2 = new Date(2022, 11, 11);
+    const d1 = newDate(2022, 11, 9);
+    const d2 = newDate(2022, 11, 11);
     const { result: stateResult } = renderHook(() =>
       useDatePickerState({ selectedDates: [d1, d2] }),
     );

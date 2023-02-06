@@ -13,27 +13,13 @@ const DatePickerContext = createContext<DatePickerContextValue>(
   {} as DatePickerContextValue,
 );
 
-export const useDatePickerContext = () => {
-  const context = useContext(DatePickerContext);
-
-  if (!context) {
-    throw new Error(
-      'Please use "useDatePickerContext" inside "DatePickerProvider"',
-    );
-  }
-
-  return context;
-};
+export const useDatePickerContext = () => useContext(DatePickerContext);
 
 export const DatePickerProvider: FC<DatePickerProviderProps> = ({
   children,
   config = {},
-}) => {
-  const value = useDatePicker(config);
-
-  return (
-    <DatePickerContext.Provider value={value}>
-      {children}
-    </DatePickerContext.Provider>
-  );
-};
+}) => (
+  <DatePickerContext.Provider value={useDatePicker(config)}>
+    {children}
+  </DatePickerContext.Provider>
+);

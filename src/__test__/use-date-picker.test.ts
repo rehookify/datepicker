@@ -2,7 +2,7 @@ import { describe, test, expect } from '@jest/globals';
 import { renderHook, act } from '@testing-library/react';
 import { useState } from 'react';
 import { useDatePicker } from '../use-date-picker';
-import { getDateParts } from '../utils/date';
+import { getDateParts, newDate } from '../utils/date';
 
 describe('useDatePicker', () => {
   test('useDatePicker returns correct selectedDates with default config', () => {
@@ -74,7 +74,7 @@ describe('useDatePicker', () => {
   test('useDatePicker: test edges with minDate and maxDate', () => {
     // For this test we will set min and max dates in the middle of the month
     // Since 9 and 11 are my favorite digit and number it will be 9-11 :)
-    const NOW = new Date();
+    const NOW = newDate();
     const { Y, M } = getDateParts(NOW);
     const minDate = 9;
     const maxDate = 11;
@@ -82,8 +82,8 @@ describe('useDatePicker', () => {
     const { result } = renderHook(() =>
       useDatePicker({
         dates: {
-          minDate: new Date(Y, M, minDate),
-          maxDate: new Date(Y, M, maxDate),
+          minDate: newDate(Y, M, minDate),
+          maxDate: newDate(Y, M, maxDate),
         },
       }),
     );

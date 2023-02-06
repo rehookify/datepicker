@@ -9,68 +9,31 @@ import {
 import { useTime, useTimePropGetter } from './use-time';
 import { useYears, useYearsActions, useYearsPropGetters } from './use-years';
 
-export const useContextCalendars = () => {
-  const s = useDatePickerStateContext();
+export const useContextCalendars = () =>
+  useCalendars(useDatePickerStateContext());
 
-  return useCalendars(s);
-};
+export const useContextDays = () => useDays(useDatePickerStateContext());
 
-export const useContextDays = () => {
-  const s = useDatePickerStateContext();
+export const useContextDaysPropGetters = () =>
+  useDaysPropGetters(useDatePickerStateContext());
 
-  return useDays(s);
-};
+export const useContextMonths = () => useMonths(useDatePickerStateContext());
 
-export const useContextDaysPropGetters = () => {
-  const s = useDatePickerStateContext();
+export const useContextMonthsPropGetters = () =>
+  useMonthsPropGetters(useDatePickerStateContext());
 
-  return useDaysPropGetters(s);
-};
+export const useContextMonthsActions = () =>
+  useMonthsActions(useDatePickerStateContext());
 
-export const useContextMonths = () => {
-  const s = useDatePickerStateContext();
+export const useContextYears = () => useYears(useDatePickerStateContext());
 
-  return useMonths(s);
-};
+export const useContextYearsPropGetters = () =>
+  useYearsPropGetters(useDatePickerStateContext());
 
-export const useContextMonthsPropGetters = () => {
-  const s = useDatePickerStateContext();
+export const useContextYearsActions = () =>
+  useYearsActions(useDatePickerStateContext());
 
-  return useMonthsPropGetters(s);
-};
+export const useContextTime = () => useTime(useDatePickerStateContext());
 
-export const useContextMonthsActions = () => {
-  const s = useDatePickerStateContext();
-
-  return useMonthsActions(s);
-};
-
-export const useContextYears = () => {
-  const s = useDatePickerStateContext();
-
-  return useYears(s);
-};
-
-export const useContextYearsPropGetters = () => {
-  const s = useDatePickerStateContext();
-
-  return useYearsPropGetters(s);
-};
-
-export const useContextYearsActions = () => {
-  const s = useDatePickerStateContext();
-
-  return useYearsActions(s);
-};
-
-export const useContextTime = () => {
-  const s = useDatePickerStateContext();
-
-  return useTime(s);
-};
-
-export const useContextTimePropGetters = () => {
-  const s = useDatePickerStateContext();
-
-  return useTimePropGetter(s);
-};
+export const useContextTimePropGetters = () =>
+  useTimePropGetter(useDatePickerStateContext());

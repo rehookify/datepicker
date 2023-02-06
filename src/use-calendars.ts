@@ -7,21 +7,15 @@ export const useCalendars = ({
   selectedDates,
   state: { offsetDate, rangeEnd, config },
 }: DPState) => {
-  const { locale, dates, calendar } = config;
-
   const calendars = createCalendars(
     offsetDate,
     selectedDates,
     rangeEnd,
-    locale,
-    dates,
-    calendar,
+    config,
   );
-
-  const weekDays = createWeekdays(calendars[0], locale);
 
   return {
     calendars,
-    weekDays,
+    weekDays: createWeekdays(calendars[0], config),
   };
 };

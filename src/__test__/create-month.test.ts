@@ -1,14 +1,14 @@
 import { describe, test, expect } from '@jest/globals';
 import { createConfig } from '../utils/config';
 import { createMonths } from '../utils/create-months';
-import { getCleanDate, getDateParts } from '../utils/date';
+import { newDate, getCleanDate, getDateParts } from '../utils/date';
 
 describe('createMonth', () => {
   test('createMonth should generate months correctly', () => {
     const { locale, dates } = createConfig();
 
     // Default configuration with no selected dates
-    const NOW = getCleanDate(new Date());
+    const NOW = getCleanDate(newDate());
     const { Y, M, D } = getDateParts(NOW);
 
     let months = createMonths(NOW, [], locale, dates);
@@ -21,7 +21,7 @@ describe('createMonth', () => {
     expect(now.length).toBe(1);
 
     // with 2 selected dates
-    months = createMonths(NOW, [NOW, new Date(Y, M + 1, D)], locale, dates);
+    months = createMonths(NOW, [NOW, newDate(Y, M + 1, D)], locale, dates);
 
     let selected = months.filter(({ selected }) => selected);
 
@@ -29,8 +29,8 @@ describe('createMonth', () => {
 
     // with 2 selection and offset date in the future
     months = createMonths(
-      new Date(Y + 1, M, D),
-      [NOW, new Date(Y, M, D + 5)],
+      newDate(Y + 1, M, D),
+      [NOW, newDate(Y, M, D + 5)],
       locale,
       dates,
     );

@@ -1,5 +1,5 @@
 import { createConfig } from '../utils/config';
-import { getCleanDate, getDateParts } from '../utils/date';
+import { newDate, getCleanDate, getDateParts } from '../utils/date';
 import { getCurrentYearPosition } from '../utils/get-current-year-position';
 
 const config = createConfig({});
@@ -8,9 +8,9 @@ export const INITIAL_STATE = {
   focusDate: null,
   rangeEnd: null,
   config,
-  offsetDate: getCleanDate(new Date()),
+  offsetDate: getCleanDate(newDate()),
   offsetYear: getCurrentYearPosition(
-    getDateParts(getCleanDate(new Date())).Y,
+    getDateParts(getCleanDate(newDate())).Y,
     config.years,
   ),
 };

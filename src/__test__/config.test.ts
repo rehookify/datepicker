@@ -1,6 +1,6 @@
 import { describe, test, expect } from '@jest/globals';
 import { createConfig } from '../utils/config';
-import { getDateParts } from '../utils/date';
+import { newDate, getDateParts } from '../utils/date';
 import { isBefore } from '../utils/predicates';
 import { DEFAULT_CONFIG } from '../__mock__/config';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
@@ -28,23 +28,23 @@ describe('createConfig', () => {
   });
 
   test('correctly composes dates', () => {
-    const d = new Date();
+    const d = newDate();
     const { Y, M } = getDateParts(d);
     const { dates, selectedDates } = createConfig({
       selectedDates: [d],
       dates: {
         mode: 'multiple',
         toggle: true,
-        minDate: new Date(Y, M - 1, 1),
-        maxDate: new Date(Y, M + 1, 0),
+        minDate: newDate(Y, M - 1, 1),
+        maxDate: newDate(Y, M + 1, 0),
         limit: 2,
       },
     });
 
     expect(dates.mode).toBe('multiple');
     expect(dates.toggle).toBeTruthy();
-    expect(dates.minDate).toEqual(new Date(Y, M - 1, 1));
-    expect(dates.maxDate).toEqual(new Date(Y, M + 1, 0));
+    expect(dates.minDate).toEqual(newDate(Y, M - 1, 1));
+    expect(dates.maxDate).toEqual(newDate(Y, M + 1, 0));
     expect(selectedDates.length).toBe(1);
     expect(dates.limit).toBe(2);
   });
@@ -58,12 +58,12 @@ describe('createConfig', () => {
   });
 
   test('should sort min and max date in ASC order', () => {
-    const d = new Date();
+    const d = newDate();
     const { Y, M, D } = getDateParts(d);
     const { dates } = createConfig({
       dates: {
-        minDate: new Date(Y, M + 1, D),
-        maxDate: new Date(Y, M - 1, D),
+        minDate: newDate(Y, M + 1, D),
+        maxDate: newDate(Y, M - 1, D),
       },
     });
 
@@ -101,8 +101,8 @@ describe('createConfig', () => {
   });
 
   test('should set focusTime if it is present in selectedDates', () => {
-    const d1 = new Date();
-    const d2 = new Date(d1.setDate(33));
+    const d1 = newDate();
+    const d2 = newDate(d1.setDate(33));
     const c1 = createConfig({ selectedDates: [d1], focusDate: d2 });
 
     expect(c1.focusDate).toBeNull();

@@ -10,51 +10,50 @@ import {
 import { useTime, useTimePropGetter } from './use-time';
 import { useYears, useYearsActions, useYearsPropGetters } from './use-years';
 
-export const useDatePicker = (config?: DatePickerUserConfig) => {
-  const dpState = useDatePickerState(config);
+interface Data
+  extends ReturnType<typeof useCalendars>,
+    ReturnType<typeof useDays>,
+    ReturnType<typeof useMonths>,
+    ReturnType<typeof useTime>,
+    ReturnType<typeof useYears> {}
 
-  const { calendars, weekDays } = useCalendars(dpState);
-  const { selectedDates, formattedDates } = useDays(dpState);
-  const { dayButton } = useDaysPropGetters(dpState);
-  const { months } = useMonths(dpState);
-  const { monthButton, nextMonthButton, previousMonthButton } =
-    useMonthsPropGetters(dpState);
-  const { setMonth, setNextMonth, setPreviousMonth } =
-    useMonthsActions(dpState);
-  const { years } = useYears(dpState);
-  const { yearButton, nextYearsButton, previousYearsButton } =
-    useYearsPropGetters(dpState);
-  const { setYear, setNextYears, setPreviousYears } = useYearsActions(dpState);
-  const { time } = useTime(dpState);
-  const { timeButton } = useTimePropGetter(dpState);
+interface PropGetters
+  extends ReturnType<typeof useDaysPropGetters>,
+    ReturnType<typeof useMonthsPropGetters>,
+    ReturnType<typeof useTimePropGetter>,
+    ReturnType<typeof useYearsPropGetters> {}
+
+interface Actions
+  extends ReturnType<typeof useMonthsActions>,
+    ReturnType<typeof useYearsActions> {}
+export interface UseDatePickerValue {
+  data: Data;
+  propGetters: PropGetters;
+  actions: Actions;
+}
+
+export const useDatePicker = (
+  config?: DatePickerUserConfig,
+): UseDatePickerValue => {
+  const dpState = useDatePickerState(config);
 
   return {
     data: {
-      calendars,
-      weekDays,
-      months,
-      years,
-      selectedDates,
-      formattedDates,
-      time,
+      ...useCalendars(dpState),
+      ...useDays(dpState),
+      ...useMonths(dpState),
+      ...useTime(dpState),
+      ...useYears(dpState),
     },
     propGetters: {
-      nextMonthButton,
-      previousMonthButton,
-      dayButton,
-      monthButton,
-      yearButton,
-      nextYearsButton,
-      previousYearsButton,
-      timeButton,
+      ...useDaysPropGetters(dpState),
+      ...useMonthsPropGetters(dpState),
+      ...useTimePropGetter(dpState),
+      ...useYearsPropGetters(dpState),
     },
     actions: {
-      setMonth,
-      setNextMonth,
-      setPreviousMonth,
-      setYear,
-      setNextYears,
-      setPreviousYears,
+      ...useMonthsActions(dpState),
+      ...useYearsActions(dpState),
     },
   };
 };
