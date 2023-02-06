@@ -260,7 +260,7 @@ const App = () => {
 }
 ```
 
-## 📚 Check the [Examples](https://github.com/rehookify/datepicker/EXAMPLES.md)
+## 📚 Check the [Examples](https://github.com/rehookify/datepicker/blob/main/EXAMPLES.md)
 
 ## API reference
 
