@@ -33,12 +33,23 @@ export const daysInMonth = (d: Date): number =>
 export const getFirstDayOfTheMonth = (d: Date): Date =>
   newDate(getDateParts(d).Y, getDateParts(d).M, 1);
 
-export const addToDate = (d: Date, value: number, part: DatePart): Date =>
-  newDate(
-    getDateParts(d).Y + (part === 'year' ? value : 0),
-    getDateParts(d).M + (part === 'month' ? value : 0),
-    getDateParts(d).D + (part === 'date' ? value : 0),
+export const addToDate = (d: Date, value: number, part: DatePart): Date => {
+  const { Y, M, D } = getDateParts(d);
+  // Cover case when offsetDate is 31 and next month doesn't have 31 days
+  // More details here https://github.com/rehookify/datepicker/issues/10
+  const nextDate =
+    part === 'date'
+      ? D + value
+      : part === 'month' && D > daysInMonth(newDate(Y, M + value, 1))
+      ? daysInMonth(newDate(Y, M + value, 1))
+      : D;
+
+  return newDate(
+    Y + (part === 'year' ? value : 0),
+    M + (part === 'month' ? value : 0),
+    nextDate,
   );
+};
 
 export const subtractFromDate = (
   d: Date,

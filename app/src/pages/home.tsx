@@ -62,11 +62,6 @@ export const HomePage = () => {
       minDate: new Date(2000, 0, 1),
       maxDate: new Date(),
     },
-    time: {
-      interval: 30,
-      minTime: { h: 9, m: 0 },
-      maxTime: { h: 18, m: 0 },
-    },
     calendar: {
       offsets: [-1, 1],
     },

@@ -33,6 +33,8 @@ Help us in our struggle, 💰  [United24](https://u24.gov.ua/), [KOLO](https://w
 npm i -S @rehookify/datepicker
 ```
 
+## 📚 Check the [Examples](https://github.com/rehookify/datepicker/blob/main/EXAMPLES.md)
+
 ## Quickstart: modular use
 
 ### With modular hooks
@@ -259,8 +261,6 @@ const App = () => {
   );
 }
 ```
-
-## 📚 Check the [Examples](https://github.com/rehookify/datepicker/blob/main/EXAMPLES.md)
 
 ## API reference
 

@@ -52,36 +52,42 @@ describe('getFirstDayOfTheMonth', () => {
 });
 
 describe('addToDate', () => {
-  const testDate = newDate(2022, 0, 1);
+  const start = newDate(2022, 0, 1);
+  const end = newDate(2023, 0, 31);
   test('addToDate adds years correctly', () => {
-    expect(addToDate(testDate, 1, 'year').getFullYear()).toBe(2023);
-    expect(addToDate(testDate, 10, 'year').getFullYear()).toBe(2032);
-    expect(addToDate(testDate, -1, 'year').getFullYear()).toBe(2021);
+    expect(addToDate(start, 1, 'year').getFullYear()).toBe(2023);
+    expect(addToDate(start, 10, 'year').getFullYear()).toBe(2032);
+    expect(addToDate(start, -1, 'year').getFullYear()).toBe(2021);
   });
 
   test('addToDate adds months correctly', () => {
-    expect(addToDate(testDate, 1, 'month').getMonth()).toBe(1);
-    expect(addToDate(testDate, 10, 'month').getMonth()).toBe(10);
+    expect(addToDate(start, 1, 'month').getMonth()).toBe(1);
+    expect(addToDate(start, 10, 'month').getMonth()).toBe(10);
+
+    // Edge case when we adding 1 month to the 31 of January
+    // the February doesn't have 31 days so it should return the last day of February
+    expect(addToDate(end, 1, 'month').getMonth()).toBe(1);
+    expect(addToDate(end, 1, 'month').getDate()).toBe(28);
 
     //Edge cases switching between years forward and backward
-    expect(addToDate(testDate, -1, 'month').getMonth()).toBe(11);
-    expect(addToDate(testDate, -1, 'month').getFullYear()).toBe(2021);
-    expect(addToDate(testDate, 12, 'month').getMonth()).toBe(0);
-    expect(addToDate(testDate, 12, 'month').getFullYear()).toBe(2023);
+    expect(addToDate(start, -1, 'month').getMonth()).toBe(11);
+    expect(addToDate(start, -1, 'month').getFullYear()).toBe(2021);
+    expect(addToDate(start, 12, 'month').getMonth()).toBe(0);
+    expect(addToDate(start, 12, 'month').getFullYear()).toBe(2023);
   });
 
   test('addToDate adds dates correctly', () => {
-    expect(addToDate(testDate, 1, 'date').getDate()).toBe(2);
+    expect(addToDate(start, 1, 'date').getDate()).toBe(2);
 
     //Edge cases switching between months and years
     //It should be the 1 of February
-    expect(addToDate(testDate, 31, 'date').getDate()).toBe(1);
-    expect(addToDate(testDate, 31, 'date').getMonth()).toBe(1);
+    expect(addToDate(start, 31, 'date').getDate()).toBe(1);
+    expect(addToDate(start, 31, 'date').getMonth()).toBe(1);
 
     // It should be the 31 of December 2021
-    expect(addToDate(testDate, -1, 'date').getDate()).toBe(31);
-    expect(addToDate(testDate, -1, 'date').getMonth()).toBe(11);
-    expect(addToDate(testDate, -1, 'date').getFullYear()).toBe(2021);
+    expect(addToDate(start, -1, 'date').getDate()).toBe(31);
+    expect(addToDate(start, -1, 'date').getMonth()).toBe(11);
+    expect(addToDate(start, -1, 'date').getFullYear()).toBe(2021);
   });
 });
 
