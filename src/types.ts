@@ -1,4 +1,5 @@
-import type { MouseEvent, Dispatch } from 'react';
+import type { Dispatch, MouseEvent } from 'react';
+
 import { Action, State } from './state-reducer';
 
 export type DayRange =

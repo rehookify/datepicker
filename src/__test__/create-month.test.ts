@@ -1,7 +1,8 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
+
 import { createConfig } from '../utils/config';
 import { createMonths } from '../utils/create-months';
-import { newDate, getCleanDate, getDateParts } from '../utils/date';
+import { getCleanDate, getDateParts, newDate } from '../utils/date';
 
 describe('createMonth', () => {
   test('createMonth should generate months correctly', () => {

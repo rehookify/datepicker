@@ -1,7 +1,8 @@
 import { describe, expect, test } from '@jest/globals';
+
 import {
-  getStartDecadePosition,
   getFluidYearPosition,
+  getStartDecadePosition,
 } from '../utils/get-current-year-position';
 
 describe('getStartDecadePosition', () => {

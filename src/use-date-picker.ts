@@ -3,9 +3,9 @@ import { useCalendars } from './use-calendars';
 import { useDatePickerState } from './use-date-picker-state';
 import { useDays, useDaysPropGetters } from './use-days';
 import {
+  useMonths,
   useMonthsActions,
   useMonthsPropGetters,
-  useMonths,
 } from './use-months';
 import { useTime, useTimePropGetter } from './use-time';
 import { useYears, useYearsActions, useYearsPropGetters } from './use-years';

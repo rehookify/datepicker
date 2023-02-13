@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import { act, renderHook } from '@testing-library/react';
+import { useState } from 'react';
+
 import { useCalendars } from '../use-calendars';
 import { useDatePickerState } from '../use-date-picker-state';
-
 import { useDays, useDaysPropGetters } from '../use-days';
 import { formatDate, newDate } from '../utils/date';
 

@@ -1,6 +1,6 @@
-export { CalendarHeaderTitle } from './calendar-header-title';
-export { CalendarHeader } from './calendar-header';
 export { Calendar } from './calendar';
+export { CalendarHeader } from './calendar-header';
+export { CalendarHeaderTitle } from './calendar-header-title';
 export { ChevronLeft } from './chevron-left';
 export { ChevronRight } from './chevron-right';
 export { Container } from './container';

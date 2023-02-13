@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import { renderHook } from '@testing-library/react';
 
 import { useCalendars } from '../use-calendars';

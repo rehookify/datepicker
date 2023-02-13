@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import '../styles/time.css';
+
 import { useDatePicker } from '@rehookify/datepicker';
+import React, { useEffect, useState } from 'react';
 
 import {
   Calendar,
@@ -17,8 +19,6 @@ import {
   getMonthClassName,
   getYearsClassName,
 } from '../utils/class-names';
-
-import '../styles/time.css';
 
 const BODY = document.body;
 

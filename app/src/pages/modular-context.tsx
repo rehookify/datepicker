@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   useContextCalendars,
   useContextDaysPropGetters,
@@ -7,6 +6,8 @@ import {
   useContextYears,
   useContextYearsPropGetters,
 } from '@rehookify/datepicker';
+import React from 'react';
+
 import {
   Calendar,
   CalendarHeader,

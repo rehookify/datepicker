@@ -1,4 +1,5 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
+
 import { createConfig } from '../utils/config';
 import { newDate } from '../utils/date';
 import { getMultipleDates } from '../utils/get-multiple-dates';

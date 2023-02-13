@@ -1,14 +1,15 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
+
 import { newDate } from '../utils/date';
 import {
-  isSame,
-  isBefore,
+  includeDate,
   isAfter,
+  isBefore,
   isBetween,
+  isSame,
   maxDateAndAfter,
   minDateAndBefore,
   minDateAndBeforeFirstDay,
-  includeDate,
 } from '../utils/predicates';
 
 describe('isSame', () => {

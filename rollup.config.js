@@ -4,11 +4,13 @@ import sourcemaps from 'rollup-plugin-sourcemaps';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
-export function createRollupConfig({ name, format, input, tsconfig }) {
+import p from './package.json';
+
+function createRollupConfig({ name, format, input, tsconfig }) {
   /*
-  * `.mjs` will always be treated as ES Module, check 👇
-  * https://nodejs.org/docs/latest/api/packages.html#packages_determining_module_system
-  */
+   * `.mjs` will always be treated as ES Module, check 👇
+   * https://nodejs.org/docs/latest/api/packages.html#packages_determining_module_system
+   */
   const extName = format === 'esm' ? 'mjs' : 'js';
   const outputName = 'dist/' + [name, format, extName].join('.');
 
@@ -46,3 +48,23 @@ export function createRollupConfig({ name, format, input, tsconfig }) {
 
   return config;
 }
+
+const buildsOptions = [
+  {
+    name: 'index',
+    format: 'cjs',
+    input: p.source,
+  },
+  {
+    name: 'index',
+    format: 'esm',
+    input: p.source,
+  },
+  {
+    name: 'index',
+    format: 'umd',
+    input: p.source,
+  },
+];
+
+export default buildsOptions.map(createRollupConfig);

@@ -1,5 +1,5 @@
 import { createConfig } from '../utils/config';
-import { newDate, getCleanDate, getDateParts } from '../utils/date';
+import { getCleanDate, getDateParts, newDate } from '../utils/date';
 import { getCurrentYearPosition } from '../utils/get-current-year-position';
 
 const config = createConfig({});

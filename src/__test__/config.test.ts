@@ -1,9 +1,10 @@
-import { describe, test, expect } from '@jest/globals';
-import { createConfig } from '../utils/config';
-import { newDate, getDateParts } from '../utils/date';
-import { isBefore } from '../utils/predicates';
+import { describe, expect, test } from '@jest/globals';
+
 import { DEFAULT_CONFIG } from '../__mock__/config';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
+import { createConfig } from '../utils/config';
+import { getDateParts, newDate } from '../utils/date';
+import { isBefore } from '../utils/predicates';
 
 describe('createConfig', () => {
   test('should create correct default config', () => {

@@ -1,6 +1,7 @@
-import { describe, test, expect } from '@jest/globals';
-import { renderHook, act } from '@testing-library/react';
+import { describe, expect, test } from '@jest/globals';
+import { act, renderHook } from '@testing-library/react';
 import { useState } from 'react';
+
 import { useDatePicker } from '../use-date-picker';
 import { getDateParts, newDate } from '../utils/date';
 

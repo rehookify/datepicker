@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
+
 import { setOffset, setYear } from './state-reducer';
 import { CalendarYear, DPState, PropsGetterConfig } from './types';
 import { callAll, skipAll, skipFirst } from './utils/call-all';
 import { createPropGetter } from './utils/create-prop-getter';
 import { createYears } from './utils/create-years';
-import { newDate, getDateParts } from './utils/date';
+import { getDateParts, newDate } from './utils/date';
 import { maxDateAndAfter, minDateAndBefore } from './utils/predicates';
 
 export const useYears = ({

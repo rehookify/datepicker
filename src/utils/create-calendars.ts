@@ -6,7 +6,6 @@ import {
   DatesConfig,
   LocaleConfig,
 } from '../types';
-
 import {
   addToDate,
   formatMonthName,
@@ -18,10 +17,10 @@ import {
 import { getCalendarMonthParams } from './get-calendar-month-params';
 import { getDateRangeState } from './get-date-range-state';
 import {
+  includeDate,
   isSame,
   maxDateAndAfter,
   minDateAndBefore,
-  includeDate,
 } from './predicates';
 
 const createCalendar = (

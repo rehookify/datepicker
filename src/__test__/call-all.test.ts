@@ -1,5 +1,6 @@
-import { describe, expect, test, jest } from '@jest/globals';
-import { callAll, skipFirst, skipAll } from '../utils/call-all';
+import { describe, expect, jest, test } from '@jest/globals';
+
+import { callAll, skipAll, skipFirst } from '../utils/call-all';
 
 describe('callAll', () => {
   test('callAll calls all functions', () => {

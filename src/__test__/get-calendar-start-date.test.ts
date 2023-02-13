@@ -1,4 +1,5 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
+
 import { getCleanDate, getDateParts, newDate } from '../utils/date';
 import { getCalendarStartDate } from '../utils/get-calendar-start-date';
 

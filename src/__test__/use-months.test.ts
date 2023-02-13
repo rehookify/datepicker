@@ -1,11 +1,11 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import { act, renderHook } from '@testing-library/react';
 
 import { useDatePickerState } from '../use-date-picker-state';
 import {
   useMonths,
-  useMonthsPropGetters,
   useMonthsActions,
+  useMonthsPropGetters,
 } from '../use-months';
 import { createMonths } from '../utils/create-months';
 import { getDateParts, newDate } from '../utils/date';

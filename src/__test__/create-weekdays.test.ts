@@ -1,10 +1,10 @@
-import { describe, test, expect } from '@jest/globals';
-import { createCalendars } from '../utils/create-calendars';
-import { createConfig } from '../utils/config';
-import { createWeekdays } from '../utils/create-weekdays';
-import { getCleanDate, newDate } from '../utils/date';
+import { describe, expect, test } from '@jest/globals';
 
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
+import { createConfig } from '../utils/config';
+import { createCalendars } from '../utils/create-calendars';
+import { createWeekdays } from '../utils/create-weekdays';
+import { getCleanDate, newDate } from '../utils/date';
 
 const now = getCleanDate(newDate());
 const config = createConfig();

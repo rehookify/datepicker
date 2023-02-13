@@ -1,8 +1,8 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import { act, renderHook } from '@testing-library/react';
 
 import { useDatePickerState } from '../use-date-picker-state';
-import { useYears, useYearsPropGetters, useYearsActions } from '../use-years';
+import { useYears, useYearsActions, useYearsPropGetters } from '../use-years';
 import { createYears } from '../utils/create-years';
 import { getDateParts, newDate } from '../utils/date';
 

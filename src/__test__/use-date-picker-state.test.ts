@@ -1,8 +1,9 @@
-import { describe, test, expect } from '@jest/globals';
-import { renderHook, act } from '@testing-library/react';
-import { useDatePickerState } from '../use-date-picker-state';
-import { setOffset, setRangeEnd, setYear } from '../state-reducer';
+import { describe, expect, test } from '@jest/globals';
+import { act, renderHook } from '@testing-library/react';
+
 import { INITIAL_STATE } from '../__mock__/initial-state';
+import { setOffset, setRangeEnd, setYear } from '../state-reducer';
+import { useDatePickerState } from '../use-date-picker-state';
 import { getDateParts, newDate } from '../utils/date';
 import { getCurrentYearPosition } from '../utils/get-current-year-position';
 

@@ -1,7 +1,8 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
+
+import { INITIAL_STATE } from '../__mock__/initial-state';
 import { createConfig } from '../utils/config';
 import { createInitialState } from '../utils/create-initial-state';
-import { INITIAL_STATE } from '../__mock__/initial-state';
 
 describe('createInitialState', () => {
   test('createInitialState should create correct state', () => {

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, FC, ReactNode } from 'react';
+import React, { createContext, FC, ReactNode, useContext } from 'react';
 
 import { DatePickerUserConfig, DPState } from './types';
 import { useDatePickerState } from './use-date-picker-state';

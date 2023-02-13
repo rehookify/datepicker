@@ -1,9 +1,9 @@
 import {
   DEFAULT_CALENDAR_CONFIG,
-  DEFAULT_YEARS_CONFIG,
   DEFAULT_DATES_CONFIG,
   DEFAULT_LOCALE_CONFIG,
   DEFAULT_TIME_CONFIG,
+  DEFAULT_YEARS_CONFIG,
 } from '../constants';
 import { DatePickerConfig, DatePickerUserConfig, DatesMode } from '../types';
 import { getCleanDate, sortDatesAsc } from './date';

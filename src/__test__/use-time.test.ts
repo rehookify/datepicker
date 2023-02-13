@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 import { act, renderHook } from '@testing-library/react';
-import { useTime, useTimePropGetter } from '../use-time';
-import { useDatePickerState } from '../use-date-picker-state';
+import { useState } from 'react';
+
 import { useCalendars } from '../use-calendars';
+import { useDatePickerState } from '../use-date-picker-state';
 import { useDaysPropGetters } from '../use-days';
+import { useTime, useTimePropGetter } from '../use-time';
 
 describe('useTime', () => {
   test('should return correct time array', () => {

@@ -1,4 +1,5 @@
-import { describe, test, expect, jest } from '@jest/globals';
+import { describe, expect, jest, test } from '@jest/globals';
+
 import { createPropGetter } from '../utils/create-prop-getter';
 
 describe('createPropGetter', () => {

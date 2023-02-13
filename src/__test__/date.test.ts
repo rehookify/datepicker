@@ -1,22 +1,23 @@
 import { describe, expect, test } from '@jest/globals';
-import {
-  getCleanDate,
-  daysInMonth,
-  getFirstDayOfTheMonth,
-  addToDate,
-  subtractFromDate,
-  sortDatesAsc,
-  formatMonthName,
-  formatDate,
-  getDateParts,
-  toLocaleDateString,
-  getTimeDate,
-  formatTime,
-  newDate,
-  addAndSortAsc,
-} from '../utils/date';
-import { DEFAULT_LOCALE_CONFIG } from '../constants';
+
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
+import { DEFAULT_LOCALE_CONFIG } from '../constants';
+import {
+  addAndSortAsc,
+  addToDate,
+  daysInMonth,
+  formatDate,
+  formatMonthName,
+  formatTime,
+  getCleanDate,
+  getDateParts,
+  getFirstDayOfTheMonth,
+  getTimeDate,
+  newDate,
+  sortDatesAsc,
+  subtractFromDate,
+  toLocaleDateString,
+} from '../utils/date';
 
 describe('getCleanDate', () => {
   test('getCleanDate should return Date without hours, minutes, seconds and milliseconds', () => {

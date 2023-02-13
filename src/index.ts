@@ -1,4 +1,5 @@
 export * from './date-picker-provider';
+export * from './date-picker-state-provider';
 export * from './types';
 export * from './use-calendars';
 export * from './use-context-hooks';
@@ -7,5 +8,4 @@ export * from './use-date-picker-state';
 export * from './use-days';
 export * from './use-months';
 export * from './use-time';
-export * from './date-picker-state-provider';
 export * from './use-years';

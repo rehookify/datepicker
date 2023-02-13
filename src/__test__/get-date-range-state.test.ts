@@ -1,4 +1,5 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
+
 import { getCleanDate, newDate } from '../utils/date';
 import { getDateRangeState } from '../utils/get-date-range-state';
 
