@@ -14,8 +14,9 @@ export const getDateRangeState = (
   selectedDates: Date[],
   mode: DatesMode,
 ): DayRange => {
-  if (!isRange(mode)) return '';
+  if (!isRange(mode) || selectedDates.length === 0) return '';
   const [start, end] = selectedDates;
+
   // We have completed range
   if (start && end) {
     if (isSame(date, getCleanDate(start))) {
