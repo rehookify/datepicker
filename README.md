@@ -822,11 +822,11 @@ interface YearsConfig {
 ```
 
 - `numberOfYears: number` - the number of years you want to show to a user.
-- `mode: 'decade' | 'fluid'` - it defines how current year will be centered;
+- `mode: 'decade' | 'fluid' | 'exact'` - it defines how current year will be centered;
 
 ✏️ NOTE: difference between `decade` and `fluid` mode
 
-Years matrix for `decade` mode;
+Years matrix for `decade` mode.
 
 It will count current decade (for 2022 is 2020-2029) and adds end of the previous and start of the next decade
 
@@ -837,7 +837,7 @@ It will count current decade (for 2022 is 2020-2029) and adds end of the previou
 2028 2029 2030
 ```
 
-Years matrix for `fluid` mode;
+Years matrix for `fluid` mode.
 
 It will place current year in the middle of the list -1 (we want to look at the future more) 😉
 
@@ -846,6 +846,17 @@ It will place current year in the middle of the list -1 (we want to look at the 
 2020 2021 2022
 2023 2024 2025
 2026 2027 2028
+```
+
+Years matrix for `exact` mode.
+
+It will place current year at the end of the list
+
+```text
+2012 2013 2014
+2015 2016 2017
+2018 2019 2020
+2021 2022 2023
 ```
 
 - `step: number` - it defines step for previous/nextYearsButton

@@ -63,7 +63,7 @@ export interface CalendarConfig {
   startDay: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-export type YearsMode = 'decade' | 'fluid';
+export type YearsMode = 'decade' | 'fluid' | 'exact';
 
 // @TODO remove after v2.0.0
 interface GeneralYearsConfig {

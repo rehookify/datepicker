@@ -1,8 +1,6 @@
 import { Dispatch } from 'react';
 
 import { DatePickerConfig } from './types';
-import { getDateParts } from './utils/date';
-import { getCurrentYearPosition } from './utils/get-current-year-position';
 
 export interface State {
   config: DatePickerConfig;
@@ -53,10 +51,6 @@ export const stateReducer = (state: State, action: Action) => {
       return {
         ...state,
         offsetDate: action.date,
-        offsetYear: getCurrentYearPosition(
-          getDateParts(action.date).Y,
-          state.config.years,
-        ),
       };
     case SET_RANGE_END_ACTION:
       return {
