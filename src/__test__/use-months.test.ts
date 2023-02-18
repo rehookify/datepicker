@@ -67,6 +67,17 @@ describe('useMonthPropGetters', () => {
     expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
       newDate(Y, M - 1, D).getMonth(),
     );
+
+    // should move 3 months back
+    const { onClick: onQuarterBack } = mResult.current.previousMonthButton({
+      step: 3,
+    });
+
+    // @ts-ignore-next-line
+    act(() => onQuarterBack());
+    expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
+      newDate(Y, M - 3, D).getMonth(),
+    );
   });
 
   test('nextMonthButton should set next month', () => {
@@ -83,6 +94,17 @@ describe('useMonthPropGetters', () => {
     act(() => onClick());
     expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
       newDate(Y, M + 1, D).getMonth(),
+    );
+
+    // should move 3 months forward
+    const { onClick: onQuarterForward } = mResult.current.nextMonthButton({
+      step: 3,
+    });
+
+    // @ts-ignore-next-line
+    act(() => onQuarterForward());
+    expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
+      newDate(Y, M + 3, D).getMonth(),
     );
   });
 });

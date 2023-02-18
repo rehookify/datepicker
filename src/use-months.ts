@@ -1,7 +1,12 @@
 import { useCallback } from 'react';
 
 import { setOffset } from './state-reducer';
-import { CalendarMonth, DPState, PropsGetterConfig } from './types';
+import {
+  CalendarMonth,
+  DPState,
+  MonthsPropGettersConfig,
+  PropsGetterConfig,
+} from './types';
 import { callAll, skipFirst } from './utils/call-all';
 import { createMonths } from './utils/create-months';
 import { createPropGetter } from './utils/create-prop-getter';
@@ -50,8 +55,13 @@ export const useMonthsPropGetters = ({
   );
 
   const nextMonthButton = useCallback(
-    ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
-      const nextMonth = addToDate(offsetDate, 1, 'month');
+    ({
+      onClick,
+      disabled,
+      step = 1,
+      ...rest
+    }: MonthsPropGettersConfig = {}) => {
+      const nextMonth = addToDate(offsetDate, step, 'month');
       const isDisabled =
         !!disabled ||
         maxDateAndAfter(maxDate, getFirstDayOfTheMonth(nextMonth));
@@ -66,8 +76,13 @@ export const useMonthsPropGetters = ({
   );
 
   const previousMonthButton = useCallback(
-    ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
-      const nextMonth = subtractFromDate(offsetDate, 1, 'month');
+    ({
+      onClick,
+      disabled,
+      step = 1,
+      ...rest
+    }: MonthsPropGettersConfig = {}) => {
+      const nextMonth = subtractFromDate(offsetDate, step, 'month');
       const isDisabled =
         !!disabled || minDateAndBeforeFirstDay(minDate, nextMonth);
 

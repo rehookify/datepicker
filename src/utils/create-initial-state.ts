@@ -1,9 +1,10 @@
+import { State } from '../state-reducer';
 import { DatePickerConfig } from '../types';
 import { getCleanDate, getDateParts, newDate } from './date';
 import { getCalendarStartDate } from './get-calendar-start-date';
 import { getCurrentYearPosition } from './get-current-year-position';
 
-export const createInitialState = (config: DatePickerConfig) => {
+export const createInitialState = (config: DatePickerConfig): State => {
   const {
     selectedDates,
     focusDate,
