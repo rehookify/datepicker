@@ -47,7 +47,6 @@ export interface PropsGetterConfig extends Record<string, unknown> {
 
 export interface MonthsPropGettersConfig extends PropsGetterConfig {
   step?: number;
-  offset?: number;
 }
 
 export type DatesMode = 'single' | 'multiple' | 'range';

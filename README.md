@@ -505,19 +505,19 @@ Params:
 
 #### nextMonthButton
 
-`nextMonthButton` moves months pagination one step forward.
+`nextMonthButton` moves months pagination forward. You can specify steps by passing them to configuration. `nextMonthButton({ step: 12 })`
 
 Params:
 
-- `props?: PropsGetterConfig`
+- `props?: MonthPropsGetterConfig`
 
 #### previousMonthButton
 
-`previousMonthButton` moves months pagination one step backward.
+`previousMonthButton` moves months pagination backward. You can specify steps by passing them to configuration. `previousMonthButton({ step: 3 })`
 
 Params:
 
-- `props?: PropsGetterConfig`
+- `props?: MonthPropsGetterConfig`
 
 #### yearButton
 
@@ -961,8 +961,8 @@ Months data.
 ```ts
 type UseMonthsPropGetters = (state: DPState) => {
   monthButton(month: CalendarMonth, config: PropsGetterConfig): void,
-  nextMonthButton(config: PropsGetterConfig): void,
-  previousMonthButton(config: PropsGetterConfig): void,
+  nextMonthButton(config: MonthsPropsGetterConfig): void,
+  previousMonthButton(config: MonthsPropsGetterConfig): void,
 };
 ```
 
