@@ -1,5 +1,7 @@
-import React, { FC, PropsWithChildren } from 'react';
+import clsx from 'clsx';
+import React, { FC, HTMLAttributes } from 'react';
 
-export const Calendar: FC<PropsWithChildren> = ({ children }) => (
-  <div className="calendar">{children}</div>
-);
+export const Calendar: FC<HTMLAttributes<HTMLDivElement>> = ({
+  className,
+  ...props
+}) => <div className={clsx('calendar', className)} {...props} />;

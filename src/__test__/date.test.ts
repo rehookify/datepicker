@@ -174,7 +174,7 @@ describe('toLocaleDateString', () => {
 describe('getTimeDate', () => {
   const { Y, M, D } = getDateParts(newDate());
   test('should return null', () => {
-    expect(getTimeDate(Y, M, D)).toBe(null);
+    expect(getTimeDate(Y, M, D)).toBe(undefined);
   });
 
   test('should return date with limit', () => {

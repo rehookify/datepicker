@@ -14,8 +14,6 @@ export const DEFAULT_CONFIG = {
   dates: {
     mode: 'single',
     toggle: false,
-    minDate: null,
-    maxDate: null,
     selectSameDate: false,
   },
   locale: {
@@ -31,7 +29,5 @@ export const DEFAULT_CONFIG = {
   },
   time: {
     interval: 30,
-    minTime: null,
-    maxTime: null,
   },
 };

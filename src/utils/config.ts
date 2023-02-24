@@ -5,21 +5,13 @@ import {
   DEFAULT_TIME_CONFIG,
   DEFAULT_YEARS_CONFIG,
 } from '../constants';
-import { DatePickerConfig, DatePickerUserConfig, DatesMode } from '../types';
-import { getCleanDate, sortDatesAsc } from './date';
-
-const sortMinMax = <T>(
-  min: T | undefined,
-  max: T | undefined,
-  sortFunction: (a: T, b: T) => number,
-): (T | undefined)[] => {
-  let [mN, mX] = [min, max];
-  if (min && max) {
-    [mN, mX] = [min, max].sort(sortFunction);
-  }
-
-  return [mN, mX];
-};
+import type {
+  DatePickerConfig,
+  DatePickerUserConfig,
+  DatesMode,
+} from '../types';
+import { getCleanDate, sortDatesAsc, sortMinMax } from './date';
+import { includeDate } from './predicates';
 
 export const createConfig = ({
   selectedDates = [],
@@ -29,8 +21,9 @@ export const createConfig = ({
   dates = {},
   locale,
   time = {},
+  exclude = {},
   years,
-}: DatePickerUserConfig = {}) => {
+}: DatePickerUserConfig = {}): DatePickerConfig => {
   const { minDate, maxDate, ...restDates } = dates;
   const { offsets = [], ...restCalendarParams } = calendar;
   const { minTime, maxTime, ...restTime } = time;
@@ -39,7 +32,7 @@ export const createConfig = ({
   const [minT, maxT] = sortMinMax(minTime, maxTime, (a, b) => a.h - b.h);
 
   const focus =
-    focusDate && selectedDates.includes(focusDate) ? focusDate : null;
+    focusDate && includeDate(selectedDates, focusDate) ? focusDate : null;
 
   return {
     selectedDates,
@@ -54,8 +47,8 @@ export const createConfig = ({
     dates: {
       ...DEFAULT_DATES_CONFIG,
       ...restDates,
-      minDate: minD ? getCleanDate(minD) : null,
-      maxDate: maxD ? getCleanDate(maxD) : null,
+      minDate: minD && getCleanDate(minD),
+      maxDate: maxD && getCleanDate(maxD),
     },
     locale: {
       ...DEFAULT_LOCALE_CONFIG,
@@ -63,11 +56,12 @@ export const createConfig = ({
     },
     time: {
       ...DEFAULT_TIME_CONFIG,
-      minTime: minT || null,
-      maxTime: maxT || null,
+      minTime: minT,
+      maxTime: maxT,
       ...restTime,
     },
-  } as DatePickerConfig;
+    exclude,
+  };
 };
 
 export const isRange = (mode: DatesMode) => mode === 'range';

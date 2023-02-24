@@ -40,13 +40,16 @@ export const DEFAULT_YEARS_CONFIG: YearsConfig = {
   step: DEFAULT_YEARS_STEP,
 };
 
-export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
+export const DEFAULT_DATES_CONFIG: Pick<
+  DatesConfig,
+  'mode' | 'toggle' | 'selectSameDate'
+> = {
   mode: 'single',
   toggle: false,
   selectSameDate: false,
 };
 
-export const DEFAULT_TIME_CONFIG: Partial<TimeConfig> = {
+export const DEFAULT_TIME_CONFIG: Pick<TimeConfig, 'interval'> = {
   interval: 30,
 };
 

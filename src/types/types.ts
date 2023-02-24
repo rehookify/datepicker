@@ -1,6 +1,8 @@
 import type { Dispatch, MouseEvent } from 'react';
 
-import { Action, State } from './state-reducer';
+import { Action, State } from '../state-reducer';
+import { DatesConfig, DatesUserConfig } from './date';
+import { DPExcludeConfiguration } from './exclude';
 
 export type DayRange =
   | 'in-range'
@@ -49,17 +51,6 @@ export interface MonthsPropGettersConfig extends PropsGetterConfig {
   step?: number;
 }
 
-export type DatesMode = 'single' | 'multiple' | 'range';
-export interface DatesUserConfig {
-  mode: DatesMode;
-  minDate: Date;
-  maxDate: Date;
-  selectedDates: Date | Date[];
-  toggle?: boolean;
-  limit?: number;
-  selectSameDate: boolean;
-}
-
 export type CalendarMode = 'static' | 'fluid';
 export interface CalendarConfig {
   mode: CalendarMode;
@@ -69,14 +60,10 @@ export interface CalendarConfig {
 
 export type YearsMode = 'decade' | 'fluid' | 'exact';
 
-// @TODO remove after v2.0.0
-interface GeneralYearsConfig {
-  numberOfYearsDisplayed?: number;
+export interface YearsConfig {
+  numberOfYears: number;
   mode: YearsMode;
   step: number;
-}
-export interface YearsConfig extends GeneralYearsConfig {
-  numberOfYears: number;
 }
 
 export interface LocaleConfig {
@@ -98,8 +85,8 @@ export interface TimeLimit {
 }
 export interface TimeConfig {
   interval: number;
-  minTime: TimeLimit;
-  maxTime: TimeLimit;
+  minTime?: TimeLimit;
+  maxTime?: TimeLimit;
 }
 
 export interface DatePickerUserConfig {
@@ -111,15 +98,7 @@ export interface DatePickerUserConfig {
   dates?: Partial<DatesUserConfig>;
   years?: Partial<YearsConfig>;
   time?: Partial<TimeConfig>;
-}
-
-export interface DatesConfig {
-  mode: DatesMode;
-  minDate: Date | null;
-  maxDate: Date | null;
-  toggle: boolean;
-  limit: number;
-  selectSameDate: boolean;
+  exclude?: DPExcludeConfiguration;
 }
 
 export interface DatePickerConfig {
@@ -131,9 +110,8 @@ export interface DatePickerConfig {
   dates: DatesConfig;
   years: YearsConfig;
   time: TimeConfig;
+  exclude?: DPExcludeConfiguration;
 }
-
-export type DatePart = 'year' | 'month' | 'date';
 
 export interface Calendar {
   year: string;

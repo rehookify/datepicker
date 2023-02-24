@@ -22,10 +22,10 @@ describe('createConfig', () => {
 
   test('correctly creates years', () => {
     const { years } = createConfig({
-      years: { numberOfYearsDisplayed: 100 },
+      years: { numberOfYears: 100 },
     });
 
-    expect(years.numberOfYearsDisplayed).toBe(100);
+    expect(years.numberOfYears).toBe(100);
   });
 
   test('correctly composes dates', () => {
@@ -80,12 +80,12 @@ describe('createConfig', () => {
 
     // minTime should remain as is because we don't have maxTime
     expect(c1.time.minTime).toEqual(minTime);
-    expect(c1.time.maxTime).toBe(null);
+    expect(c1.time.maxTime).toBe(undefined);
 
     const c2 = createConfig({ time: { maxTime } });
 
     // maxTime should remain as is because we don't have minTime
-    expect(c2.time.minTime).toBe(null);
+    expect(c2.time.minTime).toBe(undefined);
     expect(c2.time.maxTime).toEqual(maxTime);
 
     const c3 = createConfig({ time: { minTime: maxTime, maxTime: minTime } });

@@ -1,4 +1,4 @@
-import { DatePart, LocaleConfig, TimeLimit } from '../types';
+import type { DatePart, LocaleConfig, TimeLimit } from '../types';
 
 // Year and Month is a minimum required arguments for creating a date
 // == null is intentional to check also for undefined
@@ -80,8 +80,8 @@ export const getTimeDate = (
   M: number,
   D: number,
   t?: TimeLimit,
-): Date | null =>
-  t && t.h != null && t.m != null ? newDate(Y, M, D, t.h, t.m) : null;
+): Date | undefined =>
+  t && t.h != null && t.m != null ? newDate(Y, M, D, t.h, t.m) : undefined;
 
 export const formatTime = (
   d: Date,
@@ -96,3 +96,16 @@ export const formatTime = (
 
 export const addAndSortAsc = (dates: Date[], d: Date) =>
   dates.concat(d).sort(sortDatesAsc);
+
+export const sortMinMax = <T>(
+  min: T | undefined,
+  max: T | undefined,
+  sortFunction: (a: T, b: T) => number,
+): (T | undefined)[] => {
+  let [mN, mX] = [min, max];
+  if (min && max) {
+    [mN, mX] = [min, max].sort(sortFunction);
+  }
+
+  return [mN, mX];
+};

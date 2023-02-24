@@ -11,12 +11,15 @@ export const ModularContextProvider = () => {
     selectedDates,
     onDatesChange,
     dates: {
-      toggle: true,
       mode: 'multiple',
     },
     calendar: {
       startDay: 1,
       mode: 'fluid',
+    },
+    exclude: {
+      day: [0, 6],
+      date: [new Date(2023, 2, 8)],
     },
   };
   return (

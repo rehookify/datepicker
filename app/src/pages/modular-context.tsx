@@ -3,6 +3,8 @@ import {
   useContextDaysPropGetters,
   useContextMonths,
   useContextMonthsPropGetters,
+  useContextTime,
+  useContextTimePropGetters,
   useContextYears,
   useContextYearsPropGetters,
 } from '@rehookify/datepicker';
@@ -22,6 +24,7 @@ import {
 import {
   getDayClassName,
   getMonthClassName,
+  getTimeClassName,
   getYearsClassName,
 } from '../utils/class-names';
 
@@ -34,9 +37,11 @@ export const ModularContext = () => {
   const { years } = useContextYears();
   const { previousYearsButton, nextYearsButton, yearButton } =
     useContextYearsPropGetters();
+  const { time } = useContextTime();
+  const { timeButton } = useContextTimePropGetters();
 
   return (
-    <Container>
+    <Container className="time-container">
       <Calendar>
         <CalendarHeader>
           <div />
@@ -114,6 +119,19 @@ export const ModularContext = () => {
           ))}
         </div>
       </Calendar>
+      <div className="time-block">
+        <div>
+          {time.map((t) => (
+            <button
+              className={getTimeClassName(t)}
+              {...timeButton(t)}
+              key={t.$date.toISOString()}
+            >
+              {t.time}
+            </button>
+          ))}
+        </div>
+      </div>
     </Container>
   );
 };
