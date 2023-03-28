@@ -612,12 +612,12 @@ Params:
   focusDate: null,
   onDatesChange: undefined,
   dates: {
-    mode: 'single',
-    selectedDates: [],
+    limit: undefined,
     minDate: null,
     maxDate: null,
+    mode: 'single',
+    selectSameDate: false,
     toggle: false,
-    limit: undefined,
   },
   calendar: {
     mode: 'static',
@@ -756,7 +756,7 @@ interface DatesUserConfig {
   mode?: 'single' | 'multiple' | 'range';
   minDate?: Date;
   maxDate?: Date;
-  selectedDates?: Date | Date[];
+  selectSameDate?: boolean;
   toggle?: boolean;
   limit?: number;
 }
@@ -778,11 +778,10 @@ interface DatesUserConfig {
 
 ✏️ NOTE: if `maxDate < NOW` - initial calendar will show the month with `maxDate`
 
-- `selectedDates: Date | Date[]` - dates that will be added to `selectedDates` state.
-
-✏️ NOTE: If `mode: 'single'` - after the first click `selectedDates` will be reset to 1 date.
+- `selectSameDate: boolean` - it allows to select same date in the `range` mode.
 
 - `toggle: boolean` - allows a user to unselect dates.
+
 - `limit: number` - number of dates that a user could select.
 
 ✏️ NOTE: works only with `mode: 'multiple'`
