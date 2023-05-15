@@ -1,4 +1,4 @@
-import { CalendarYear, DatesConfig, YearsConfig } from '../types';
+import type { DPDatesConfig, DPYear, DPYearsConfig } from '../types';
 import { getDateParts, getFirstDayOfTheMonth, newDate } from './date';
 import { maxDateAndAfter, minDateAndBeforeFirstDay } from './predicates';
 
@@ -6,9 +6,9 @@ export const createYears = (
   currentYear: number,
   offsetDate: Date,
   selectedDates: Date[],
-  { numberOfYears }: YearsConfig,
-  { minDate, maxDate }: DatesConfig,
-): CalendarYear[] => {
+  { numberOfYears }: DPYearsConfig,
+  { minDate, maxDate }: DPDatesConfig,
+): DPYear[] => {
   const { Y, M, D } = getDateParts(offsetDate);
   const years = [];
   const { Y: nY } = getDateParts(newDate());

@@ -3,7 +3,7 @@ import { describe, expect, test } from '@jest/globals';
 import { DEFAULT_CONFIG } from '../__mock__/config';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
 import { createConfig } from '../utils/config';
-import { getDateParts, newDate } from '../utils/date';
+import { getCleanDate, getDateParts, newDate } from '../utils/date';
 import { isBefore } from '../utils/predicates';
 
 describe('createConfig', () => {
@@ -102,7 +102,7 @@ describe('createConfig', () => {
   });
 
   test('should set focusTime if it is present in selectedDates', () => {
-    const d1 = newDate();
+    const d1 = getCleanDate(newDate());
     const d2 = newDate(d1.setDate(33));
     const c1 = createConfig({ selectedDates: [d1], focusDate: d2 });
 

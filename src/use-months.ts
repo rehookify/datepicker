@@ -1,11 +1,13 @@
 import { useCallback } from 'react';
 
 import { setOffset } from './state-reducer';
-import {
-  CalendarMonth,
-  DPState,
-  MonthsPropGettersConfig,
-  PropsGetterConfig,
+import type {
+  DPMonth,
+  DPMonthsPropGettersConfig,
+  DPPropsGetterConfig,
+  DPUseMonths,
+  DPUseMonthsActions,
+  DPUseMonthsPropGetters,
 } from './types';
 import { callAll, skipFirst } from './utils/call-all';
 import { createMonths } from './utils/create-months';
@@ -17,23 +19,23 @@ import {
 } from './utils/date';
 import { maxDateAndAfter, minDateAndBeforeFirstDay } from './utils/predicates';
 
-export const useMonths = ({
+export const useMonths: DPUseMonths = ({
   selectedDates,
   state: {
     offsetDate,
     config: { locale, dates },
   },
-}: DPState) => ({
+}) => ({
   months: createMonths(offsetDate, selectedDates, locale, dates),
 });
 
-export const useMonthsPropGetters = ({
+export const useMonthsPropGetters: DPUseMonthsPropGetters = ({
   state: {
     offsetDate,
     config: { dates },
   },
   dispatch,
-}: DPState) => {
+}) => {
   const { minDate, maxDate } = dates;
 
   const callSetOffset = useCallback(
@@ -43,8 +45,8 @@ export const useMonthsPropGetters = ({
 
   const monthButton = useCallback(
     (
-      { $date, disabled }: CalendarMonth,
-      { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
+      { $date, disabled }: DPMonth,
+      { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
@@ -60,7 +62,7 @@ export const useMonthsPropGetters = ({
       disabled,
       step = 1,
       ...rest
-    }: MonthsPropGettersConfig = {}) => {
+    }: DPMonthsPropGettersConfig = {}) => {
       const nextMonth = addToDate(offsetDate, step, 'month');
       const isDisabled =
         !!disabled ||
@@ -81,7 +83,7 @@ export const useMonthsPropGetters = ({
       disabled,
       step = 1,
       ...rest
-    }: MonthsPropGettersConfig = {}) => {
+    }: DPMonthsPropGettersConfig = {}) => {
       const nextMonth = subtractFromDate(offsetDate, step, 'month');
       const isDisabled =
         !!disabled || minDateAndBeforeFirstDay(minDate, nextMonth);
@@ -98,10 +100,10 @@ export const useMonthsPropGetters = ({
   return { monthButton, nextMonthButton, previousMonthButton };
 };
 
-export const useMonthsActions = ({
+export const useMonthsActions: DPUseMonthsActions = ({
   state: { offsetDate },
   dispatch,
-}: DPState) => {
+}) => {
   const setMonth = useCallback((d: Date) => setOffset(dispatch, d), [dispatch]);
 
   const setNextMonth = useCallback(

@@ -7,7 +7,7 @@ export const isBefore = (d1: Date, d2: Date): boolean => d1 < d2;
 
 export const isAfter = (d1: Date, d2: Date): boolean => d1 > d2;
 
-export const isBetween = (start: Date, d: Date, end: Date) =>
+export const isBetween = (start: Date, d: Date, end: Date): boolean =>
   (isAfter(d, start) && isBefore(d, end)) ||
   (isBefore(d, start) && isAfter(d, end));
 

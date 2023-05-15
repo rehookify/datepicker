@@ -2,14 +2,16 @@ import { describe, expect, test } from '@jest/globals';
 
 import { createConfig } from '../utils/config';
 import { createCalendars } from '../utils/create-calendars';
+import { createInitialState } from '../utils/create-initial-state';
 import { getCleanDate, newDate } from '../utils/date';
 
 describe('createCalendars', () => {
   test('createCalendars should create a calendar correctly with default configuration', () => {
     const now = getCleanDate(newDate());
     const config = createConfig();
+    const state = createInitialState(config);
 
-    const testCalendar = createCalendars(now, [], null, config);
+    const testCalendar = createCalendars([now], state);
     const { days } = testCalendar[0];
 
     const today = days.filter(({ now }) => now);
@@ -23,10 +25,12 @@ describe('createCalendars', () => {
   test('createCalendars should create correct number of calendars', () => {
     const offsetDate = getCleanDate(newDate(2022, 10, 20));
     const config = createConfig({
+      selectedDates: [offsetDate],
       calendar: { offsets: [-1, 1] },
     });
+    const state = createInitialState(config);
 
-    const testCalendar = createCalendars(offsetDate, [], null, config);
+    const testCalendar = createCalendars([offsetDate], state);
 
     expect(testCalendar.length).toBe(3);
     expect(testCalendar[0].month).toBe('November');
@@ -37,10 +41,13 @@ describe('createCalendars', () => {
   test('createCalendars should create correct fluid calendar', () => {
     const offsetDate = getCleanDate(newDate(2022, 10, 20));
     const config = createConfig({
+      selectedDates: [offsetDate],
       calendar: { mode: 'fluid' },
     });
 
-    const [testCalendar] = createCalendars(offsetDate, [], null, config);
+    const state = createInitialState(config);
+
+    const [testCalendar] = createCalendars([offsetDate], state);
 
     expect(testCalendar.days.length).toBe(35);
   });

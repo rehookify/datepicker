@@ -1,4 +1,4 @@
-import { DatesMode, DayRange } from '../types';
+import type { DPDatesMode, DPDayRange } from '../types';
 import { isRange } from './config';
 import { getCleanDate } from './date';
 import { isBefore, isBetween, isSame } from './predicates';
@@ -12,8 +12,8 @@ export const getDateRangeState = (
   date: Date,
   rangeEnd: Date | null,
   selectedDates: Date[],
-  mode: DatesMode,
-): DayRange => {
+  mode: DPDatesMode,
+): DPDayRange => {
   if (!isRange(mode) || selectedDates.length === 0) return '';
   const [start, end] = selectedDates;
 

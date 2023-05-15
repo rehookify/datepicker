@@ -5,11 +5,7 @@ import {
   DEFAULT_TIME_CONFIG,
   DEFAULT_YEARS_CONFIG,
 } from '../constants';
-import type {
-  DatePickerConfig,
-  DatePickerUserConfig,
-  DatesMode,
-} from '../types';
+import type { DPConfig, DPDatesMode, DPUserConfig } from '../types';
 import { getCleanDate, sortDatesAsc, sortMinMax } from './date';
 import { includeDate } from './predicates';
 
@@ -23,7 +19,7 @@ export const createConfig = ({
   time = {},
   exclude = {},
   years,
-}: DatePickerUserConfig = {}): DatePickerConfig => {
+}: DPUserConfig = {}): DPConfig => {
   const { minDate, maxDate, ...restDates } = dates;
   const { offsets = [], ...restCalendarParams } = calendar;
   const { minTime, maxTime, ...restTime } = time;
@@ -64,4 +60,4 @@ export const createConfig = ({
   };
 };
 
-export const isRange = (mode: DatesMode) => mode === 'range';
+export const isRange = (mode: DPDatesMode): boolean => mode === 'range';

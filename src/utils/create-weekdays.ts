@@ -1,11 +1,11 @@
 import { WEEK_DAYS } from '../constants';
-import { Calendar, DatePickerConfig } from '../types';
+import type { DPCalendar, DPConfig } from '../types';
 import { toLocaleDateString } from './date';
 
 export const createWeekdays = (
-  { days }: Calendar,
-  { locale: { locale, weekday } }: DatePickerConfig,
-) =>
+  { days }: DPCalendar,
+  { locale: { locale, weekday } }: DPConfig,
+): string[] =>
   WEEK_DAYS.map((day: number) =>
     toLocaleDateString(days[day].$date, locale, { weekday }),
   );

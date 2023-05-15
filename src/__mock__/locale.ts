@@ -1,6 +1,6 @@
-import { LocaleConfig } from '../types';
+import type { DPLocaleConfig } from '../types';
 
-export const ALTERNATIVE_LOCALE_CONFIG: LocaleConfig = {
+export const ALTERNATIVE_LOCALE_CONFIG: DPLocaleConfig = {
   day: '2-digit',
   hour: '2-digit',
   hour12: undefined,

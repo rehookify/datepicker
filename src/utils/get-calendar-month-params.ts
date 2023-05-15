@@ -1,5 +1,5 @@
 import { NUMBER_OF_STATIC_CALENDAR_DAYS } from '../constants';
-import { CalendarConfig } from '../types';
+import type { DPCalendarConfig } from '../types';
 import { daysInMonth, getDay, newDate } from './date';
 
 const getStartOffset = (d: Date, startDay: number): number =>
@@ -8,8 +8,11 @@ const getStartOffset = (d: Date, startDay: number): number =>
 export const getCalendarMonthParams = (
   month: number,
   year: number,
-  { mode, startDay }: CalendarConfig,
-) => {
+  { mode, startDay }: DPCalendarConfig,
+): {
+  start: number;
+  length: number;
+} => {
   const firstMonthDay = newDate(year, month, 1);
   const lastDay = daysInMonth(firstMonthDay);
 

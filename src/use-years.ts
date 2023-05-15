@@ -1,7 +1,13 @@
 import { useCallback } from 'react';
 
 import { setOffset, setYear } from './state-reducer';
-import { CalendarYear, DPState, PropsGetterConfig } from './types';
+import type {
+  DPPropsGetterConfig,
+  DPUseYears,
+  DPUseYearsActions,
+  DPUseYearsPropGetters,
+  DPYear,
+} from './types';
 import { callAll, skipAll, skipFirst } from './utils/call-all';
 import { createPropGetter } from './utils/create-prop-getter';
 import { createYears } from './utils/create-years';
@@ -9,25 +15,25 @@ import { getDateParts, newDate } from './utils/date';
 import { isExactMode } from './utils/get-current-year-position';
 import { isSame, maxDateAndAfter, minDateAndBefore } from './utils/predicates';
 
-export const useYears = ({
+export const useYears: DPUseYears = ({
   selectedDates,
   state: {
     offsetDate,
     offsetYear,
     config: { years, dates },
   },
-}: DPState) => ({
+}) => ({
   years: createYears(offsetYear, offsetDate, selectedDates, years, dates),
 });
 
-export const useYearsPropGetters = ({
+export const useYearsPropGetters: DPUseYearsPropGetters = ({
   state: {
     offsetYear,
     offsetDate,
     config: { dates, years: yearsConfig },
   },
   dispatch,
-}: DPState) => {
+}) => {
   const { minDate, maxDate } = dates;
   const { step, numberOfYears, mode } = yearsConfig;
   const { D, M } = getDateParts(offsetDate);
@@ -39,8 +45,8 @@ export const useYearsPropGetters = ({
 
   const yearButton = useCallback(
     (
-      { $date, disabled }: CalendarYear,
-      { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
+      { $date, disabled }: DPYear,
+      { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
@@ -51,7 +57,7 @@ export const useYearsPropGetters = ({
   );
 
   const nextYearsButton = useCallback(
-    ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
+    ({ onClick, disabled, ...rest }: DPPropsGetterConfig = {}) => {
       const endYearDate = newDate(offsetYear + numberOfYears - 1, M, D);
       const isDisabled =
         !!disabled ||
@@ -72,7 +78,7 @@ export const useYearsPropGetters = ({
   );
 
   const previousYearsButton = useCallback(
-    ({ onClick, disabled, ...rest }: PropsGetterConfig = {}) => {
+    ({ onClick, disabled, ...rest }: DPPropsGetterConfig = {}) => {
       const isDisabled =
         !!disabled || minDateAndBefore(minDate, newDate(offsetYear, M, D));
 
@@ -96,13 +102,13 @@ export const useYearsPropGetters = ({
   };
 };
 
-export const useYearsActions = ({
+export const useYearsActions: DPUseYearsActions = ({
   state: {
     offsetYear,
     config: { years },
   },
   dispatch,
-}: DPState) => {
+}) => {
   const { step } = years;
   const setYearAction = useCallback(
     (d: Date) => setOffset(dispatch, d),

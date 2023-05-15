@@ -1,10 +1,4 @@
-import { State } from '../state-reducer';
-import type {
-  Calendar,
-  CalendarDay,
-  DPDayInteger,
-  DPExcludeConfiguration,
-} from '../types';
+import type { DPCalendar, DPDay, DPReducerState } from '../types';
 import {
   addToDate,
   formatMonthName,
@@ -13,6 +7,7 @@ import {
   newDate,
   toLocaleDateString,
 } from './date';
+import { isExcluded } from './excluded';
 import { getCalendarMonthParams } from './get-calendar-month-params';
 import { getDateRangeState } from './get-date-range-state';
 import {
@@ -22,26 +17,11 @@ import {
   minDateAndBefore,
 } from './predicates';
 
-const isExcludedDay = (d: number, eDays?: DPDayInteger[]): boolean =>
-  eDays ? eDays.includes(d as DPDayInteger) : false;
-
-const isExcludedDate = (d: Date, dates: Date[] = []): boolean => {
-  const { M, D } = getDateParts(d);
-  return dates.some((dt: Date) => {
-    const { M: md, D: dd } = getDateParts(dt);
-    return M === md && D === dd;
-  });
-};
-
-const isExcluded = (d: Date, { day, date }: DPExcludeConfiguration = {}) => {
-  return isExcludedDay(d.getDay(), day) || isExcludedDate(d, date);
-};
-
 const createCalendar = (
   offsetDate: Date,
   selectedDates: Date[],
-  { rangeEnd, config }: State,
-): Calendar => {
+  { rangeEnd, config }: DPReducerState,
+): DPCalendar => {
   const {
     dates: { mode, minDate, maxDate },
     locale,
@@ -52,7 +32,7 @@ const createCalendar = (
   const { M, Y } = getDateParts(offsetDate);
   const { start, length } = getCalendarMonthParams(M, Y, calendar);
 
-  const days: CalendarDay[] = [];
+  const days: DPDay[] = [];
 
   for (let i = 1; i <= length; i++) {
     const date = newDate(Y, M, i - start);
@@ -78,7 +58,10 @@ const createCalendar = (
   };
 };
 
-export const createCalendars = (selectedDates: Date[], state: State) => {
+export const createCalendars = (
+  selectedDates: Date[],
+  state: DPReducerState,
+) => {
   const {
     config: { calendar },
     offsetDate,

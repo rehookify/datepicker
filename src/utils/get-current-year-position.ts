@@ -1,4 +1,4 @@
-import { YearsConfig, YearsMode } from '../types';
+import type { DPYearsConfig, DPYearsMode } from '../types';
 
 /*
  * Default behavior years collection
@@ -10,7 +10,8 @@ import { YearsConfig, YearsMode } from '../types';
  * 2025 2026 2027
  * 2028 2029 2030
  */
-export const getStartDecadePosition = (year: number) => year - (year % 10) - 1;
+export const getStartDecadePosition = (year: number): number =>
+  year - (year % 10) - 1;
 
 /*
  * If number of the year is default = 12 and current year is 2022
@@ -38,12 +39,12 @@ export const getStartExactPosition = (
   numberOfYears: number,
 ): number => year - numberOfYears + 1;
 
-export const isExactMode = (mode: YearsMode) => mode === 'exact';
+export const isExactMode = (mode: DPYearsMode): boolean => mode === 'exact';
 
 export const getCurrentYearPosition = (
   year: number,
-  { mode, numberOfYears }: YearsConfig,
-) => {
+  { mode, numberOfYears }: DPYearsConfig,
+): number => {
   if (isExactMode(mode)) return getStartExactPosition(year, numberOfYears);
   return mode === 'decade'
     ? getStartDecadePosition(year)

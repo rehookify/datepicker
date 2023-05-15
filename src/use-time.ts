@@ -1,26 +1,31 @@
 import { useCallback } from 'react';
 
 import { setFocus } from './state-reducer';
-import { DPState, PropsGetterConfig, Time } from './types';
+import type {
+  DPPropsGetterConfig,
+  DPTime,
+  DPUseTime,
+  DPUseTimePropGetter,
+} from './types';
 import { callAll, skipFirst } from './utils/call-all';
 import { createPropGetter } from './utils/create-prop-getter';
 import { createTime } from './utils/create-time';
 import { isSame } from './utils/predicates';
 
-export const useTime = ({ state: { config, focusDate } }: DPState) => ({
+export const useTime: DPUseTime = ({ state: { config, focusDate } }) => ({
   time: createTime(focusDate, config),
 });
 
-export const useTimePropGetter = ({
+export const useTimePropGetter: DPUseTimePropGetter = ({
   selectedDates,
   state: { config, focusDate },
   dispatch,
-}: DPState) => {
+}) => {
   const { onDatesChange } = config;
   const timeButton = useCallback(
     (
-      { $date, selected, disabled }: Time,
-      { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
+      { $date, selected, disabled }: DPTime,
+      { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         disabled || !!disabledProps,
