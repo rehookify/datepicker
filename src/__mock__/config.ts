@@ -14,9 +14,9 @@ export const DEFAULT_CONFIG = {
   dates: {
     mode: 'single',
     toggle: false,
-    minDate: null,
-    maxDate: null,
     selectSameDate: false,
+    minDate: undefined,
+    maxDate: undefined,
   },
   locale: {
     day: '2-digit',
@@ -29,9 +29,8 @@ export const DEFAULT_CONFIG = {
     weekday: 'short',
     year: 'numeric',
   },
+  exclude: {},
   time: {
     interval: 30,
-    minTime: null,
-    maxTime: null,
   },
 };

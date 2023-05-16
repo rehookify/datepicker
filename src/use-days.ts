@@ -1,29 +1,34 @@
 import { useCallback } from 'react';
 
 import { setFocus, setRangeEnd as setRangeEndAction } from './state-reducer';
-import { CalendarDay, DPState, PropsGetterConfig } from './types';
+import type {
+  DPDay,
+  DPPropsGetterConfig,
+  DPUseDays,
+  DPUseDaysPropGetters,
+} from './types';
 import { callAll, skipFirst } from './utils/call-all';
 import { isRange } from './utils/config';
 import { createPropGetter } from './utils/create-prop-getter';
 import { formatDate, getCleanDate } from './utils/date';
 import { getMultipleDates } from './utils/get-multiple-dates';
-import { isSame } from './utils/predicates';
+import { includeDate, isSame } from './utils/predicates';
 
-export const useDays = ({
+export const useDays: DPUseDays = ({
   selectedDates,
   state: {
     config: { locale },
   },
-}: DPState) => ({
+}) => ({
   selectedDates,
   formattedDates: selectedDates.map((d: Date) => formatDate(d, locale)),
 });
 
-export const useDaysPropGetters = ({
+export const useDaysPropGetters: DPUseDaysPropGetters = ({
   selectedDates,
   state: { config },
   dispatch,
-}: DPState) => {
+}) => {
   const {
     onDatesChange,
     dates: { mode, toggle, selectSameDate },
@@ -31,8 +36,8 @@ export const useDaysPropGetters = ({
 
   const dayButton = useCallback(
     (
-      { $date, selected, disabled }: CalendarDay,
-      { onClick, disabled: disabledProps, ...rest }: PropsGetterConfig = {},
+      { $date, selected, disabled }: DPDay,
+      { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         disabled || !!disabledProps,
@@ -57,7 +62,10 @@ export const useDaysPropGetters = ({
                   d,
                   config.dates,
                 );
-                setFocus(dispatch, nextSelectedDates.includes(d) ? d : null);
+                setFocus(
+                  dispatch,
+                  includeDate(nextSelectedDates, d) ? d : null,
+                );
                 onDatesChange(nextSelectedDates);
               }
             }),

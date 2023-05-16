@@ -1,17 +1,16 @@
-import { DatePart, LocaleConfig, TimeLimit } from '../types';
+import type {
+  DPDatePart,
+  DPDateParts,
+  DPLocaleConfig,
+  DPTimeLimit,
+} from '../types';
 
 // Year and Month is a minimum required arguments for creating a date
 // == null is intentional to check also for undefined
-export const newDate = (Y?: number, M?: number, ...rest: number[]) =>
+export const newDate = (Y?: number, M?: number, ...rest: number[]): Date =>
   !Y || M == null ? new Date() : new Date(Y, M, ...rest);
 
-interface DateParts {
-  D: number;
-  M: number;
-  Y: number;
-}
-
-export const getDateParts = (d: Date): DateParts => ({
+export const getDateParts = (d: Date): DPDateParts => ({
   D: d.getDate(),
   M: d.getMonth(),
   Y: d.getFullYear(),
@@ -33,7 +32,7 @@ export const daysInMonth = (d: Date): number =>
 export const getFirstDayOfTheMonth = (d: Date): Date =>
   newDate(getDateParts(d).Y, getDateParts(d).M, 1);
 
-export const addToDate = (d: Date, value: number, part: DatePart): Date => {
+export const addToDate = (d: Date, value: number, part: DPDatePart): Date => {
   const { Y, M, D } = getDateParts(d);
   // Cover case when offsetDate is 31 and next month doesn't have 31 days
   // More details here https://github.com/rehookify/datepicker/issues/10
@@ -54,7 +53,7 @@ export const addToDate = (d: Date, value: number, part: DatePart): Date => {
 export const subtractFromDate = (
   d: Date,
   value: number,
-  part: DatePart,
+  part: DPDatePart,
 ): Date => addToDate(d, 0 - value, part);
 
 export const sortDatesAsc = (a: Date, b: Date): number => +a - +b;
@@ -67,25 +66,25 @@ export const toLocaleDateString = (
 
 export const formatMonthName = (
   d: Date,
-  { locale, monthName }: LocaleConfig,
+  { locale, monthName }: DPLocaleConfig,
 ): string => toLocaleDateString(d, locale, { month: monthName });
 
 export const formatDate = (
   d: Date,
-  { locale, options }: LocaleConfig,
+  { locale, options }: DPLocaleConfig,
 ): string => toLocaleDateString(d, locale, options);
 
 export const getTimeDate = (
   Y: number,
   M: number,
   D: number,
-  t?: TimeLimit,
-): Date | null =>
-  t && t.h != null && t.m != null ? newDate(Y, M, D, t.h, t.m) : null;
+  t?: DPTimeLimit,
+): Date | undefined =>
+  t && t.h != null && t.m != null ? newDate(Y, M, D, t.h, t.m) : undefined;
 
 export const formatTime = (
   d: Date,
-  { locale, hour, minute, second, hour12 }: LocaleConfig,
+  { locale, hour, minute, second, hour12 }: DPLocaleConfig,
 ): string =>
   d.toLocaleTimeString(locale, {
     hour,
@@ -94,5 +93,18 @@ export const formatTime = (
     hour12,
   });
 
-export const addAndSortAsc = (dates: Date[], d: Date) =>
+export const addAndSortAsc = (dates: Date[], d: Date): Date[] =>
   dates.concat(d).sort(sortDatesAsc);
+
+export const sortMinMax = <T>(
+  min: T | undefined,
+  max: T | undefined,
+  sortFunction: (a: T, b: T) => number,
+): (T | undefined)[] => {
+  let [mN, mX] = [min, max];
+  if (min && max) {
+    [mN, mX] = [min, max].sort(sortFunction);
+  }
+
+  return [mN, mX];
+};

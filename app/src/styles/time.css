@@ -1,15 +1,12 @@
 .time-container {
   display: grid;
-  grid-template-columns: 1fr 8rem;
+  grid-template-columns: repeat(3, 1fr) 8rem;
   column-gap: 24px;
 }
 
-.time {
-  padding: 24px;
-  border-radius: var(--border-radius);
-  background-color: var(--calendar-background);
-  max-height: 520px;
+.time-block {
   overflow-y: scroll;
+  max-height: 300px;
 }
 
 .time-button {

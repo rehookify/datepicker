@@ -1,11 +1,4 @@
-import {
-  Calendar,
-  CalendarConfig,
-  CalendarDay,
-  DatePickerConfig,
-  DatesConfig,
-  LocaleConfig,
-} from '../types';
+import type { DPCalendar, DPDay, DPReducerState } from '../types';
 import {
   addToDate,
   formatMonthName,
@@ -14,6 +7,7 @@ import {
   newDate,
   toLocaleDateString,
 } from './date';
+import { isExcluded } from './excluded';
 import { getCalendarMonthParams } from './get-calendar-month-params';
 import { getDateRangeState } from './get-date-range-state';
 import {
@@ -26,16 +20,19 @@ import {
 const createCalendar = (
   offsetDate: Date,
   selectedDates: Date[],
-  rangeEnd: Date | null,
-  locale: LocaleConfig,
-  { mode, minDate, maxDate }: DatesConfig,
-  calendar: CalendarConfig,
-): Calendar => {
-  const { locale: localeStr, day, year: localeYear } = locale;
+  { rangeEnd, config }: DPReducerState,
+): DPCalendar => {
+  const {
+    dates: { mode, minDate, maxDate },
+    locale,
+    calendar,
+    exclude,
+  } = config;
+  const { locale: localeStr, day, year } = locale;
   const { M, Y } = getDateParts(offsetDate);
   const { start, length } = getCalendarMonthParams(M, Y, calendar);
 
-  const days: CalendarDay[] = [];
+  const days: DPDay[] = [];
 
   for (let i = 1; i <= length; i++) {
     const date = newDate(Y, M, i - start);
@@ -46,32 +43,34 @@ const createCalendar = (
       now: isSame(getCleanDate(newDate()), date),
       range: getDateRangeState(date, rangeEnd, selectedDates, mode),
       disabled:
-        minDateAndBefore(minDate, date) || maxDateAndAfter(maxDate, date),
+        minDateAndBefore(minDate, date) ||
+        maxDateAndAfter(maxDate, date) ||
+        isExcluded(date, exclude),
       selected: includeDate(selectedDates, date),
       inCurrentMonth: getDateParts(date).M === M,
     });
   }
 
   return {
-    year: toLocaleDateString(offsetDate, localeStr, { year: localeYear }),
+    year: toLocaleDateString(offsetDate, localeStr, { year }),
     month: formatMonthName(offsetDate, locale),
     days,
   };
 };
 
 export const createCalendars = (
-  offsetDate: Date,
   selectedDates: Date[],
-  rangeEnd: Date | null,
-  { locale, dates, calendar }: DatePickerConfig,
-) =>
-  calendar.offsets.map((offset) =>
+  state: DPReducerState,
+) => {
+  const {
+    config: { calendar },
+    offsetDate,
+  } = state;
+  return calendar.offsets.map((offset) =>
     createCalendar(
       addToDate(offsetDate, offset, 'month'),
       selectedDates,
-      rangeEnd,
-      locale,
-      dates,
-      calendar,
+      state,
     ),
   );
+};

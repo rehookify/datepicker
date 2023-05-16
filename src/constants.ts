@@ -1,9 +1,9 @@
-import {
-  CalendarConfig,
-  DatesConfig,
-  LocaleConfig,
-  TimeConfig,
-  YearsConfig,
+import type {
+  DPCalendarConfig,
+  DPDatesConfig,
+  DPLocaleConfig,
+  DPTimeConfig,
+  DPYearsConfig,
 } from './types';
 
 /*
@@ -19,7 +19,7 @@ import {
 export const NUMBER_OF_STATIC_CALENDAR_DAYS = 42;
 
 //Weekdays array template, each index mimics its position
-export const WEEK_DAYS = [0, 1, 2, 3, 4, 5, 6];
+export const WEEK_DAYS = [0, 1, 2, 3, 4, 5, 6] as const;
 export const NUMBER_OF_MONTHS = 12;
 export const MINUTES_IN_THE_DAY = 60 * 24; // 1440 :)
 
@@ -28,29 +28,32 @@ export const MINUTES_IN_THE_DAY = 60 * 24; // 1440 :)
 const DECADE_NUMBER_OF_YEARS = 12;
 export const DEFAULT_YEARS_STEP = 10;
 
-export const DEFAULT_CALENDAR_CONFIG: CalendarConfig = {
+export const DEFAULT_CALENDAR_CONFIG: DPCalendarConfig = {
   mode: 'static',
   offsets: [0],
   startDay: 0,
 };
 
-export const DEFAULT_YEARS_CONFIG: YearsConfig = {
+export const DEFAULT_YEARS_CONFIG: DPYearsConfig = {
   mode: 'decade',
   numberOfYears: DECADE_NUMBER_OF_YEARS,
   step: DEFAULT_YEARS_STEP,
 };
 
-export const DEFAULT_DATES_CONFIG: Partial<DatesConfig> = {
+export const DEFAULT_DATES_CONFIG: Pick<
+  DPDatesConfig,
+  'mode' | 'toggle' | 'selectSameDate'
+> = {
   mode: 'single',
   toggle: false,
   selectSameDate: false,
 };
 
-export const DEFAULT_TIME_CONFIG: Partial<TimeConfig> = {
+export const DEFAULT_TIME_CONFIG: Pick<DPTimeConfig, 'interval'> = {
   interval: 30,
 };
 
-export const DEFAULT_LOCALE_CONFIG: LocaleConfig = {
+export const DEFAULT_LOCALE_CONFIG: DPLocaleConfig = {
   locale: 'en-GB',
   day: '2-digit',
   year: 'numeric',
@@ -61,3 +64,8 @@ export const DEFAULT_LOCALE_CONFIG: LocaleConfig = {
   hour12: undefined,
   second: undefined,
 };
+
+export const SET_FOCUS_DATE_ACTION = 'SET_FOCUS_DATE';
+export const SET_OFFSET_DATE_ACTION = 'SET_OFFSET_DATE';
+export const SET_RANGE_END_ACTION = 'SET_RANGE_END';
+export const SET_YEAR_ACTION = 'SET_YEAR';

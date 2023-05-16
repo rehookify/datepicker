@@ -1,6 +1,6 @@
 import '../styles/time.css';
 
-import { useDatePicker } from '@rehookify/datepicker';
+import { CalendarDay, useDatePicker } from '@rehookify/datepicker';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -106,7 +106,7 @@ export const HomePage = () => {
         </CalendarHeader>
         <Weekdays weekDays={weekDays} prefix={calendars[0].month} />
         <Days>
-          {calendars[0].days.map((d) => (
+          {calendars[0].days.map((d: CalendarDay) => (
             <button
               className={getDayClassName(d)}
               key={`${0}/${d.$date.toString()}`}

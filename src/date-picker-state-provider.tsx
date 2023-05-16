@@ -1,23 +1,14 @@
-import React, { createContext, FC, ReactNode, useContext } from 'react';
+import React, { createContext, FC, useContext } from 'react';
 
-import { DatePickerUserConfig, DPState } from './types';
+import type { DatePickerProviderProps, DPState } from './types';
 import { useDatePickerState } from './use-date-picker-state';
 
-export interface DatePickerStateProviderProps {
-  children: ReactNode;
-  config?: DatePickerUserConfig;
-}
-
-export type DatePickerStateProviderValue = DPState;
-
-const DatePickerStateContext = createContext<DatePickerStateProviderValue>(
-  {} as DatePickerStateProviderValue,
-);
+const DatePickerStateContext = createContext<DPState>({} as DPState);
 
 export const useDatePickerStateContext = () =>
   useContext(DatePickerStateContext);
 
-export const DatePickerStateProvider: FC<DatePickerStateProviderProps> = ({
+export const DatePickerStateProvider: FC<DatePickerProviderProps> = ({
   children,
   config = {},
 }) => (

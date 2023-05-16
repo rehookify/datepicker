@@ -294,6 +294,7 @@ const App = () => {
   - [General configuration](#general-configuration)
   - [Locale configuration](#locale-configuration)
   - [Calendar configuration](#calendar-configuration)
+  - [Exclude configuration](#exclude-configuration)
   - [Dates configuration](#dates-configuration)
   - [Years configuration](#years-configuration)
   - [Time configuration](#time-configuration)
@@ -321,7 +322,7 @@ The state consists of three main parts: [data](#data), [propGetters](#prop-gette
 The data represents all entities that you could use in your date picker. It consists of [calendars](#calendars), [weekDays](#weekdays), [months](#months), [years](#years), [selectedDates](#selecteddates) and [time](#time)
 
 ```ts
-interface Data {
+interface DPData {
   calendars: Calendar[];
   formattedDates: Date[];
   months: CalendarMonth[];
@@ -338,7 +339,7 @@ interface Data {
 `calendars` are an array of objects with **year**, **month** and **days** properties. It always has at least one member - an initial calendar `calendars[0]`. For calendars configuration 👀 [Calendar config](#calendar-configuration)
 
 ```ts
-export type DayRange =
+export type DPDayRange =
   | 'in-range'
   | 'range-start'
   | 'range-end'
@@ -348,18 +349,18 @@ export type DayRange =
   | 'will-be-range-end'
   | '';
 
-interface CalendarDay {
+interface DPDay {
   $date: Date;
   day: string;
   disabled: boolean;
   inCurrentMonth: boolean;
   now: boolean;
-  range: DayRange;
+  range: DPDayRange;
   selected: boolean;
 }
 
-interface Calendar {
-  days: CalendarDay[];
+interface DPCalendar {
+  days: DPDay[];
   month: string;
   year: string;
 }
@@ -370,7 +371,7 @@ interface Calendar {
 Weekdays are an array of day names [`Mon`, `Tue`, `Wed`, ...]. The name format can be changed by `locale.weekdays` property 👀 [Locale configuration](#locale-configuration)
 
 ```ts
-type Weekdays = string[]
+type DPWeekdays = string[]
 ```
 
 #### months
@@ -378,7 +379,7 @@ type Weekdays = string[]
 Months are an array of objects with **$date**, **active**, **disabled**, **month**, **now** and **selected** properties. The month name format could be changed by `locale.monthName` property 👀 [Locale configuration](#locale-configuration).
 
 ```ts
-interface CalendarMonth {
+interface DPMonth {
   $date: Date;
   active: boolean;
   disabled: boolean;
@@ -401,7 +402,7 @@ interface CalendarMonth {
 Years are an array of objects with **$date**, **active**, **disabled**, **now**, **selected** and **year** properties.
 
 ```ts
-interface CalendarYear {
+interface DPYear {
   $date: Date;
   active: boolean;
   disabled: boolean;
@@ -440,7 +441,7 @@ type FormattedDates = string[];
 Time is an array of objects with **$date**, **disabled**, **now**, **selected** and **value** properties. You can change **time** format with `hour12`, `hour` and `minute` options 👀 [Locale configuration](#locale-configuration)
 
 ```ts
-export interface Time {
+export interface DPTime {
   $date: Date;
   disabled: boolean;
   selected: boolean;
@@ -457,7 +458,7 @@ A [prop-getters](https://kentcdodds.com/blog/how-to-give-rendering-control-to-us
 Each prop-getter accepts a configuration object to enhance the properties and functionality of the component.
 
 ```ts
-interface PropsGetterConfig extends Record<string, unknown> {
+export interface DPPropsGetterConfig extends Record<string, unknown> {
   onClick?(evt?: MouseEvent<HTMLElement>, date?: Date): void;
   disabled?: boolean;
 }
@@ -466,12 +467,12 @@ interface PropsGetterConfig extends Record<string, unknown> {
 Each prop-getter returns an object with properties:
 
 ```ts
-interface PropGetterReturnValue extends Omit<PropsGetterConfig, 'onClick' | 'disabled'>{
-  role: 'button',
-  tabIndex: 0,
-  disabled: boolean,
-  'area-disabled': boolean;
-  onClick?(evt: MouseEvent<HTMLElement>),
+export interface DPPropGetter extends Record<string, unknown> {
+  role: 'button';
+  tabIndex: number;
+  disabled?: boolean;
+  'aria-disabled'?: boolean;
+  onClick?(evt: MouseEvent<HTMLElement>): void;
 }
 ```
 
@@ -481,15 +482,13 @@ interface PropGetterReturnValue extends Omit<PropsGetterConfig, 'onClick' | 'dis
 
 Params:
 
-- `day: Calendar` - you could get it from the calendars 👆 [#Calendars](#calendars)
-- `props?: PropsGetterConfig`
+- `day: DPDay` - you could get it from the calendars 👆 [#Calendars](#calendars)
+- `props?: DPPropsGetterConfig`
 
 Returns:
 
 ```ts
-interface DayButtonReturnValue extends PropGetterReturnValue {
-  onMouseEnter?(): void;
-}
+type DayButton = (day: DPDay, config?: DPPropsGetterConfig) => DPPropGetter;
 ```
 
 ✏️ NOTE: `onMouseMove` - appears only if dates mode is `range`, it is not composable. 👀 [Dates configuration](#dates-configuration)
@@ -498,10 +497,16 @@ interface DayButtonReturnValue extends PropGetterReturnValue {
 
 `monthButton` produces properties for calendar months and changes month when a user clicks on a month.
 
+Returns:
+
+```ts
+type MonthButton = (month: DPMonth, config?: DPPropsGetterConfig) => DPPropGetter;
+```
+
 Params:
 
-- `month: CalendarMonth` - you could get it from the months 👆 [Months](#months)
-- `props?: PropsGetterConfig`
+- `month: DPMonth` - you could get it from the months 👆 [Months](#months)
+- `props?: DPMonthsPropGettersConfig`
 
 #### nextMonthButton
 
@@ -509,7 +514,7 @@ Params:
 
 Params:
 
-- `props?: MonthPropsGetterConfig`
+- `props?: DPMonthsPropGettersConfig`
 
 #### previousMonthButton
 
@@ -517,7 +522,7 @@ Params:
 
 Params:
 
-- `props?: MonthPropsGetterConfig`
+- `props?: DPMonthsPropGettersConfig`
 
 #### yearButton
 
@@ -525,8 +530,14 @@ Params:
 
 Params:
 
-- `year: CalendarYear` - you could get it from the years 👆 [Years](#years)
-- `props?: PropsGetterConfig`
+- `year: DPYear` - you could get it from the years 👆 [Years](#years)
+- `props?: DPPropsGetterConfig`
+
+Returns:
+
+```ts
+type YearButton = (year: DPYear, config?: DPPropsGetterConfig) => DPPropGetter;
+```
 
 #### nextYearsButton
 
@@ -534,7 +545,7 @@ Params:
 
 Params:
 
-- `props?: PropsGetterConfig`
+- `props?: DPPropsGetterConfig`
 
 ✏️ NOTE: `onClick` - callback function doesn't get `date` as a second parameter.
 
@@ -544,7 +555,7 @@ Params:
 
 Params:
 
-- `props?: PropsGetterConfig`
+- `props?: DPPropsGetterConfig`
 
 ✏️ NOTE: `onClick` - callback function doesn't get `date` as a second parameter.
 
@@ -554,12 +565,8 @@ Params:
 
 Params:
 
-- `time: Time` - you could get it from the years 👆 [Time](#time)
-- `props?: PropsGetterConfig`
-
-Params:
-
-- `props?: PropsGetterConfig`
+- `time: DPTime` - you could get it from the years 👆 [Time](#time)
+- `props?: DPPropsGetterConfig`
 
 ✏️ NOTE: `onClick` - callback function doesn't get `date` as a second parameter.
 
@@ -613,15 +620,20 @@ Params:
   onDatesChange: undefined,
   dates: {
     limit: undefined,
-    minDate: null,
-    maxDate: null,
     mode: 'single',
+    minDate: undefined,
+    maxDate: undefined,
+    selectedDates: [],
     selectSameDate: false,
     toggle: false,
   },
   calendar: {
     mode: 'static',
     offsets: [0],
+  },
+  exclude: {
+    day: [],
+    date: [],
   },
   locale: {
     locale: 'en-GB',
@@ -636,8 +648,8 @@ Params:
   },
   time: {
     interval: 30,
-    minTime: null,
-    maxTime: null,
+    minTime: undefined,
+    maxTime: undefined,
   },
   years: {
     mode: 'decade',
@@ -677,7 +689,7 @@ Locale configuration consists of values compatible with `date.toLocaleString()`.
 For more information about locale you can reed at [MDN doc](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString).
 
 ```ts
-interface LocaleConfig {
+interface DPLocaleConfig {
   locale?: Intl.LocalesArgument;
   options?: Intl.DateTimeFormatOptions;
   day?: Intl.DateTimeFormatOptions['day'];
@@ -705,10 +717,10 @@ interface LocaleConfig {
 #### Calendar configuration
 
 ```ts
-interface CalendarConfig {
+interface DPCalendarConfig {
   mode?: 'static' | 'fluid';
   offsets?: number[];
-  startDay: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  startDay: DPDayInteger;
 }
 ```
 
@@ -749,10 +761,26 @@ The values of offsets could be negative, `-1`, this will add month before curren
 
 `startDay` - The day of the week that will be the first in the calendar. It accepts a number in the range of 0-6, where 0 represents Sunday and 6 represents Saturday.
 
+#### Exclude configuration
+
+```ts
+// The days in JS Date object has numbers from 0 - Sun to 6 - Sat
+type DPDayInteger = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface DPExcludeConfig {
+  day?: DPDayInteger[];
+  date?: Date[];
+}
+```
+
+- `day: DPDayInteger` - an array of days number from 0 to 6. If you will specify 0 and 6 all Sundays and Saturdays will be disabled.
+
+- `date: Date[]` - an array of Dates that will be disabled
+
 #### Dates configuration
 
 ```ts
-interface DatesUserConfig {
+interface DPDatesUserConfig {
   mode?: 'single' | 'multiple' | 'range';
   minDate?: Date;
   maxDate?: Date;
@@ -789,14 +817,14 @@ interface DatesUserConfig {
 #### Time configuration
 
 ```ts
-export interface TimeLimit {
+export interface DPTimeLimit {
   h: number;
   m: number;
 }
-export interface TimeConfig {
+export interface DPTimeConfig {
   interval: number;
-  minTime: TimeLimit;
-  maxTime: TimeLimit;
+  minTime: DPTimeLimit;
+  maxTime: DPTimeLimit;
 }
 ```
 
@@ -811,10 +839,10 @@ export interface TimeConfig {
 #### Years configuration
 
 ```ts
-type YearsMode = 'decade' | 'fluid';
+type DPYearsMode = 'decade' | 'fluid';
 
-interface YearsConfig {
-  mode: YearsMode,
+interface DPYearsConfig {
+  mode: DPYearsMode,
   numberOfYears: number;
   step: number;
 },
@@ -869,24 +897,24 @@ All entities are consists of 3 hooks: data, prop-getters and actions (for exampl
 #### useDatePickerState
 
 ```ts
-interface State {
-  config: DatePickerConfig;
+export interface DPReducerState {
+  config: DPConfig;
   focusDate: Date | null;
+  rangeEnd: Date | null;
   offsetDate: Date;
   offsetYear: number;
-  rangeEnd: Date | null;
 }
 
-type Action =
-  | SetFocusDate
-  | SetOffsetDate
-  | SetYearAction
-  | SetRangeEndAction;
+export type DPReducerAction =
+  | DPSetFocusDate
+  | DPSetOffsetDate
+  | DPSetYearAction
+  | DPSetRangeEndAction;
 
-type DPState = {
-  dispatch: Dispatch<Action>;
+export interface DPState {
+  dispatch: Dispatch<DPReducerAction>;
+  state: DPReducerState;
   selectedDates: Date[];
-  state: State;
 }
 
 type UseDatePickerState = (config: DatePickerConfig) =>
@@ -906,10 +934,10 @@ type DatePickerStateProviderValue = DPState;
 #### useCalendars
 
 ```ts
-type UseCalendars = (state: DPState) => {
-  calendars: Calendar[];
+type DPUseCalendars = (state: DPState) => {
+  calendars: DPCalendar[];
   weekDays: string[];
-}
+};
 ```
 
 - `calendars` - 👀 [calendars](#calendars)
@@ -920,7 +948,7 @@ Basic entities to build UI without interactivity.
 #### useDays
 
 ```ts
-type UseDays = (state: DPState) => {
+export type DPUseDays = (state: DPState) => {
   selectedDates: Date[];
   formattedDates: string[];
 };
@@ -934,8 +962,8 @@ Set of data with raw and formatted dates
 #### useDaysPropGetters
 
 ```ts
-type UseDaysPropGetters = (state: DPState) => {
-  dayButton(day: CalendarDay, config: PropsGetterConfig): void;
+export type DPUseDaysPropGetters = (state: DPState) => {
+  dayButton: (day: DPDay, config?: DPPropsGetterConfig) => DPPropGetter;
 };
 ```
 
@@ -946,8 +974,8 @@ Prop-getter for dates selection.
 #### useMonths
 
 ```ts
-type UseMonths = (state: DPState) => {
-  months: CalendarMonth[],
+export type DPUseMonths = (state: DPState) => {
+  months: DPMonth[];
 };
 ```
 
@@ -958,10 +986,10 @@ Months data.
 #### useMonthsPropGetters
 
 ```ts
-type UseMonthsPropGetters = (state: DPState) => {
-  monthButton(month: CalendarMonth, config: PropsGetterConfig): void,
-  nextMonthButton(config: MonthsPropsGetterConfig): void,
-  previousMonthButton(config: MonthsPropsGetterConfig): void,
+export type DPUseMonthsPropGetters = (state: DPState) => {
+  monthButton: (month: DPMonth, config?: DPPropsGetterConfig) => DPPropGetter;
+  nextMonthButton: (config?: DPMonthsPropGettersConfig) => DPPropGetter;
+  previousMonthButton: (config?: DPMonthsPropGettersConfig) => DPPropGetter;
 };
 ```
 
@@ -974,10 +1002,10 @@ Prop-getters for month manipulation.
 #### useMonthsActions
 
 ```ts
-type UseMonthsActions = (state: DPState) => {
-  setMonth(date: Date): void,
-  setNextMonth(): void,
-  setPreviousMonth(): void,
+export type DPUseMonthsActions = (state: DPState) => {
+  setMonth: (d: Date) => void;
+  setNextMonth: () => void;
+  setPreviousMonth: () => void;
 };
 ```
 
@@ -990,8 +1018,8 @@ Actions for month manipulation.
 #### useTime
 
 ```ts
-type UseTime = (state: DPState) => {
-  time: Time[]
+export type DPUseTime = (state: DPState) => {
+  time: DPTime[];
 };
 ```
 
@@ -1002,8 +1030,8 @@ Years data.
 #### useTimePropGetters
 
 ```ts
-type UseTimePropGetters = (state: DPState) => {
-  timeButton(time: Time, config: PropsGetterConfig): void,
+export type DPUseTimePropGetter = (state: DPState) => {
+  timeButton: (time: DPTime, config?: DPPropsGetterConfig) => DPPropGetter;
 };
 ```
 
@@ -1014,8 +1042,8 @@ Prop-getters for time manipulation.
 #### useYears
 
 ```ts
-type UseYears = (state: DPState) => {
-  years: CalendarYear[]
+export type DPUseYears = (state: DPState) => {
+  years: DPYear[];
 };
 ```
 
@@ -1026,10 +1054,10 @@ Years data.
 #### useYearsPropGetters
 
 ```ts
-type UseYearsPropGetters = (state: DPState) => {
-  yearButton(year: CalendarYear, config: PropsGetterConfig): void;
-  nextYearsButton(config: PropsGetterConfig): void;
-  previousYearsButton(config: PropsGetterConfig): void;
+export type DPUseYearsPropGetters = (state: DPState) => {
+  yearButton: (year: DPYear, config?: DPPropsGetterConfig) => DPPropGetter;
+  nextYearsButton: (config?: DPPropsGetterConfig) => DPPropGetter;
+  previousYearsButton: (config?: DPPropsGetterConfig) => DPPropGetter;
 };
 ```
 
@@ -1042,10 +1070,10 @@ Prop-getters for years manipulation.
 #### useYearsActions
 
 ```ts
-type UseYearsActions = (state: DPState) => {
-  setYear(date: Date): void;
-  setNextYears(): void;
-  setPreviousYears(): void;
+export type DPUseYearsActions = (state: DPState) => {
+  setYear: (d: Date) => void;
+  setNextYears: () => void;
+  setPreviousYears: () => void;
 };
 ```
 

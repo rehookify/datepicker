@@ -1,5 +1,5 @@
 import { NUMBER_OF_MONTHS } from '../constants';
-import { CalendarMonth, DatesConfig, LocaleConfig } from '../types';
+import type { DPDatesConfig, DPLocaleConfig, DPMonth } from '../types';
 import {
   formatMonthName,
   getDateParts,
@@ -11,9 +11,9 @@ import { maxDateAndAfter, minDateAndBeforeFirstDay } from './predicates';
 export const createMonths = (
   offsetDate: Date,
   selectedDates: Date[],
-  locale: LocaleConfig,
-  { minDate, maxDate }: DatesConfig,
-): CalendarMonth[] => {
+  locale: DPLocaleConfig,
+  { minDate, maxDate }: DPDatesConfig,
+): DPMonth[] => {
   const months = [];
   const { M, Y } = getDateParts(offsetDate);
   const { Y: nY, M: nM } = getDateParts(newDate());

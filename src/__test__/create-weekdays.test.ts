@@ -3,13 +3,15 @@ import { describe, expect, test } from '@jest/globals';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
 import { createConfig } from '../utils/config';
 import { createCalendars } from '../utils/create-calendars';
+import { createInitialState } from '../utils/create-initial-state';
 import { createWeekdays } from '../utils/create-weekdays';
 import { getCleanDate, newDate } from '../utils/date';
 
 const now = getCleanDate(newDate());
 const config = createConfig();
+const state = createInitialState(config);
 
-const TEST_CALENDAR = createCalendars(now, [], null, config)[0];
+const TEST_CALENDAR = createCalendars([now], state)[0];
 
 describe('createWeekdays', () => {
   test('createWeekdays create weekdays correctly with default props', () => {

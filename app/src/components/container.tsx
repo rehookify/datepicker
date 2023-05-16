@@ -1,5 +1,7 @@
-import React, { FC, PropsWithChildren } from 'react';
+import clsx from 'clsx';
+import React, { FC, HTMLAttributes } from 'react';
 
-export const Container: FC<PropsWithChildren> = ({ children }) => (
-  <div className="container">{children}</div>
-);
+export const Container: FC<HTMLAttributes<HTMLDivElement>> = ({
+  className,
+  ...props
+}) => <div className={clsx('container', className)} {...props} />;

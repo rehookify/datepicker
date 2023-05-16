@@ -1,12 +1,12 @@
 import { MINUTES_IN_THE_DAY } from '../constants';
-import { DatePickerConfig, Time } from '../types';
+import type { DPConfig, DPTime } from '../types';
 import { formatTime, getDateParts, getTimeDate, newDate } from './date';
 import { isSame, maxDateAndAfter, minDateAndBefore } from './predicates';
 
 export const createTime = (
   d: Date | null,
-  { time, locale }: DatePickerConfig,
-): Time[] => {
+  { time, locale }: DPConfig,
+): DPTime[] => {
   const NOW = newDate();
   const { interval, minTime, maxTime } = time;
   const { Y, M, D } = getDateParts(d || NOW);
