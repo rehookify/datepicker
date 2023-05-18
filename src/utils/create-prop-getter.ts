@@ -6,6 +6,7 @@ export const createPropGetter = (
   isDisabled: boolean,
   action: (evt: MouseEvent<HTMLElement>) => void,
   props: DPPropsGetterConfig = {},
+  selected = false,
 ): DPPropGetter => ({
   role: 'button',
   tabIndex: 0,
@@ -19,5 +20,6 @@ export const createPropGetter = (
           action(evt);
         },
       }),
+  ...(selected ? { 'aria-selected': true } : {}),
   ...props,
 });

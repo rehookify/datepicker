@@ -18,12 +18,14 @@ describe('createPropGetter', () => {
       onClick,
       disabled,
       'aria-disabled': ariaDisabled,
-    } = createPropGetter(true, jest.fn(), {});
+      'aria-selected': ariaSelected,
+    } = createPropGetter(true, jest.fn(), {}, true);
 
     expect(role).toBe('button');
     expect(tabIndex).toBe(0);
     expect(onClick).toBeFalsy();
     expect(disabled).toBe(true);
     expect(ariaDisabled).toBe(true);
+    expect(ariaSelected).toBe(true);
   });
 });

@@ -45,13 +45,14 @@ export const useMonthsPropGetters: DPUseMonthsPropGetters = ({
 
   const monthButton = useCallback(
     (
-      { $date, disabled }: DPMonth,
+      { $date, disabled, selected }: DPMonth,
       { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
         (evt) => callAll(onClick, skipFirst(callSetOffset))(evt, $date),
         rest,
+        selected,
       ),
     [callSetOffset],
   );

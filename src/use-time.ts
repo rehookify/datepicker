@@ -45,6 +45,7 @@ export const useTimePropGetter: DPUseTimePropGetter = ({
           )(evt, $date);
         },
         rest,
+        selected,
       ),
     [selectedDates, onDatesChange, dispatch, focusDate],
   );

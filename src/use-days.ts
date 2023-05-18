@@ -80,6 +80,7 @@ export const useDaysPropGetters: DPUseDaysPropGetters = ({
               },
             }),
         },
+        selected,
       ),
     [
       mode,

@@ -45,13 +45,14 @@ export const useYearsPropGetters: DPUseYearsPropGetters = ({
 
   const yearButton = useCallback(
     (
-      { $date, disabled }: DPYear,
+      { $date, disabled, selected }: DPYear,
       { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
         (evt) => callAll(onClick, skipFirst(callSetOffset))(evt, $date),
         rest,
+        selected,
       ),
     [callSetOffset],
   );

@@ -14,5 +14,6 @@ export interface DPPropGetter extends Record<string, unknown> {
   tabIndex: number;
   disabled?: boolean;
   'aria-disabled'?: boolean;
+  'aria-selected'?: boolean;
   onClick?(evt: MouseEvent<HTMLElement>): void;
 }
