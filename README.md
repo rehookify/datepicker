@@ -1088,7 +1088,7 @@ Actions for years manipulation.
 
 We have set of context hooks that have similar API with regular one.
 
-- `useContextCalendars` - 👀 [useColendars](#usecalendars)
+- `useContextCalendars` - 👀 [useCalendars](#usecalendars)
 - `useContextDays` - 👀 [useDay](#usedays)
 - `useContextDaysPropsGetters` - 👀 [useDayPropGetters](#usedayspropgetters)
 - `useContextMonths` - 👀 [useMonths](#usemonths)
