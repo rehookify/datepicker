@@ -1,5 +1,5 @@
 import type { DPUseDatePicker } from './types';
-import { useCalendars } from './use-calendars';
+import { useCalendarActions, useCalendars } from './use-calendars';
 import { useDatePickerState } from './use-date-picker-state';
 import { useDays, useDaysPropGetters } from './use-days';
 import {
@@ -30,6 +30,7 @@ export const useDatePicker: DPUseDatePicker = (config) => {
     actions: {
       ...useMonthsActions(dpState),
       ...useYearsActions(dpState),
+      ...useCalendarActions(dpState),
     },
   };
 };

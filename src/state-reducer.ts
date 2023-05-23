@@ -2,6 +2,8 @@ import { Dispatch } from 'react';
 
 import {
   SET_FOCUS_DATE_ACTION,
+  SET_MAX_DATE_ACTION,
+  SET_MIN_DATE_ACTION,
   SET_OFFSET_DATE_ACTION,
   SET_RANGE_END_ACTION,
   SET_YEAR_ACTION,
@@ -10,6 +12,8 @@ import type {
   DPReducerAction,
   DPReducerState,
   DPSetFocusDate,
+  DPSetMaxDateAction,
+  DPSetMinDateAction,
   DPSetOffsetDate,
   DPSetRangeEndAction,
   DPSetYearAction,
@@ -40,6 +44,28 @@ export const stateReducer = (
         ...state,
         offsetYear: action.year,
       };
+    case SET_MIN_DATE_ACTION:
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          dates: {
+            ...state.config.dates,
+            minDate: action.minDate,
+          },
+        },
+      };
+    case SET_MAX_DATE_ACTION:
+      return {
+        ...state,
+        config: {
+          ...state.config,
+          dates: {
+            ...state.config.dates,
+            maxDate: action.maxDate,
+          },
+        },
+      };
     default:
       return state;
   }
@@ -64,3 +90,13 @@ export const setYear = (
   dispatch: Dispatch<DPSetYearAction>,
   year: number,
 ): void => dispatch({ type: SET_YEAR_ACTION, year });
+
+export const setMinDate = (
+  dispatch: Dispatch<DPSetMinDateAction>,
+  minDate: Date,
+): void => dispatch({ type: SET_MIN_DATE_ACTION, minDate });
+
+export const setMaxDate = (
+  dispatch: Dispatch<DPSetMaxDateAction>,
+  maxDate: Date,
+): void => dispatch({ type: SET_MAX_DATE_ACTION, maxDate });

@@ -21,6 +21,11 @@ export type DPUseDays = (state: DPState) => {
   formattedDates: string[];
 };
 
+export type DPUseCalendarActions = (state: DPState) => {
+  setMinDate: (d: Date) => void;
+  setMaxDate: (d: Date) => void;
+};
+
 export type DPUseDaysPropGetters = (state: DPState) => {
   dayButton: (day: DPDay, config?: DPPropsGetterConfig) => DPPropGetter;
 };
