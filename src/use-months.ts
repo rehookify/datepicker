@@ -21,19 +21,15 @@ import { maxDateAndAfter, minDateAndBeforeFirstDay } from './utils/predicates';
 
 export const useMonths: DPUseMonths = ({
   selectedDates,
-  state: {
-    offsetDate,
-    config: { locale, dates },
-  },
+  state: { offsetDate },
+  config: { locale, dates },
 }) => ({
   months: createMonths(offsetDate, selectedDates, locale, dates),
 });
 
 export const useMonthsPropGetters: DPUseMonthsPropGetters = ({
-  state: {
-    offsetDate,
-    config: { dates },
-  },
+  state: { offsetDate },
+  config: { dates },
   dispatch,
 }) => {
   const { minDate, maxDate } = dates;

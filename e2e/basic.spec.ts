@@ -1,6 +1,7 @@
-import { test, expect } from '@playwright/test';
-import { formatMonthName, subtractFromDate } from '../src/utils/date';
+import { expect, test } from '@playwright/test';
+
 import { DEFAULT_LOCALE_CONFIG } from '../src/constants';
+import { formatMonthName, subtractFromDate } from '../src/utils/date';
 
 test('test basic month navigation', async ({ page }) => {
   await page.goto('/');

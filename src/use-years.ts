@@ -17,21 +17,15 @@ import { isSame, maxDateAndAfter, minDateAndBefore } from './utils/predicates';
 
 export const useYears: DPUseYears = ({
   selectedDates,
-  state: {
-    offsetDate,
-    offsetYear,
-    config: { years, dates },
-  },
+  state: { offsetDate, offsetYear },
+  config: { years, dates },
 }) => ({
   years: createYears(offsetYear, offsetDate, selectedDates, years, dates),
 });
 
 export const useYearsPropGetters: DPUseYearsPropGetters = ({
-  state: {
-    offsetYear,
-    offsetDate,
-    config: { dates, years: yearsConfig },
-  },
+  state: { offsetYear, offsetDate },
+  config: { dates, years: yearsConfig },
   dispatch,
 }) => {
   const { minDate, maxDate } = dates;
@@ -104,10 +98,8 @@ export const useYearsPropGetters: DPUseYearsPropGetters = ({
 };
 
 export const useYearsActions: DPUseYearsActions = ({
-  state: {
-    offsetYear,
-    config: { years },
-  },
+  state: { offsetYear },
+  config: { years },
   dispatch,
 }) => {
   const { step } = years;

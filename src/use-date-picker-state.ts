@@ -21,5 +21,6 @@ export const useDatePickerState = (config?: DPUserConfig): DPState => {
     dispatch,
     selectedDates: dpConfig.selectedDates,
     state,
+    config: dpConfig,
   };
 };

@@ -16,7 +16,7 @@ describe('useDays', () => {
     );
     const { result } = renderHook(() => useDays(stateResult.current));
 
-    const { locale } = stateResult.current.state.config;
+    const { locale } = stateResult.current.config;
 
     expect(result.current.selectedDates).toEqual([d1, d2]);
     expect(result.current.formattedDates).toEqual([

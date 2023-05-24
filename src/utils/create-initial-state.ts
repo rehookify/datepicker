@@ -21,6 +21,5 @@ export const createInitialState = (config: DPConfig): DPReducerState => {
     rangeEnd: null,
     offsetDate,
     offsetYear: getCurrentYearPosition(getDateParts(offsetDate).Y, years),
-    config,
   };
 };

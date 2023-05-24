@@ -12,16 +12,16 @@ import { createPropGetter } from './utils/create-prop-getter';
 import { createTime } from './utils/create-time';
 import { isSame } from './utils/predicates';
 
-export const useTime: DPUseTime = ({ state: { config, focusDate } }) => ({
+export const useTime: DPUseTime = ({ state: { focusDate }, config }) => ({
   time: createTime(focusDate, config),
 });
 
 export const useTimePropGetter: DPUseTimePropGetter = ({
   selectedDates,
-  state: { config, focusDate },
+  state: { focusDate },
+  config: { onDatesChange },
   dispatch,
 }) => {
-  const { onDatesChange } = config;
   const timeButton = useCallback(
     (
       { $date, selected, disabled }: DPTime,

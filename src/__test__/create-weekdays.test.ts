@@ -11,7 +11,12 @@ const now = getCleanDate(newDate());
 const config = createConfig();
 const state = createInitialState(config);
 
-const TEST_CALENDAR = createCalendars([now], state)[0];
+const TEST_CALENDAR = createCalendars({
+  selectedDates: [now],
+  state,
+  config,
+  dispatch: jest.fn(),
+})[0];
 
 describe('createWeekdays', () => {
   test('createWeekdays create weekdays correctly with default props', () => {

@@ -17,7 +17,12 @@ describe('isExcludedDay', () => {
     });
 
     const state = createInitialState(config);
-    const [calendar] = createCalendars([], state);
+    const [calendar] = createCalendars({
+      selectedDates: [] as Date[],
+      state,
+      config,
+      dispatch: jest.fn(),
+    });
     const { days } = calendar;
 
     days.forEach((day) => {
@@ -38,7 +43,12 @@ describe('isExcludedDate', () => {
     });
 
     const state = createInitialState(config);
-    const [calendar] = createCalendars([], state);
+    const [calendar] = createCalendars({
+      selectedDates: [] as Date[],
+      state,
+      config,
+      dispatch: jest.fn(),
+    });
     const { days } = calendar;
 
     days.forEach((day) => {

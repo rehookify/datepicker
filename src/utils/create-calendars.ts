@@ -1,4 +1,10 @@
-import type { DPCalendar, DPDay, DPReducerState } from '../types';
+import type {
+  DPCalendar,
+  DPConfig,
+  DPDay,
+  DPReducerState,
+  DPState,
+} from '../types';
 import {
   addToDate,
   formatMonthName,
@@ -20,7 +26,8 @@ import {
 const createCalendar = (
   offsetDate: Date,
   selectedDates: Date[],
-  { rangeEnd, config }: DPReducerState,
+  { rangeEnd }: DPReducerState,
+  config: DPConfig,
 ): DPCalendar => {
   const {
     dates: { mode, minDate, maxDate },
@@ -58,19 +65,18 @@ const createCalendar = (
   };
 };
 
-export const createCalendars = (
-  selectedDates: Date[],
-  state: DPReducerState,
-) => {
-  const {
-    config: { calendar },
-    offsetDate,
-  } = state;
-  return calendar.offsets.map((offset) =>
+export const createCalendars = ({
+  selectedDates,
+  state,
+  config,
+}: DPState): DPCalendar[] => {
+  const { offsetDate } = state;
+  return config.calendar.offsets.map((offset) =>
     createCalendar(
       addToDate(offsetDate, offset, 'month'),
       selectedDates,
       state,
+      config,
     ),
   );
 };

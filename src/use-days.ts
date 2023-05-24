@@ -14,19 +14,14 @@ import { formatDate, getCleanDate } from './utils/date';
 import { getMultipleDates } from './utils/get-multiple-dates';
 import { includeDate, isSame } from './utils/predicates';
 
-export const useDays: DPUseDays = ({
-  selectedDates,
-  state: {
-    config: { locale },
-  },
-}) => ({
+export const useDays: DPUseDays = ({ selectedDates, config: { locale } }) => ({
   selectedDates,
   formattedDates: selectedDates.map((d: Date) => formatDate(d, locale)),
 });
 
 export const useDaysPropGetters: DPUseDaysPropGetters = ({
+  config,
   selectedDates,
-  state: { config },
   dispatch,
 }) => {
   const {

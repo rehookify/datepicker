@@ -15,7 +15,8 @@ describe('useYears', () => {
 
     const {
       selectedDates,
-      state: { offsetDate, offsetYear, config },
+      state: { offsetDate, offsetYear },
+      config,
     } = stateResult.current;
     const { years, dates } = config;
 
@@ -55,7 +56,7 @@ describe('useYearsPropGetters', () => {
 
   test('previousYearsButton: should move years pagination one step backward', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const { years } = stateResult.current.state.config;
+    const { years } = stateResult.current.config;
     const { result: yResult } = renderHook(() =>
       useYearsPropGetters(stateResult.current),
     );
@@ -73,7 +74,7 @@ describe('useYearsPropGetters', () => {
 
   test('nextYearsButton: should move years pagination step forward', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const { years } = stateResult.current.state.config;
+    const { years } = stateResult.current.config;
     const { result: yResult } = renderHook(() =>
       useYearsPropGetters(stateResult.current),
     );
@@ -115,7 +116,7 @@ describe('useYearsAction', () => {
 
     act(() => setPreviousYears());
     expect(stateResult.current.state.offsetYear).toBe(
-      currentYear - stateResult.current.state.config.years.step,
+      currentYear - stateResult.current.config.years.step,
     );
   });
 
@@ -130,7 +131,7 @@ describe('useYearsAction', () => {
 
     act(() => setNextYears());
     expect(stateResult.current.state.offsetYear).toBe(
-      currentYear + stateResult.current.state.config.years.step,
+      currentYear + stateResult.current.config.years.step,
     );
   });
 });

@@ -11,7 +11,12 @@ describe('createCalendars', () => {
     const config = createConfig();
     const state = createInitialState(config);
 
-    const testCalendar = createCalendars([now], state);
+    const testCalendar = createCalendars({
+      selectedDates: [now],
+      state,
+      config,
+      dispatch: jest.fn(),
+    });
     const { days } = testCalendar[0];
 
     const today = days.filter(({ now }) => now);
@@ -30,7 +35,12 @@ describe('createCalendars', () => {
     });
     const state = createInitialState(config);
 
-    const testCalendar = createCalendars([offsetDate], state);
+    const testCalendar = createCalendars({
+      selectedDates: [offsetDate],
+      state,
+      config,
+      dispatch: jest.fn(),
+    });
 
     expect(testCalendar.length).toBe(3);
     expect(testCalendar[0].month).toBe('November');
@@ -47,7 +57,12 @@ describe('createCalendars', () => {
 
     const state = createInitialState(config);
 
-    const [testCalendar] = createCalendars([offsetDate], state);
+    const [testCalendar] = createCalendars({
+      selectedDates: [offsetDate],
+      state,
+      config,
+      dispatch: jest.fn(),
+    });
 
     expect(testCalendar.days.length).toBe(35);
   });

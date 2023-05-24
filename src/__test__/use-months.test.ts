@@ -20,9 +20,9 @@ describe('useMonths', () => {
 
     const {
       selectedDates,
-      state: { offsetDate, config },
+      state: { offsetDate },
+      config: { locale, dates },
     } = stateResult.current;
-    const { locale, dates } = config;
 
     const months = createMonths(offsetDate, selectedDates, locale, dates);
 

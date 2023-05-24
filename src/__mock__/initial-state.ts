@@ -7,7 +7,6 @@ const config = createConfig({});
 export const INITIAL_STATE = {
   focusDate: null,
   rangeEnd: null,
-  config,
   offsetDate: getCleanDate(newDate()),
   offsetYear: getCurrentYearPosition(
     getDateParts(getCleanDate(newDate())).Y,

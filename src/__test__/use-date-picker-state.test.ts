@@ -24,7 +24,7 @@ describe('useDatePickerState', () => {
     act(() => setOffset(dispatch, d));
     expect(result.current.state.offsetDate).toEqual(d);
     expect(result.current.state.offsetYear).toBe(
-      getCurrentYearPosition(Y + 1, result.current.state.config.years),
+      getCurrentYearPosition(Y + 1, result.current.config.years),
     );
   });
 

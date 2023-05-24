@@ -11,11 +11,9 @@ describe('useCalendars', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
     const { result } = renderHook(() => useCalendars(stateResult.current));
 
-    const { selectedDates, state } = stateResult.current;
+    const calendars = createCalendars(stateResult.current);
 
-    const calendars = createCalendars(selectedDates, state);
-
-    const weekDays = createWeekdays(calendars[0], state.config);
+    const weekDays = createWeekdays(calendars[0], stateResult.current.config);
 
     expect(result.current.calendars).toEqual(calendars);
     expect(result.current.weekDays).toEqual(weekDays);
