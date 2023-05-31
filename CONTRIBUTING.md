@@ -1,4 +1,4 @@
-# Contributing to `React Hook Form`
+# Contributing to `@rehookify/datepicker`
 
 As the creators and maintainers of this project, we want to ensure that `@rehookify/datepicker` lives and continues to grow and evolve. We would like to encourage everyone to help and support this library by contributing.
 
@@ -24,7 +24,7 @@ Here is a quick guide to doing code contributions to the library.
 
 7. Push your branch: `git push -u origin your-meaningful-branch-name`
 
-8. Submit a pull request to the upstream react-hook-form repository.
+8. Submit a pull request to the upstream @rehookify/datepicker repository.
 
 9. Choose a descriptive title and describe your changes briefly.
 
