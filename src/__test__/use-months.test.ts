@@ -8,7 +8,12 @@ import {
   useMonthsPropGetters,
 } from '../use-months';
 import { createMonths } from '../utils/create-months';
-import { getDateParts, newDate } from '../utils/date';
+import {
+  addToDate,
+  getDateParts,
+  newDate,
+  subtractFromDate,
+} from '../utils/date';
 
 // Test Month data
 describe('useMonths', () => {
@@ -54,19 +59,24 @@ describe('useMonthPropGetters', () => {
 
   test('previousMonthButton should set previous month', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const { result: mResult } = renderHook(() =>
+    const { result: mResult, rerender } = renderHook(() =>
       useMonthsPropGetters(stateResult.current),
     );
 
     const { Y, M, D } = getDateParts(stateResult.current.state.offsetDate);
+    const startDate = newDate(Y, M, D);
 
     const { onClick } = mResult.current.previousMonthButton();
 
     // @ts-ignore-next-line
     act(() => onClick());
+
     expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
-      newDate(Y, M - 1, D).getMonth(),
+      subtractFromDate(startDate, 1, 'month').getMonth(),
     );
+
+    // We need rerender to get fresh offsetDate to the useMonthsPropGetters
+    rerender();
 
     // should move 3 months back
     const { onClick: onQuarterBack } = mResult.current.previousMonthButton({
@@ -75,26 +85,31 @@ describe('useMonthPropGetters', () => {
 
     // @ts-ignore-next-line
     act(() => onQuarterBack());
+
     expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
-      newDate(Y, M - 3, D).getMonth(),
+      subtractFromDate(startDate, 4, 'month').getMonth(),
     );
   });
 
   test('nextMonthButton should set next month', () => {
     const { result: stateResult } = renderHook(() => useDatePickerState());
-    const { result: mResult } = renderHook(() =>
+    const { result: mResult, rerender } = renderHook(() =>
       useMonthsPropGetters(stateResult.current),
     );
 
     const { Y, M, D } = getDateParts(stateResult.current.state.offsetDate);
+    const startDate = newDate(Y, M, D);
 
     const { onClick } = mResult.current.nextMonthButton();
 
     // @ts-ignore-next-line
     act(() => onClick());
     expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
-      newDate(Y, M + 1, D).getMonth(),
+      addToDate(startDate, 1, 'month').getMonth(),
     );
+
+    // We need rerender to get fresh offsetDate to the useMonthsPropGetters
+    rerender();
 
     // should move 3 months forward
     const { onClick: onQuarterForward } = mResult.current.nextMonthButton({
@@ -104,7 +119,7 @@ describe('useMonthPropGetters', () => {
     // @ts-ignore-next-line
     act(() => onQuarterForward());
     expect(stateResult.current.state.offsetDate.getMonth()).toEqual(
-      newDate(Y, M + 3, D).getMonth(),
+      addToDate(startDate, 4, 'month').getMonth(),
     );
   });
 });
@@ -138,7 +153,7 @@ describe('useMonthsAction', () => {
 
     act(() => setPreviousMonth());
     expect(stateResult.current.state.offsetDate.getMonth()).toBe(
-      newDate(Y, M - 1, D).getMonth(),
+      subtractFromDate(newDate(Y, M, D), 1, 'month').getMonth(),
     );
   });
 
@@ -153,7 +168,7 @@ describe('useMonthsAction', () => {
 
     act(() => setNextMonth());
     expect(stateResult.current.state.offsetDate.getMonth()).toBe(
-      newDate(Y, M + 1, D).getMonth(),
+      addToDate(newDate(Y, M, D), 1, 'month').getMonth(),
     );
   });
 });
