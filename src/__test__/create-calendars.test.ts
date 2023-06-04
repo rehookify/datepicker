@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createConfig } from '../utils/config';
 import { createCalendars } from '../utils/create-calendars';
@@ -15,7 +15,7 @@ describe('createCalendars', () => {
       selectedDates: [now],
       state,
       config,
-      dispatch: jest.fn(),
+      dispatch: vi.fn(),
     });
     const { days } = testCalendar[0];
 
@@ -39,7 +39,7 @@ describe('createCalendars', () => {
       selectedDates: [offsetDate],
       state,
       config,
-      dispatch: jest.fn(),
+      dispatch: vi.fn(),
     });
 
     expect(testCalendar.length).toBe(3);
@@ -61,7 +61,7 @@ describe('createCalendars', () => {
       selectedDates: [offsetDate],
       state,
       config,
-      dispatch: jest.fn(),
+      dispatch: vi.fn(),
     });
 
     expect(testCalendar.days.length).toBe(35);

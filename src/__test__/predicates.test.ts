@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import { newDate } from '../utils/date';
 import {
@@ -72,7 +72,7 @@ describe('maxDateAndAfter', () => {
     expect(maxDateAndAfter(maxDate, d1)).toBe(false);
     expect(maxDateAndAfter(maxDate, d2)).toBe(true);
     expect(maxDateAndAfter(d2, d2)).toBe(false);
-    expect(maxDateAndAfter(null, d2)).toBe(false);
+    expect(maxDateAndAfter(undefined, d2)).toBe(false);
   });
 });
 
@@ -85,7 +85,7 @@ describe('minDateAndBefore', () => {
     expect(minDateAndBefore(minDate, d1)).toBe(true);
     expect(minDateAndBefore(minDate, d2)).toBe(false);
     expect(minDateAndBefore(d2, d2)).toBe(false);
-    expect(minDateAndBefore(null, d1)).toBe(false);
+    expect(minDateAndBefore(undefined, d1)).toBe(false);
   });
 });
 
@@ -98,7 +98,7 @@ describe('minDateAndBeforeFirstDay', () => {
     expect(minDateAndBeforeFirstDay(minDate, d1)).toBe(true);
     expect(minDateAndBefore(minDate, d2)).toBe(false);
     expect(minDateAndBefore(d2, d2)).toBe(false);
-    expect(minDateAndBefore(null, d1)).toBe(false);
+    expect(minDateAndBefore(undefined, d1)).toBe(false);
   });
 });
 

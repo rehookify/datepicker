@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createConfig } from '../utils/config';
 import { createCalendars } from '../utils/create-calendars';
@@ -21,7 +21,7 @@ describe('isExcludedDay', () => {
       selectedDates: [] as Date[],
       state,
       config,
-      dispatch: jest.fn(),
+      dispatch: vi.fn(),
     });
     const { days } = calendar;
 
@@ -47,7 +47,7 @@ describe('isExcludedDate', () => {
       selectedDates: [] as Date[],
       state,
       config,
-      dispatch: jest.fn(),
+      dispatch: vi.fn(),
     });
     const { days } = calendar;
 

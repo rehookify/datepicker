@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import { createConfig } from '../utils/config';
 import { createYears } from '../utils/create-years';
