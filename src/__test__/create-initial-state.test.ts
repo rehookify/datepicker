@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import { INITIAL_STATE } from '../__mock__/initial-state';
 import { createConfig } from '../utils/config';

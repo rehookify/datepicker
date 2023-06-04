@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import { DEFAULT_CONFIG } from '../__mock__/config';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';

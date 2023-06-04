@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test, vi } from 'vitest';
 
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
 import { createConfig } from '../utils/config';
@@ -15,7 +15,7 @@ const TEST_CALENDAR = createCalendars({
   selectedDates: [now],
   state,
   config,
-  dispatch: jest.fn(),
+  dispatch: vi.fn(),
 })[0];
 
 describe('createWeekdays', () => {

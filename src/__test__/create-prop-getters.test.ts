@@ -1,10 +1,10 @@
-import { describe, expect, jest, test } from '@jest/globals';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createPropGetter } from '../utils/create-prop-getter';
 
 describe('createPropGetter', () => {
   test('createPropGetter should create correct not disabled config', () => {
-    const { role, tabIndex, onClick } = createPropGetter(false, jest.fn(), {});
+    const { role, tabIndex, onClick } = createPropGetter(false, vi.fn(), {});
 
     expect(role).toBe('button');
     expect(tabIndex).toBe(0);
@@ -19,7 +19,7 @@ describe('createPropGetter', () => {
       disabled,
       'aria-disabled': ariaDisabled,
       'aria-selected': ariaSelected,
-    } = createPropGetter(true, jest.fn(), {}, true);
+    } = createPropGetter(true, vi.fn(), {}, true);
 
     expect(role).toBe('button');
     expect(tabIndex).toBe(0);

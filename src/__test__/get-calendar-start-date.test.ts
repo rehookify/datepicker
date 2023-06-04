@@ -1,4 +1,4 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
 
 import { getCleanDate, getDateParts, newDate } from '../utils/date';
 import { getCalendarStartDate } from '../utils/get-calendar-start-date';
@@ -9,7 +9,7 @@ describe('getCalendarStartDate', () => {
     const { Y, M, D } = getDateParts(now);
     const minDate = newDate(Y, M, D + 2);
 
-    const currentDate = getCalendarStartDate(minDate, null, now);
+    const currentDate = getCalendarStartDate(minDate, undefined, now);
 
     expect(currentDate).toEqual(minDate);
   });
@@ -19,7 +19,7 @@ describe('getCalendarStartDate', () => {
     const { Y, M, D } = getDateParts(now);
     const maxDate = newDate(Y, M, D - 2);
 
-    const currentDate = getCalendarStartDate(null, maxDate, now);
+    const currentDate = getCalendarStartDate(undefined, maxDate, now);
 
     expect(currentDate).toEqual(maxDate);
   });

@@ -1,5 +1,5 @@
-import { describe, expect, test } from '@jest/globals';
 import { act, renderHook } from '@testing-library/react';
+import { describe, expect, test } from 'vitest';
 
 import { useDatePickerState } from '../use-date-picker-state';
 import {
