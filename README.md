@@ -68,7 +68,7 @@ const DatePicker = () => {
       </header>
       <ul>
         {days.map((dpDay) => (
-          <li key={`${month}-${dpDay.day}`}>
+          <li key={dpDay.$date.toDateString()}>
             <button>{dpDay.day}</button>
           </li>
         ))}
@@ -110,7 +110,7 @@ const DatePicker = () => {
       </header>
       <ul>
         {days.map((dpDay) => (
-          <li key={`${month}-${dpDay.day}`}>
+          <li key={dpDay.$date.toDateString()}>
             <button {...dayButton(dpDay)}>{dpDay.day}</button>
           </li>
         ))}
@@ -207,7 +207,7 @@ const DatePicker = () => {
       </header>
       <ul>
         {days.map((dpDay) => (
-          <li key={`${month}-${dpDay.day}`}>
+          <li key={dpDay.$date.toDateString()}>
             <button
               {...dayButton(dpDay, { onClick: onDayClick })}
             >
