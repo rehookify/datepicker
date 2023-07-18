@@ -11,7 +11,7 @@ export const ModularContextProvider = () => {
         selectedDates,
         onDatesChange,
         dates: {
-          mode: 'multiple',
+          // mode: 'multiple',
         },
         calendar: {
           startDay: 1,
