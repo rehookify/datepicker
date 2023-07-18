@@ -11,6 +11,8 @@ describe('isExcludedDay', () => {
     // exclude all Sundays
     const EXCLUDED_DATE = 0;
     const config = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       exclude: {
         day: [EXCLUDED_DATE],
       },
@@ -22,6 +24,7 @@ describe('isExcludedDay', () => {
       state,
       config,
       dispatch: vi.fn(),
+      offsetDate: newDate(),
     });
     const { days } = calendar;
 
@@ -37,6 +40,8 @@ describe('isExcludedDate', () => {
   test('should exclude dates', () => {
     const NOW = getCleanDate(newDate());
     const config = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       exclude: {
         date: [NOW],
       },
@@ -48,6 +53,7 @@ describe('isExcludedDate', () => {
       state,
       config,
       dispatch: vi.fn(),
+      offsetDate: newDate(),
     });
     const { days } = calendar;
 

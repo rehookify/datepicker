@@ -1,6 +1,6 @@
 {
   "name": "@rehookify/datepicker",
-  "version": "5.2.2",
+  "version": "6.0.0",
   "description": "The ultimate tool to create a date, range and time picker in your React applications.",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
@@ -29,7 +29,7 @@
     "lint:fix": "eslint src/ --fix",
     "prebuild": "npm run clean",
     "prepare": "husky install",
-    "prepublishOnly": "npm run test && npm run clean && npm run build",
+    "prepublishOnly": "npm t --run && npm run clean && npm run build",
     "test": "vitest",
     "t:e2e": "playwright test",
     "start:app": "npm start --prefix ./app",
@@ -98,7 +98,8 @@
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
-      "npm run lint:fix"
+      "prettier --write",
+      "eslint --fix"
     ]
   },
   "publishConfig": {

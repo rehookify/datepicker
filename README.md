@@ -23,7 +23,6 @@ Help us in our struggle, 💰  [United24](https://u24.gov.ua/), [KOLO](https://w
 - Zero dependencies.
 - [Modular Hooks](#modular-hooks) will help you to use only what you need.
 - You can get accessible component props with prop-getters.
-- You have full power to manipulate the state with actions.
 - Available as a hook or context.
 - Support localization with `.toLocaleString`, `.toLocalTimeString`
 
@@ -165,16 +164,21 @@ import { useDatePicker } from '@rehookify/datepicker';
 
 const DatePicker = () => {
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
+  const [offsetDate, onOffsetChange] = useState<Date>(new Date());
+
   const {
     data: { weekDays, calendars },
     propGetters: {
       dayButton,
-      previousMonthButton,
-      nextMonthButton,
+      addOffset,
+      subtractOffset,
     },
   } = useDatePicker({
     selectedDates,
     onDatesChange,
+    // we want to manipulate with offsetDate outside of the hook
+    offsetDate,
+    onOffsetChange,
   });
 
   // calendars[0] is always present, this is an initial calendar
@@ -188,6 +192,10 @@ const DatePicker = () => {
     console.log(date);
   }
 
+  const moveOffsetToNewYear = () => {
+    onOffsetChange(new Date(2024, 0, 1));
+  }
+
   // selectedDates is an array of dates
   // formatted with date.toLocaleDateString(locale, options)
   return (
@@ -195,9 +203,9 @@ const DatePicker = () => {
       {selectedDates.length > 0 && <h1>{selectedDates[0]}</h1>}
       <header>
         <div>
-          <button {...previousMonthButton()}>&lt;</button>
+          <button {...subtractOffset({ months: 1 })}>&lt;</button>
           <p>{month} {year}</p>
-          <button {...nextMonthButton()}>&gt;</button>
+          <button {...appOffset({ months: 1 })}>&gt;</button>
         </div>
         <ul>
           {weekDays.map((day) => (
@@ -216,6 +224,7 @@ const DatePicker = () => {
           </li>
         ))}
       </ul>
+      <button onClick={moveOffsetToNewYear}>New Year</button>
     </section>
   )
 }
@@ -278,26 +287,22 @@ const App = () => {
     - [monthButton](#monthbutton)
     - [nextMonthButton](#nextmonthbutton)
     - [previousMonthButton](#previousmonthbutton)
+    - [setOffset](#setoffset)
+    - [addOffset](#addoffset)
+    - [subtractOffset](#subtractoffset)
+    - [timeButton](#timebutton)
     - [yearButton](#yearbutton)
     - [nextYearsButton](#nextyearsbutton)
     - [previousYearsButton](#previousyearsbutton)
-    - [timeButton](#timebutton)
-  - [actions](#actions)
-    - [setMonth](#setmonth)
-    - [setYear](#setyear)
-    - [setNextYears](#setnextyears)
-    - [setPreviousYears](#setpreviousyears)
-    - [setNextMonth](#setnextmonth)
-    - [setPreviousMonth](#setpreviousmonth)
 - [Configuration](#configuration)
   - [Default configuration](#default-configuration)
   - [General configuration](#general-configuration)
-  - [Locale configuration](#locale-configuration)
   - [Calendar configuration](#calendar-configuration)
-  - [Exclude configuration](#exclude-configuration)
   - [Dates configuration](#dates-configuration)
-  - [Years configuration](#years-configuration)
+  - [Exclude configuration](#exclude-configuration)
+  - [Locale configuration](#locale-configuration)
   - [Time configuration](#time-configuration)
+  - [Years configuration](#years-configuration)
 - [Modular Hooks](#modular-hooks)
   - [useDatePickerState](#usedatepickerstate)
   - [useCalendars](#usecalendars)
@@ -305,17 +310,16 @@ const App = () => {
   - [useDaysPropGetters](#usedayspropgetters)
   - [useMonths](#usemonths)
   - [useMonthsPropGetters](#usemonthspropgetters)
-  - [useMonthsActions](#usemonthsactions)
+  - [useDatePickerOffsetPropGetters](#usedatepickeroffsetpropgetters)
   - [useTime](#usetime)
   - [useTimePropGetters](#usetimepropgetters)
   - [useYears](#useyears)
   - [useYearsPropGetters](#useyearspropgetters)
-  - [useYearsActions](#useyearsactions)
   - [Context Hooks](#context-hooks)
 
 ### State
 
-The state consists of three main parts: [data](#data), [propGetters](#prop-getters) and [actions](#actions).
+The state consists of two main parts: [data](#data) and [propGetters](#prop-getters).
 
 ### Data
 
@@ -331,7 +335,6 @@ interface DPData {
   weekDays: string[];
   years: CalendarYears[];
 }
-
 ```
 
 #### calendars
@@ -509,22 +512,6 @@ Params:
 - `month: DPMonth` - you could get it from the months 👆 [Months](#months)
 - `props?: DPMonthsPropGettersConfig`
 
-#### nextMonthButton
-
-`nextMonthButton` moves months pagination forward. You can specify steps by passing them to configuration. `nextMonthButton({ step: 12 })`
-
-Params:
-
-- `props?: DPMonthsPropGettersConfig`
-
-#### previousMonthButton
-
-`previousMonthButton` moves months pagination backward. You can specify steps by passing them to configuration. `previousMonthButton({ step: 3 })`
-
-Params:
-
-- `props?: DPMonthsPropGettersConfig`
-
 #### yearButton
 
 `yearButton` produces properties for calendar years and changes the year when user clicks on a year.
@@ -571,42 +558,56 @@ Params:
 
 ✏️ NOTE: `onClick` - callback function doesn't get `date` as a second parameter.
 
+#### setOffset
 
-### Actions
+```ts
+type SetOffset = (date: Date, config?: DPPropsGetterConfig) => DPPropGetter;
+```
 
-Actions allow you to control the date picker's state. They don't have any additional logic. You need to check the state of days, months and years or disable the months and years pagination buttons.
-
-#### setMonth
-
-`setMonth` - set the month that a user sees.
-
-Params:
-
-- `date: Date` - javascript Date object, you could get it from the `month.$date` 👆 [Months](#months), or create `new Date(2022, 10, 18)`
-
-#### setNextMonth
-
-`setNextMonth` adds one month to current
-
-#### setPreviousMonth
-
-`setPreviousMonth` subtracts one month from current
-
-#### setYear
-
-`setYear` set the year that user sees
+`setOffset` moves offset to passed date if it is after than minDate and before maxDate.
 
 Params:
 
-- `date: Date` - javascript Date object, you could get it from the `year.$date` 👆 [Years](#years), or create `new Date(2022, 10, 18)`
+- `date: Date` - JS date object
+- `props?: DPPropsGetterConfig`
 
-#### setNextYears
+#### addOffset
 
-`setNextYears` moves years pagination one step forward
+```ts
+interface DPOffsetValue {
+  days?: number;
+  months?: number;
+  years?: number;
+}
 
-#### setPreviousYears
+type AddOffset = (
+    offsetValue: DPOffsetValue,
+    config?: DPPropsGetterConfig,
+  ) => DPPropGetter;
+```
 
-`setPreviousYears` moves years pagination one step backward
+`addOffset` - moves current offsetDate forward on the number of days, months and years.
+
+Params:
+
+- `offsetValue: DPOffsetValue` - JS object with number of days, months and years
+- `props?: DPPropsGetterConfig`
+
+#### subtractOffset
+
+```ts
+type SubtractOffset = (
+    offsetValue: DPOffsetValue,
+    config?: DPPropsGetterConfig,
+  ) => DPPropGetter;
+```
+
+`subtractOffset` - moves current offsetDate backward on the number of days, months and years.
+
+Params:
+
+- `offsetValue: DPOffsetValue` - JS object with number of days, months and years
+- `props?: DPPropsGetterConfig`
 
 ### Configuration
 
@@ -617,7 +618,7 @@ Params:
 ```ts
 {
   selectedDates: [],
-  focusDate: null,
+  focusDate: undefined,
   onDatesChange: undefined,
   dates: {
     limit: undefined,
@@ -664,8 +665,10 @@ Params:
 
 ```ts
 selectedDates: Date[];
-focusDate: Date | null;
 onDatesChange(d: Date[]): void;
+focusDate?: Date | undefined;
+offsetDate?: Date
+onOffsetChange?(d: Date): void;
 ```
 
 The date-picker is a controlled component that utilizes the `selectedDates` property to create all entities and display the user's selection. If you don't provide a `selectedDates` value, it will default to an empty array, but the selection won't be visible. Every time a date is selected, it will be passed to the `onDatesChange` function.
@@ -681,7 +684,13 @@ const { data } = useDatePicker({
 
 ```
 
-`focusDate` is initial value for the time-picker, if it is **null** or not present in the `selectedDates` array all time buttons will be disabled.
+`focusDate` is initial value for the time-picker, if it is **undefined** or not present in the `selectedDates` array all time buttons will be disabled.
+
+You can also pass an offsetDate and onOffsetChange function to control the offsetDate. It is really useful when you want to use the date-picker with input, or save offset in the multiple mode, or pair date selection with offset management.
+
+If you will not pass either offsetDate or onOffsetChange, the date-picker will manage offsetDate by itself.
+
+```ts
 
 #### Locale configuration
 
@@ -899,7 +908,6 @@ All entities are consists of 3 hooks: data, prop-getters and actions (for exampl
 
 ```ts
 export interface DPReducerState {
-  config: DPConfig;
   focusDate: Date | null;
   rangeEnd: Date | null;
   offsetDate: Date;

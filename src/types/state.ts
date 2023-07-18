@@ -9,7 +9,7 @@ import {
 import { DPConfig } from './config';
 
 export interface DPReducerState {
-  focusDate: Date | null;
+  focusDate?: Date;
   rangeEnd: Date | null;
   offsetDate: Date;
   offsetYear: number;
@@ -45,5 +45,6 @@ export interface DPState {
   dispatch: Dispatch<DPReducerAction>;
   state: DPReducerState;
   selectedDates: Date[];
+  offsetDate: Date;
   config: DPConfig;
 }

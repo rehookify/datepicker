@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { setFocus } from './state-reducer';
 import type {
@@ -12,9 +12,13 @@ import { createPropGetter } from './utils/create-prop-getter';
 import { createTime } from './utils/create-time';
 import { isSame } from './utils/predicates';
 
-export const useTime: DPUseTime = ({ state: { focusDate }, config }) => ({
-  time: createTime(focusDate, config),
-});
+export const useTime: DPUseTime = ({ state: { focusDate }, config }) =>
+  useMemo(
+    () => ({
+      time: createTime(focusDate, config),
+    }),
+    [focusDate, config],
+  );
 
 export const useTimePropGetter: DPUseTimePropGetter = ({
   selectedDates,
@@ -34,13 +38,11 @@ export const useTimePropGetter: DPUseTimePropGetter = ({
           callAll(
             onClick,
             skipFirst((d: Date) => {
-              if (onDatesChange && typeof onDatesChange === 'function') {
-                const newSelected = selectedDates.map((selected) => {
-                  return isSame(focusDate as Date, selected) ? d : selected;
-                });
-                setFocus(dispatch, d);
-                onDatesChange(newSelected);
-              }
+              const newSelected = selectedDates.map((selected) => {
+                return isSame(focusDate as Date, selected) ? d : selected;
+              });
+              setFocus(dispatch, d);
+              onDatesChange(newSelected);
             }),
           )(evt, $date);
         },

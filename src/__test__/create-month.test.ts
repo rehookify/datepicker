@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createConfig } from '../utils/config';
 import { createMonths } from '../utils/create-months';
@@ -6,7 +6,10 @@ import { getCleanDate, getDateParts, newDate } from '../utils/date';
 
 describe('createMonth', () => {
   test('createMonth should generate months correctly', () => {
-    const { locale, dates } = createConfig();
+    const { locale, dates } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+    });
 
     // Default configuration with no selected dates
     const NOW = getCleanDate(newDate());

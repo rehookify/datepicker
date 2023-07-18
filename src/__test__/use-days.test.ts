@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { useState } from 'react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { useCalendars } from '../use-calendars';
 import { useDatePickerState } from '../use-date-picker-state';
@@ -12,7 +12,10 @@ describe('useDays', () => {
     const d1 = newDate(2022, 11, 9);
     const d2 = newDate(2022, 11, 11);
     const { result: stateResult } = renderHook(() =>
-      useDatePickerState({ selectedDates: [d1, d2] }),
+      useDatePickerState({
+        onDatesChange: vi.fn(),
+        selectedDates: [d1, d2],
+      }),
     );
     const { result } = renderHook(() => useDays(stateResult.current));
 

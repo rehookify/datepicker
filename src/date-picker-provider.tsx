@@ -11,7 +11,7 @@ export const useDatePickerContext = () => useContext(DatePickerContext);
 
 export const DatePickerProvider: FC<DatePickerProviderProps> = ({
   children,
-  config = {},
+  config,
 }) => (
   <DatePickerContext.Provider value={useDatePicker(config)}>
     {children}

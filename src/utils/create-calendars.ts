@@ -69,8 +69,8 @@ export const createCalendars = ({
   selectedDates,
   state,
   config,
+  offsetDate,
 }: DPState): DPCalendar[] => {
-  const { offsetDate } = state;
   return config.calendar.offsets.map((offset) =>
     createCalendar(
       addToDate(offsetDate, offset, 'month'),

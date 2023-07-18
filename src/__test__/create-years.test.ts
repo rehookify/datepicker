@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createConfig } from '../utils/config';
 import { createYears } from '../utils/create-years';
@@ -7,7 +7,10 @@ import { getStartDecadePosition } from '../utils/get-current-year-position';
 
 describe('createYears', () => {
   test('createYears should create years correctly', () => {
-    const { years: yearsConfig, dates } = createConfig();
+    const { years: yearsConfig, dates } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+    });
     const NOW = newDate();
     const { Y, M, D } = getDateParts(NOW);
 
@@ -57,6 +60,8 @@ describe('createYears', () => {
 
   test('createYears should generate correct number of years', () => {
     const { years: yearsConfig, dates } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       years: {
         numberOfYears: 50,
       },

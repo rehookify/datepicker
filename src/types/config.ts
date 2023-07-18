@@ -19,10 +19,6 @@ export interface DPDatesConfig {
   exclude?: DPDateExclude;
 }
 
-export interface DPDatesUserConfig extends Partial<DPDatesConfig> {
-  selectedDates: Date | Date[];
-}
-
 export interface DPYearsConfig {
   numberOfYears: number;
   mode: DPYearsMode;
@@ -57,25 +53,29 @@ export interface DPTimeConfig {
 }
 
 export interface DPUserConfig {
-  selectedDates?: Date[];
-  focusDate?: Date | null;
-  onDatesChange?(d: Date[]): void;
-  locale?: Partial<DPLocaleConfig>;
   calendar?: Partial<DPCalendarConfig>;
-  dates?: Partial<DPDatesUserConfig>;
-  years?: Partial<DPYearsConfig>;
-  time?: Partial<DPTimeConfig>;
+  dates?: Partial<DPDatesConfig>;
   exclude?: DPExcludeConfig;
+  focusDate?: Date;
+  locale?: Partial<DPLocaleConfig>;
+  offsetDate?: Date;
+  onOffsetChange?(d: Date): void;
+  onDatesChange(d: Date[]): void;
+  selectedDates: Date[];
+  time?: Partial<DPTimeConfig>;
+  years?: Partial<DPYearsConfig>;
 }
 
 export interface DPConfig {
-  selectedDates: Date[];
-  focusDate: Date | null;
-  onDatesChange?(d: Date[]): void;
-  locale: DPLocaleConfig;
   calendar: DPCalendarConfig;
   dates: DPDatesConfig;
-  years: DPYearsConfig;
-  time: DPTimeConfig;
   exclude?: DPExcludeConfig;
+  focusDate?: Date;
+  locale: DPLocaleConfig;
+  offsetDate?: Date;
+  onOffsetChange?(d: Date): void;
+  onDatesChange(d: Date[]): void;
+  selectedDates: Date[];
+  time: DPTimeConfig;
+  years: DPYearsConfig;
 }

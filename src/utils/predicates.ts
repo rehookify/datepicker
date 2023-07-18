@@ -27,4 +27,4 @@ export const minDateAndBeforeFirstDay = (
 ): boolean => !!minDate && isBefore(date, getFirstDayOfTheMonth(minDate));
 
 export const includeDate = (dates: Date[], d: Date): boolean =>
-  dates.some((date) => isSame(getCleanDate(date), d));
+  dates.some((date) => isSame(getCleanDate(date), getCleanDate(d)));

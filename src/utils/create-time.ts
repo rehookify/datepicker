@@ -4,7 +4,7 @@ import { formatTime, getDateParts, getTimeDate, newDate } from './date';
 import { isSame, maxDateAndAfter, minDateAndBefore } from './predicates';
 
 export const createTime = (
-  d: Date | null,
+  d: Date | undefined,
   { time, locale }: DPConfig,
 ): DPTime[] => {
   const NOW = newDate();

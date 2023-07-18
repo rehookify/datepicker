@@ -1,6 +1,9 @@
+import { vi } from 'vitest';
+
 export const DEFAULT_CONFIG = {
   selectedDates: [],
-  focusDate: null,
+  onDatesChange: vi.fn,
+  focusDate: undefined,
   calendar: {
     mode: 'static',
     offsets: [0],

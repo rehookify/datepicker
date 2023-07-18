@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { useCalendars } from '../use-calendars';
 import { useDatePickerState } from '../use-date-picker-state';
@@ -8,7 +8,9 @@ import { createWeekdays } from '../utils/create-weekdays';
 
 describe('useCalendars', () => {
   test('useCalendars should return correct calendars and weekDays', () => {
-    const { result: stateResult } = renderHook(() => useDatePickerState());
+    const { result: stateResult } = renderHook(() =>
+      useDatePickerState({ selectedDates: [], onDatesChange: vi.fn() }),
+    );
     const { result } = renderHook(() => useCalendars(stateResult.current));
 
     const calendars = createCalendars(stateResult.current);

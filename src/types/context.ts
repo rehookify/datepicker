@@ -7,5 +7,5 @@ export type DatePickerContextValue = ReturnType<DPUseDatePicker>;
 
 export interface DatePickerProviderProps {
   children: ReactNode;
-  config?: DPUserConfig;
+  config: DPUserConfig;
 }

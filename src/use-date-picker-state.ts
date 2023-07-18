@@ -10,7 +10,7 @@ import type {
 import { createConfig } from './utils/config';
 import { createInitialState } from './utils/create-initial-state';
 
-export const useDatePickerState = (config?: DPUserConfig): DPState => {
+export const useDatePickerState = (config: DPUserConfig): DPState => {
   const dpConfig = createConfig(config);
 
   const [state, dispatch] = useReducer<
@@ -20,6 +20,7 @@ export const useDatePickerState = (config?: DPUserConfig): DPState => {
   return {
     dispatch,
     selectedDates: dpConfig.selectedDates,
+    offsetDate: dpConfig.offsetDate || state.offsetDate,
     state,
     config: dpConfig,
   };

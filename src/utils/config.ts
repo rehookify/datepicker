@@ -11,15 +11,17 @@ import { includeDate } from './predicates';
 
 export const createConfig = ({
   selectedDates = [],
-  focusDate = null,
   onDatesChange,
+  focusDate,
+  offsetDate,
+  onOffsetChange,
   calendar = {},
   dates = {},
   locale,
   time = {},
   exclude = {},
   years,
-}: DPUserConfig = {}): DPConfig => {
+}: DPUserConfig): DPConfig => {
   const { minDate, maxDate, ...restDates } = dates;
   const { offsets = [], ...restCalendarParams } = calendar;
   const { minTime, maxTime, ...restTime } = time;
@@ -28,12 +30,14 @@ export const createConfig = ({
   const [minT, maxT] = sortMinMax(minTime, maxTime, (a, b) => a.h - b.h);
 
   const focus =
-    focusDate && includeDate(selectedDates, focusDate) ? focusDate : null;
+    focusDate && includeDate(selectedDates, focusDate) ? focusDate : undefined;
 
   return {
     selectedDates,
-    focusDate: focus,
     onDatesChange,
+    offsetDate,
+    onOffsetChange,
+    focusDate: focus,
     calendar: {
       ...DEFAULT_CALENDAR_CONFIG,
       ...restCalendarParams,
