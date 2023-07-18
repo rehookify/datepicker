@@ -4,6 +4,7 @@ export * from './types';
 export * from './use-calendars';
 export * from './use-context-hooks';
 export * from './use-date-picker';
+export * from './use-date-picker-offset';
 export * from './use-date-picker-state';
 export * from './use-days';
 export * from './use-months';

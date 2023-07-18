@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createConfig } from '../utils/config';
 import { newDate } from '../utils/date';
@@ -6,7 +6,10 @@ import { getMultipleDates } from '../utils/get-multiple-dates';
 
 describe('getMultipleDates', () => {
   test('returns correct data in single mode', () => {
-    const { dates } = createConfig();
+    const { dates } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+    });
 
     // Adds date correctly
     const clickedDate = newDate(2022, 10, 21);
@@ -19,6 +22,8 @@ describe('getMultipleDates', () => {
 
   test('returns correct data in multiple mode', () => {
     const { dates } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       dates: { mode: 'multiple', toggle: true, limit: 3 },
     });
 
@@ -46,6 +51,8 @@ describe('getMultipleDates', () => {
 
   test('returns correct data in range mode', () => {
     const { dates } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       dates: { mode: 'range', toggle: true },
     });
     const clickedDate = newDate(2022, 10, 21);

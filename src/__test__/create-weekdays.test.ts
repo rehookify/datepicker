@@ -8,7 +8,10 @@ import { createWeekdays } from '../utils/create-weekdays';
 import { getCleanDate, newDate } from '../utils/date';
 
 const now = getCleanDate(newDate());
-const config = createConfig();
+const config = createConfig({
+  selectedDates: [now],
+  onDatesChange: vi.fn(),
+});
 const state = createInitialState(config);
 
 const TEST_CALENDAR = createCalendars({
@@ -16,6 +19,7 @@ const TEST_CALENDAR = createCalendars({
   state,
   config,
   dispatch: vi.fn(),
+  offsetDate: newDate(),
 })[0];
 
 describe('createWeekdays', () => {
@@ -27,7 +31,11 @@ describe('createWeekdays', () => {
   });
 
   test('createWeekdays create weekdays correctly with alternative locale', () => {
-    const config = createConfig({ locale: ALTERNATIVE_LOCALE_CONFIG });
+    const config = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+      locale: ALTERNATIVE_LOCALE_CONFIG,
+    });
     const weekdays = createWeekdays(TEST_CALENDAR, config);
 
     // Weekdays with Ukrainian locale and weekdays = 'short'

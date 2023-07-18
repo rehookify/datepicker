@@ -23,7 +23,7 @@ export const WEEK_DAYS = [0, 1, 2, 3, 4, 5, 6] as const;
 export const NUMBER_OF_MONTHS = 12;
 export const MINUTES_IN_THE_DAY = 60 * 24; // 1440 :)
 
-// Number of yearn by default to mimic number of month
+// Number of years by default to mimic number of month
 // It will be easy to reuse same layout for years picker
 const DECADE_NUMBER_OF_YEARS = 12;
 export const DEFAULT_YEARS_STEP = 10;

@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { useState } from 'react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { useDatePicker } from '../use-date-picker';
 import { getDateParts, newDate } from '../utils/date';
@@ -82,6 +82,8 @@ describe('useDatePicker', () => {
 
     const { result } = renderHook(() =>
       useDatePicker({
+        selectedDates: [],
+        onDatesChange: vi.fn(),
         dates: {
           minDate: newDate(Y, M, minDate),
           maxDate: newDate(Y, M, maxDate),
@@ -90,10 +92,12 @@ describe('useDatePicker', () => {
     );
 
     //Ensure that next/previous months buttons are disabled
-    expect(result.current.propGetters.nextMonthButton().disabled).toBe(true);
-    expect(result.current.propGetters.previousMonthButton().disabled).toBe(
+    expect(result.current.propGetters.addOffset({ months: 1 }).disabled).toBe(
       true,
     );
+    expect(
+      result.current.propGetters.subtractOffset({ months: 1 }).disabled,
+    ).toBe(true);
 
     // Ensure that all months disabled expect current
     const enabledMonths = result.current.data.months.filter(

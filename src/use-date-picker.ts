@@ -1,14 +1,11 @@
 import type { DPUseDatePicker } from './types';
 import { useCalendars } from './use-calendars';
+import { useDatePickerOffsetPropGetters } from './use-date-picker-offset';
 import { useDatePickerState } from './use-date-picker-state';
 import { useDays, useDaysPropGetters } from './use-days';
-import {
-  useMonths,
-  useMonthsActions,
-  useMonthsPropGetters,
-} from './use-months';
+import { useMonths, useMonthsPropGetters } from './use-months';
 import { useTime, useTimePropGetter } from './use-time';
-import { useYears, useYearsActions, useYearsPropGetters } from './use-years';
+import { useYears, useYearsPropGetters } from './use-years';
 
 export const useDatePicker: DPUseDatePicker = (config) => {
   const dpState = useDatePickerState(config);
@@ -26,10 +23,7 @@ export const useDatePicker: DPUseDatePicker = (config) => {
       ...useMonthsPropGetters(dpState),
       ...useTimePropGetter(dpState),
       ...useYearsPropGetters(dpState),
-    },
-    actions: {
-      ...useMonthsActions(dpState),
-      ...useYearsActions(dpState),
+      ...useDatePickerOffsetPropGetters(dpState),
     },
   };
 };

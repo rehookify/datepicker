@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { DEFAULT_CONFIG } from '../__mock__/config';
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
@@ -8,11 +8,16 @@ import { isBefore } from '../utils/predicates';
 
 describe('createConfig', () => {
   test('should create correct default config', () => {
-    expect(createConfig()).toEqual(DEFAULT_CONFIG);
+    // vi.fn here because we can't assert over vi.fn() because resolves based on context
+    expect(createConfig({ selectedDates: [], onDatesChange: vi.fn })).toEqual(
+      DEFAULT_CONFIG,
+    );
   });
 
   test('correctly composes calendar config', () => {
     const { calendar } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       calendar: { mode: 'fluid', offsets: [1] },
     });
 
@@ -22,6 +27,8 @@ describe('createConfig', () => {
 
   test('correctly creates years', () => {
     const { years } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       years: { numberOfYears: 100 },
     });
 
@@ -33,6 +40,7 @@ describe('createConfig', () => {
     const { Y, M } = getDateParts(d);
     const { dates, selectedDates } = createConfig({
       selectedDates: [d],
+      onDatesChange: vi.fn(),
       dates: {
         mode: 'multiple',
         toggle: true,
@@ -52,6 +60,8 @@ describe('createConfig', () => {
 
   test('correctly composes locales', () => {
     const { locale } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       locale: ALTERNATIVE_LOCALE_CONFIG,
     });
 
@@ -62,6 +72,8 @@ describe('createConfig', () => {
     const d = newDate();
     const { Y, M, D } = getDateParts(d);
     const { dates } = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       dates: {
         minDate: newDate(Y, M + 1, D),
         maxDate: newDate(Y, M - 1, D),
@@ -76,25 +88,41 @@ describe('createConfig', () => {
   test('should respect min and max time', () => {
     const minTime = { h: 9, m: 11 };
     const maxTime = { h: 16, m: 0 };
-    const c1 = createConfig({ time: { minTime } });
+    const c1 = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+      time: { minTime },
+    });
 
     // minTime should remain as is because we don't have maxTime
     expect(c1.time.minTime).toEqual(minTime);
     expect(c1.time.maxTime).toBe(undefined);
 
-    const c2 = createConfig({ time: { maxTime } });
+    const c2 = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+      time: { maxTime },
+    });
 
     // maxTime should remain as is because we don't have minTime
     expect(c2.time.minTime).toBe(undefined);
     expect(c2.time.maxTime).toEqual(maxTime);
 
-    const c3 = createConfig({ time: { minTime: maxTime, maxTime: minTime } });
+    const c3 = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+      time: { minTime: maxTime, maxTime: minTime },
+    });
 
     // We should swap min and max because minTime > maxTime
     expect(c3.time.minTime).toEqual(minTime);
     expect(c3.time.maxTime).toEqual(maxTime);
 
-    const c4 = createConfig({ time: { minTime, maxTime } });
+    const c4 = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+      time: { minTime, maxTime },
+    });
 
     // minTime and maxTime should stay as is
     expect(c4.time.minTime).toEqual(minTime);
@@ -104,11 +132,19 @@ describe('createConfig', () => {
   test('should set focusTime if it is present in selectedDates', () => {
     const d1 = getCleanDate(newDate());
     const d2 = newDate(d1.setDate(33));
-    const c1 = createConfig({ selectedDates: [d1], focusDate: d2 });
+    const c1 = createConfig({
+      selectedDates: [d1],
+      onDatesChange: vi.fn(),
+      focusDate: d2,
+    });
 
-    expect(c1.focusDate).toBeNull();
+    expect(c1.focusDate).toBe(undefined);
 
-    const c2 = createConfig({ selectedDates: [d1, d2], focusDate: d1 });
+    const c2 = createConfig({
+      selectedDates: [d1, d2],
+      onDatesChange: vi.fn(),
+      focusDate: d1,
+    });
 
     expect(c2.focusDate).toEqual(d1);
   });

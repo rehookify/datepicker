@@ -5,6 +5,7 @@ export * from './date';
 export * from './day';
 export * from './hooks';
 export * from './month';
+export * from './offset';
 export * from './prop-getters';
 export * from './state';
 export * from './time';

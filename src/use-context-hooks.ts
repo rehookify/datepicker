@@ -1,26 +1,22 @@
 import { useDatePickerStateContext } from './date-picker-state-provider';
 import type {
   DPUseContextCalendars,
+  DPUseContextDatePickerOffsetPropGetters,
   DPUseContextDays,
   DPUseContextDaysPropGetters,
   DPUseContextMonths,
-  DPUseContextMonthsActions,
   DPUseContextMonthsPropGetters,
   DPUseContextTime,
   DPUseContextTimePropGetters,
   DPUseContextYears,
-  DPUseContextYearsActions,
   DPUseContextYearsPropGetters,
 } from './types';
 import { useCalendars } from './use-calendars';
+import { useDatePickerOffsetPropGetters } from './use-date-picker-offset';
 import { useDays, useDaysPropGetters } from './use-days';
-import {
-  useMonths,
-  useMonthsActions,
-  useMonthsPropGetters,
-} from './use-months';
+import { useMonths, useMonthsPropGetters } from './use-months';
 import { useTime, useTimePropGetter } from './use-time';
-import { useYears, useYearsActions, useYearsPropGetters } from './use-years';
+import { useYears, useYearsPropGetters } from './use-years';
 
 export const useContextCalendars: DPUseContextCalendars = () =>
   useCalendars(useDatePickerStateContext());
@@ -37,9 +33,6 @@ export const useContextMonths: DPUseContextMonths = () =>
 export const useContextMonthsPropGetters: DPUseContextMonthsPropGetters = () =>
   useMonthsPropGetters(useDatePickerStateContext());
 
-export const useContextMonthsActions: DPUseContextMonthsActions = () =>
-  useMonthsActions(useDatePickerStateContext());
-
 export const useContextTime: DPUseContextTime = () =>
   useTime(useDatePickerStateContext());
 
@@ -52,5 +45,5 @@ export const useContextYears: DPUseContextYears = () =>
 export const useContextYearsPropGetters: DPUseContextYearsPropGetters = () =>
   useYearsPropGetters(useDatePickerStateContext());
 
-export const useContextYearsActions: DPUseContextYearsActions = () =>
-  useYearsActions(useDatePickerStateContext());
+export const useContextDatePickerOffsetPropGetters: DPUseContextDatePickerOffsetPropGetters =
+  () => useDatePickerOffsetPropGetters(useDatePickerStateContext());

@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { createConfig } from '../utils/config';
 import { createTime } from '../utils/create-time';
@@ -6,15 +6,22 @@ import { newDate } from '../utils/date';
 
 describe('createTime', () => {
   test('should generate times correctly', () => {
-    const config = createConfig();
-    const time = createTime(null, config);
+    const config = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+    });
+    const time = createTime(undefined, config);
 
     // If we will not provide date all buttons should be disabled
     expect(time.filter(({ disabled }) => disabled).length).toBe(time.length);
     // The default interval is 30 so we have 2 segments for 1 hour
     expect(time.length).toBe(48);
 
-    const config2 = createConfig({ time: { interval: 60 } });
+    const config2 = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
+      time: { interval: 60 },
+    });
     const time2 = createTime(newDate(), config2);
 
     expect(time2.filter(({ disabled }) => disabled).length).toBe(0);
@@ -25,6 +32,8 @@ describe('createTime', () => {
   test('should create times correctly with min and max dates', () => {
     const d = newDate();
     const config = createConfig({
+      selectedDates: [],
+      onDatesChange: vi.fn(),
       time: { minTime: { h: 9, m: 0 }, maxTime: { h: 18, m: 0 } },
     });
     const time = createTime(d, config);

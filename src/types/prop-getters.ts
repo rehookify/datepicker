@@ -5,10 +5,6 @@ export interface DPPropsGetterConfig extends Record<string, unknown> {
   disabled?: boolean;
 }
 
-export interface DPMonthsPropGettersConfig extends DPPropsGetterConfig {
-  step?: number;
-}
-
 export interface DPPropGetter extends Record<string, unknown> {
   role: 'button';
   tabIndex: number;

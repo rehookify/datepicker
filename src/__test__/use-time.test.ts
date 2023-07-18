@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react';
 import { useState } from 'react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { useCalendars } from '../use-calendars';
 import { useDatePickerState } from '../use-date-picker-state';
@@ -9,7 +9,12 @@ import { useTime, useTimePropGetter } from '../use-time';
 
 describe('useTime', () => {
   test('should return correct time array', () => {
-    const { result: stateResult } = renderHook(() => useDatePickerState());
+    const { result: stateResult } = renderHook(() =>
+      useDatePickerState({
+        selectedDates: [],
+        onDatesChange: vi.fn(),
+      }),
+    );
     const { result: timeResult } = renderHook(() =>
       useTime(stateResult.current),
     );

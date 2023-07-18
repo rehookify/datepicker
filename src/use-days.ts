@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { setFocus, setRangeEnd as setRangeEndAction } from './state-reducer';
 import type {
@@ -14,10 +14,14 @@ import { formatDate, getCleanDate } from './utils/date';
 import { getMultipleDates } from './utils/get-multiple-dates';
 import { includeDate, isSame } from './utils/predicates';
 
-export const useDays: DPUseDays = ({ selectedDates, config: { locale } }) => ({
-  selectedDates,
-  formattedDates: selectedDates.map((d: Date) => formatDate(d, locale)),
-});
+export const useDays: DPUseDays = ({ selectedDates, config: { locale } }) =>
+  useMemo(
+    () => ({
+      selectedDates,
+      formattedDates: selectedDates.map((d: Date) => formatDate(d, locale)),
+    }),
+    [selectedDates, locale],
+  );
 
 export const useDaysPropGetters: DPUseDaysPropGetters = ({
   config,
@@ -51,18 +55,16 @@ export const useDaysPropGetters: DPUseDaysPropGetters = ({
           callAll(
             onClick,
             skipFirst((d: Date) => {
-              if (onDatesChange && typeof onDatesChange === 'function') {
-                const nextSelectedDates = getMultipleDates(
-                  selectedDates,
-                  d,
-                  config.dates,
-                );
-                setFocus(
-                  dispatch,
-                  includeDate(nextSelectedDates, d) ? d : null,
-                );
-                onDatesChange(nextSelectedDates);
-              }
+              const nextSelectedDates = getMultipleDates(
+                selectedDates,
+                d,
+                config.dates,
+              );
+              setFocus(
+                dispatch,
+                includeDate(nextSelectedDates, d) ? d : undefined,
+              );
+              onDatesChange(nextSelectedDates);
             }),
           )(evt, $date);
         },

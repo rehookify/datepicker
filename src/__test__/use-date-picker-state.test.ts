@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 import { INITIAL_STATE } from '../__mock__/initial-state';
 import { setOffset, setRangeEnd, setYear } from '../state-reducer';
@@ -9,13 +9,23 @@ import { getCurrentYearPosition } from '../utils/get-current-year-position';
 
 describe('useDatePickerState', () => {
   test('useDatePickerState should return correct initial state', () => {
-    const { result } = renderHook(() => useDatePickerState());
+    const { result } = renderHook(() =>
+      useDatePickerState({
+        selectedDates: [],
+        onDatesChange: vi.fn(),
+      }),
+    );
 
     expect(result.current.state).toEqual(INITIAL_STATE);
   });
 
   test('useDatePickerState should set offset correctly', () => {
-    const { result } = renderHook(() => useDatePickerState());
+    const { result } = renderHook(() =>
+      useDatePickerState({
+        selectedDates: [],
+        onDatesChange: vi.fn(),
+      }),
+    );
 
     const { dispatch } = result.current;
     const { Y, M, D } = getDateParts(newDate());
@@ -29,17 +39,12 @@ describe('useDatePickerState', () => {
   });
 
   test('useDatePickerState should set offsetYear correctly', () => {
-    const { result } = renderHook(() => useDatePickerState());
-
-    const { dispatch } = result.current;
-    const { Y } = getDateParts(newDate());
-
-    act(() => setYear(dispatch, Y + 10));
-    expect(result.current.state.offsetYear).toBe(Y + 10);
-  });
-
-  test('useDatePickerState should set offsetYear correctly', () => {
-    const { result } = renderHook(() => useDatePickerState());
+    const { result } = renderHook(() =>
+      useDatePickerState({
+        selectedDates: [],
+        onDatesChange: vi.fn(),
+      }),
+    );
 
     const { dispatch } = result.current;
     const { Y } = getDateParts(newDate());
@@ -49,7 +54,12 @@ describe('useDatePickerState', () => {
   });
 
   test('useDatePickerState should set rangeEnd correctly', () => {
-    const { result } = renderHook(() => useDatePickerState());
+    const { result } = renderHook(() =>
+      useDatePickerState({
+        selectedDates: [],
+        onDatesChange: vi.fn(),
+      }),
+    );
 
     const { dispatch } = result.current;
     const d = newDate();

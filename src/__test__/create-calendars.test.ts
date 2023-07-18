@@ -8,7 +8,10 @@ import { getCleanDate, newDate } from '../utils/date';
 describe('createCalendars', () => {
   test('createCalendars should create a calendar correctly with default configuration', () => {
     const now = getCleanDate(newDate());
-    const config = createConfig();
+    const config = createConfig({
+      selectedDates: [now],
+      onDatesChange: vi.fn(),
+    });
     const state = createInitialState(config);
 
     const testCalendar = createCalendars({
@@ -16,6 +19,7 @@ describe('createCalendars', () => {
       state,
       config,
       dispatch: vi.fn(),
+      offsetDate: newDate(),
     });
     const { days } = testCalendar[0];
 
@@ -31,6 +35,7 @@ describe('createCalendars', () => {
     const offsetDate = getCleanDate(newDate(2022, 10, 20));
     const config = createConfig({
       selectedDates: [offsetDate],
+      onDatesChange: vi.fn(),
       calendar: { offsets: [-1, 1] },
     });
     const state = createInitialState(config);
@@ -40,6 +45,7 @@ describe('createCalendars', () => {
       state,
       config,
       dispatch: vi.fn(),
+      offsetDate,
     });
 
     expect(testCalendar.length).toBe(3);
@@ -52,6 +58,7 @@ describe('createCalendars', () => {
     const offsetDate = getCleanDate(newDate(2022, 10, 20));
     const config = createConfig({
       selectedDates: [offsetDate],
+      onDatesChange: vi.fn(),
       calendar: { mode: 'fluid' },
     });
 
@@ -62,6 +69,7 @@ describe('createCalendars', () => {
       state,
       config,
       dispatch: vi.fn(),
+      offsetDate,
     });
 
     expect(testCalendar.days.length).toBe(35);
