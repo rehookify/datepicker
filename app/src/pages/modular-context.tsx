@@ -1,5 +1,6 @@
 import {
   useContextCalendars,
+  useContextDatePickerOffsetPropGetters,
   useContextDaysPropGetters,
   useContextMonths,
   useContextMonthsPropGetters,
@@ -32,8 +33,8 @@ export const ModularContext = () => {
   const { calendars, weekDays } = useContextCalendars();
   const { dayButton } = useContextDaysPropGetters();
   const { months } = useContextMonths();
-  const { previousMonthButton, nextMonthButton, monthButton } =
-    useContextMonthsPropGetters();
+  const { monthButton } = useContextMonthsPropGetters();
+  const { addOffset, subtractOffset } = useContextDatePickerOffsetPropGetters();
   const { years } = useContextYears();
   const { previousYearsButton, nextYearsButton, yearButton } =
     useContextYearsPropGetters();
@@ -66,12 +67,12 @@ export const ModularContext = () => {
       <Calendar>
         <CalendarHeader
           leftButton={
-            <HeaderButton {...previousMonthButton()}>
+            <HeaderButton {...subtractOffset({ months: 1 })}>
               <ChevronLeft />
             </HeaderButton>
           }
           rightButton={
-            <HeaderButton {...nextMonthButton()}>
+            <HeaderButton {...addOffset({ months: 1 })}>
               <ChevronRight />
             </HeaderButton>
           }
