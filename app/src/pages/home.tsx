@@ -45,8 +45,8 @@ export const HomePage = () => {
     data: { calendars, weekDays, months, years },
     propGetters: {
       dayButton,
-      previousMonthButton,
-      nextMonthButton,
+      addOffset,
+      subtractOffset,
       monthButton,
       yearButton,
       nextYearsButton,
@@ -73,7 +73,7 @@ export const HomePage = () => {
         <CalendarHeader
           leftButton={
             <HeaderButton
-              {...previousMonthButton()}
+              {...subtractOffset({ months: 1 })}
               data-testid="previous-month-button"
             >
               <ChevronLeft />
@@ -121,7 +121,7 @@ export const HomePage = () => {
         <CalendarHeader
           rightButton={
             <HeaderButton
-              {...nextMonthButton()}
+              {...addOffset({ months: 1 })}
               data-testid="next-month-button"
             >
               <ChevronRight />
@@ -149,12 +149,12 @@ export const HomePage = () => {
       <Calendar>
         <CalendarHeader
           leftButton={
-            <HeaderButton {...previousMonthButton()}>
+            <HeaderButton {...subtractOffset({ months: 1 })}>
               <ChevronLeft />
             </HeaderButton>
           }
           rightButton={
-            <HeaderButton {...nextMonthButton()}>
+            <HeaderButton {...addOffset({ months: 1 })}>
               <ChevronRight />
             </HeaderButton>
           }
