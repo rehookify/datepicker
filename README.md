@@ -285,8 +285,6 @@ const App = () => {
   - [propGetters](#prop-getters)
     - [dayButton](#daybutton)
     - [monthButton](#monthbutton)
-    - [nextMonthButton](#nextmonthbutton)
-    - [previousMonthButton](#previousmonthbutton)
     - [setOffset](#setoffset)
     - [addOffset](#addoffset)
     - [subtractOffset](#subtractoffset)
@@ -902,13 +900,13 @@ It will place current year at the end of the list
 
 The main aim of modular hooks is to safe bundle size of your app.
 
-All entities are consists of 3 hooks: data, prop-getters and actions (for example `useDays`, `useDaysPropGetters` and `useDaysActions`).
+All entities are consists of 2 hooks: data, prop-getters and actions (for example `useDays` and `useDaysPropGetters`).
 
 #### useDatePickerState
 
 ```ts
 export interface DPReducerState {
-  focusDate: Date | null;
+  focusDate?: Date;
   rangeEnd: Date | null;
   offsetDate: Date;
   offsetYear: number;
@@ -924,10 +922,11 @@ export interface DPState {
   dispatch: Dispatch<DPReducerAction>;
   state: DPReducerState;
   selectedDates: Date[];
+  offsetDate: Date;
+  config: DPConfig;
 }
 
-type UseDatePickerState = (config: DatePickerConfig) =>
-  DPState;
+type UseDatePickerState = (config: DPUserConfig): DPState
 ```
 
 Under the hook, it uses `useReducer` to capture date-picker state and provides `dispatch` for state manipulation.
@@ -997,32 +996,12 @@ Months data.
 ```ts
 export type DPUseMonthsPropGetters = (state: DPState) => {
   monthButton: (month: DPMonth, config?: DPPropsGetterConfig) => DPPropGetter;
-  nextMonthButton: (config?: DPMonthsPropGettersConfig) => DPPropGetter;
-  previousMonthButton: (config?: DPMonthsPropGettersConfig) => DPPropGetter;
 };
 ```
 
 Prop-getters for month manipulation.
 
 - `monthButton` - propGetter 👀 [monthButton](#monthbutton)
-- `nextMonthButton` - propGetter 👀 [nextMonthButton](#nextmonthbutton)
-- `previousMonthButton` - propGetter 👀 [previousMonthButton](#previousmonthbutton)
-
-#### useMonthsActions
-
-```ts
-export type DPUseMonthsActions = (state: DPState) => {
-  setMonth: (d: Date) => void;
-  setNextMonth: () => void;
-  setPreviousMonth: () => void;
-};
-```
-
-Actions for month manipulation.
-
-- `setMonth` - action 👀 [setMonth](#setmonth)
-- `setNextMonth` - action 👀 [setNextMonth](#setnextmonth)
-- `setPreviousMonth` - action 👀 [setPreviousMonth](#setpreviousmonth)
 
 #### useTime
 
@@ -1032,7 +1011,29 @@ export type DPUseTime = (state: DPState) => {
 };
 ```
 
-Years data.
+#### useDatePickerOffsetPropGetters
+
+```ts
+export type DPUseDatePickerOffsetPropGetters = (state: DPState) => {
+  addOffset: (
+    offsetValue: DPOffsetValue,
+    config?: DPPropsGetterConfig,
+  ) => DPPropGetter;
+  setOffset: (date: Date) => DPPropGetter;
+  subtractOffset: (
+    offsetValue: DPOffsetValue,
+    config?: DPPropsGetterConfig,
+  ) => DPPropGetter;
+};
+```
+
+Prop-getters for offset manipulation.
+
+- `addOffset` - propGetter 👀 [addOffset](#addoffset)
+- `setOffset` - propGetter 👀 [setOffset](#setoffset)
+- `subtractOffset` - propGetter 👀 [subtractOffset](#subtractoffset)
+
+Time data.
 
 - `time` - 👀 [Time](#time)
 
@@ -1076,22 +1077,6 @@ Prop-getters for years manipulation.
 - `nextYearsButton` - propGetter 👀 [nextYearsButton](#nextyearsbutton)
 - `previousYearsButton` - propGetter 👀 [previousYearsButton](#previousyearsbutton)
 
-#### useYearsActions
-
-```ts
-export type DPUseYearsActions = (state: DPState) => {
-  setYear: (d: Date) => void;
-  setNextYears: () => void;
-  setPreviousYears: () => void;
-};
-```
-
-Actions for years manipulation.
-
-- `setYear` - action 👀 [setYear](#setyear)
-- `setNextYears` - action 👀 [setNextYears](#setnextyears)
-- `setPreviousYears` - action 👀 [setPreviousYears](#setpreviousyears)
-
 #### Context Hooks
 
 We have set of context hooks that have similar API with regular one.
@@ -1101,12 +1086,11 @@ We have set of context hooks that have similar API with regular one.
 - `useContextDaysPropsGetters` - 👀 [useDayPropGetters](#usedayspropgetters)
 - `useContextMonths` - 👀 [useMonths](#usemonths)
 - `useContextMonthsPropGetters` - 👀 [useMonthsPropGetters](#usemonthspropgetters)
-- `useContextMonthsActions` - 👀 [useMonthsActions](#usemonthsactions)
 - `useContextTime` - 👀 [useTime](#usetime)
 - `useContextTimePropGetters` - 👀 [useTimePropGetters](#usetimepropgetters)
 - `useContextYears` - 👀 [useYears](#useyears)
 - `useContextYearsPropGetters` - 👀 [useYearsPropGetters](#useyearspropgetters)
-- `useContextYearsActions` - 👀 [useYearsActions](#useyearsactions)
+- `useContextDatePickerOffsetPropGetters` - 👀 [useDatePickerOffsetPropGetters](#usedatepickeroffsetpropgetters)
 
 The main difference that they use context value from the `DatePickerStateProvider`. You don't need to pass any parameters to them.
 
