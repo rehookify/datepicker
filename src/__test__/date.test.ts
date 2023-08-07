@@ -2,11 +2,13 @@ import { describe, expect, test } from 'vitest';
 
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
 import { DEFAULT_LOCALE_CONFIG } from '../constants';
+import { DPLocaleConfig } from '../types';
 import {
   addAndSortAsc,
   addToDate,
   daysInMonth,
   formatDate,
+  formatLocaleTime,
   formatMonthName,
   formatTime,
   getCleanDate,
@@ -183,16 +185,16 @@ describe('getTimeDate', () => {
   });
 });
 
-describe('formatTime', () => {
+describe('formatLocaleTime', () => {
   const d = newDate(2023, 0, 31, 22, 22);
   test('should return time in 24h mode', () => {
-    expect(formatTime(d, DEFAULT_LOCALE_CONFIG)).toBe('22:22');
+    expect(formatLocaleTime(d, DEFAULT_LOCALE_CONFIG)).toBe('22:22');
   });
 
   test('should return time in 12h mode', () => {
     const LOCALE_CONFIG = { ...DEFAULT_LOCALE_CONFIG, hour12: true };
 
-    const formatted = formatTime(d, LOCALE_CONFIG);
+    const formatted = formatLocaleTime(d, LOCALE_CONFIG);
 
     // We need to test like this because we have different space symbol here and CI
     expect(formatted.slice(0, 5)).toBe('10:22');
@@ -208,5 +210,27 @@ describe('addAndSortAsc', () => {
 
     expect(addAndSortAsc([d2], d1)).toEqual([d1, d2]);
     expect(addAndSortAsc([d2], d3)).toEqual([d2, d3]);
+  });
+});
+
+describe('formatTime', () => {
+  test('should add leading zero before hours and minutes', () => {
+    const d1 = newDate(2023, 8, 7, 1, 7);
+
+    expect(formatTime(d1, { hour12: false } as DPLocaleConfig)).toBe('01:07');
+  });
+
+  test('should convert 24h time to 12h time', () => {
+    const d1 = newDate(2023, 8, 7);
+    const d2 = newDate(2023, 8, 7, 24, 0);
+    const d3 = newDate(2023, 8, 7, 12, 0);
+    const d4 = newDate(2023, 8, 7, 13, 11);
+    const d5 = newDate(2023, 8, 7, 3, 3);
+
+    expect(formatTime(d1, { hour12: true } as DPLocaleConfig)).toBe('12:00 am');
+    expect(formatTime(d2, { hour12: true } as DPLocaleConfig)).toBe('12:00 am');
+    expect(formatTime(d5, { hour12: true } as DPLocaleConfig)).toBe('03:03 am');
+    expect(formatTime(d3, { hour12: true } as DPLocaleConfig)).toBe('12:00 pm');
+    expect(formatTime(d4, { hour12: true } as DPLocaleConfig)).toBe('01:11 pm');
   });
 });

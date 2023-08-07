@@ -688,8 +688,6 @@ You can also pass an offsetDate and onOffsetChange function to control the offse
 
 If you will not pass either offsetDate or onOffsetChange, the date-picker will manage offsetDate by itself.
 
-```ts
-
 #### Locale configuration
 
 Locale configuration consists of values compatible with `date.toLocaleString()`.
@@ -833,16 +831,19 @@ export interface DPTimeConfig {
   interval: number;
   minTime: DPTimeLimit;
   maxTime: DPTimeLimit;
+  useLocales: boolean;
 }
 ```
 
 - `interval` - time segments value in minutes for example, interval 30 is 48 segments 2 for each hour
-
 - `minTime` - all times in prop-getters before the `minTime` will be marked as disabled
-
 - `maxTime` - all times in prop-getters after the `maxTime` will be marked as disabled
+- `useLocales` - if `true` it will use `getLocaleTimeString` to format time
 
-✏️ NOTE: config will sort `minTime` and `maxTime` if both present.
+✏️ NOTE:
+
+- config will sort `minTime` and `maxTime` if both present.
+- you can still get 12h time format by setting `hour12: true` in [Locale configuration](#locale-configuration)
 
 #### Years configuration
 

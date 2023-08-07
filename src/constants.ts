@@ -49,8 +49,12 @@ export const DEFAULT_DATES_CONFIG: Pick<
   selectSameDate: false,
 };
 
-export const DEFAULT_TIME_CONFIG: Pick<DPTimeConfig, 'interval'> = {
+export const DEFAULT_TIME_CONFIG: Pick<
+  DPTimeConfig,
+  'interval' | 'useLocales'
+> = {
   interval: 30,
+  useLocales: false,
 };
 
 export const DEFAULT_LOCALE_CONFIG: DPLocaleConfig = {

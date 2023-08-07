@@ -1,6 +1,12 @@
 import { MINUTES_IN_THE_DAY } from '../constants';
 import type { DPConfig, DPTime } from '../types';
-import { formatTime, getDateParts, getTimeDate, newDate } from './date';
+import {
+  formatLocaleTime,
+  formatTime,
+  getDateParts,
+  getTimeDate,
+  newDate,
+} from './date';
 import { isSame, maxDateAndAfter, minDateAndBefore } from './predicates';
 
 export const createTime = (
@@ -8,7 +14,7 @@ export const createTime = (
   { time, locale }: DPConfig,
 ): DPTime[] => {
   const NOW = newDate();
-  const { interval, minTime, maxTime } = time;
+  const { interval, minTime, maxTime, useLocales } = time;
   const { Y, M, D } = getDateParts(d || NOW);
   const segments = MINUTES_IN_THE_DAY / interval;
 
@@ -26,7 +32,9 @@ export const createTime = (
       disabled,
       now: isSame($date, NOW),
       selected: d ? isSame(d, $date) : false,
-      time: formatTime($date, locale),
+      time: useLocales
+        ? formatLocaleTime($date, locale)
+        : formatTime($date, locale),
     });
   }
 

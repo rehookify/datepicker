@@ -21,6 +21,9 @@ export const ModularContextProvider = () => {
           // day: [0, 6],
           // date: [new Date(2023, 2, 8)],
         },
+        locale: {
+          hour12: true,
+        },
       }}
     >
       <Outlet />
