@@ -48,6 +48,7 @@ export interface DPLocaleConfig {
 
 export interface DPTimeConfig {
   interval: number;
+  useLocales: boolean;
   minTime?: DPTimeLimit;
   maxTime?: DPTimeLimit;
 }

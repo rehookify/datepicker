@@ -82,7 +82,7 @@ export const getTimeDate = (
 ): Date | undefined =>
   t && t.h != null && t.m != null ? newDate(Y, M, D, t.h, t.m) : undefined;
 
-export const formatTime = (
+export const formatLocaleTime = (
   d: Date,
   { locale, hour, minute, second, hour12 }: DPLocaleConfig,
 ): string =>
@@ -92,6 +92,23 @@ export const formatTime = (
     second,
     hour12,
   });
+
+const addLeadingZero = (n: number): string => `${n < 10 ? 0 : ''}${n}`;
+
+const convertTo12H = (h: number, m: number): string => {
+  const median = h >= 12 ? 'pm' : 'am';
+
+  return `${addLeadingZero(h % 12 || 12)}:${addLeadingZero(m)} ${median}`;
+};
+
+export const formatTime = (d: Date, { hour12 }: DPLocaleConfig): string => {
+  const h = d.getHours();
+  const m = d.getMinutes();
+
+  return hour12
+    ? convertTo12H(h, m)
+    : `${addLeadingZero(h)}:${addLeadingZero(m)}`;
+};
 
 export const addAndSortAsc = (dates: Date[], d: Date): Date[] =>
   dates.concat(d).sort(sortDatesAsc);

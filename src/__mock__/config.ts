@@ -35,5 +35,6 @@ export const DEFAULT_CONFIG = {
   exclude: {},
   time: {
     interval: 30,
+    useLocales: false,
   },
 };
