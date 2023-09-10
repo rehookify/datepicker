@@ -4,12 +4,15 @@ import { newDate } from '../utils/date';
 import {
   includeDate,
   isAfter,
+  isAfterMaxMonth,
+  isAfterMaxYear,
   isBefore,
+  isBeforeMinMonth,
+  isBeforeMinYear,
   isBetween,
   isSame,
   maxDateAndAfter,
   minDateAndBefore,
-  minDateAndBeforeFirstDay,
 } from '../utils/predicates';
 
 describe('isSame', () => {
@@ -89,19 +92,6 @@ describe('minDateAndBefore', () => {
   });
 });
 
-describe('minDateAndBeforeFirstDay', () => {
-  test('minDateAndBeforeFirstDay should return true if minDate is exist and 1 day of the month <  minDate', () => {
-    const d1 = newDate(2022, 9, 21);
-    const d2 = newDate(2022, 10, 30);
-    const minDate = newDate(2022, 10, 23);
-
-    expect(minDateAndBeforeFirstDay(minDate, d1)).toBe(true);
-    expect(minDateAndBefore(minDate, d2)).toBe(false);
-    expect(minDateAndBefore(d2, d2)).toBe(false);
-    expect(minDateAndBefore(undefined, d1)).toBe(false);
-  });
-});
-
 describe('includeDate', () => {
   test('should return true if dates present in array dates', () => {
     const selected = [
@@ -125,5 +115,57 @@ describe('includeDate', () => {
     expect(includeDate(selected, newDate(2023, 1, 6))).toBe(false);
     expect(includeDate(selected, newDate(2023, 2, 7))).toBe(false);
     expect(includeDate(selected, newDate(2024, 1, 8))).toBe(false);
+  });
+});
+
+describe('isBeforeMinMonth', () => {
+  test('should return false if minMonth is not exist', () => {
+    expect(isBeforeMinMonth(1)).toBe(false);
+  });
+
+  test('should return true if month < minMonth', () => {
+    const minMonth = newDate(2023, 1, 1);
+    expect(isBeforeMinMonth(0, minMonth)).toBe(true);
+    expect(isBeforeMinMonth(1, minMonth)).toBe(false);
+    expect(isBeforeMinMonth(2, minMonth)).toBe(false);
+  });
+});
+
+describe('isBeforeMinYear', () => {
+  test('should return false if minYear is not exist', () => {
+    expect(isBeforeMinYear(2024)).toBe(false);
+  });
+
+  test('should return true if year < minYear', () => {
+    const minYear = newDate(2023, 1, 1);
+    expect(isBeforeMinYear(2022, minYear)).toBe(true);
+    expect(isBeforeMinYear(2023, minYear)).toBe(false);
+    expect(isBeforeMinYear(2024, minYear)).toBe(false);
+  });
+});
+
+describe('isAfterMaxMonth', () => {
+  test('should return false if maxMonth is not exist', () => {
+    expect(isAfterMaxMonth(1)).toBe(false);
+  });
+
+  test('should return true if month > maxMonth', () => {
+    const maxMonth = newDate(2023, 1, 1);
+    expect(isAfterMaxMonth(0, maxMonth)).toBe(false);
+    expect(isAfterMaxMonth(1, maxMonth)).toBe(false);
+    expect(isAfterMaxMonth(2, maxMonth)).toBe(true);
+  });
+});
+
+describe('isAfterMaxYear', () => {
+  test('should return false if maxYear is not exist', () => {
+    expect(isAfterMaxYear(2022)).toBe(false);
+  });
+
+  test('should return true if year > maxYear', () => {
+    const maxYear = newDate(2023, 1, 1);
+    expect(isAfterMaxYear(2022, maxYear)).toBe(false);
+    expect(isAfterMaxYear(2023, maxYear)).toBe(false);
+    expect(isAfterMaxYear(2024, maxYear)).toBe(true);
   });
 });

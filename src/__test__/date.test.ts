@@ -13,7 +13,6 @@ import {
   formatTime,
   getCleanDate,
   getDateParts,
-  getFirstDayOfTheMonth,
   getTimeDate,
   newDate,
   sortDatesAsc,
@@ -39,18 +38,6 @@ describe('daysInMonth', () => {
 
     expect(daysInMonth(newDate(2022, 0, 1))).toBe(DAYS_IN_JANUARY);
     expect(daysInMonth(newDate(2022, 3, 1))).toBe(DAYS_IN_APRIL);
-  });
-});
-
-describe('getFirstDayOfTheMonth', () => {
-  test('getFirstDayOfTheMonth must return first day of the month', () => {
-    const testDate = newDate(2022, 2, 12);
-
-    const firstDayOfTheMonth = getFirstDayOfTheMonth(testDate);
-
-    expect(firstDayOfTheMonth.getFullYear()).toBe(testDate.getFullYear());
-    expect(firstDayOfTheMonth.getMonth()).toBe(testDate.getMonth());
-    expect(firstDayOfTheMonth.getDate()).toBe(1);
   });
 });
 

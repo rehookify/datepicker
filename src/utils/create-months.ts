@@ -1,12 +1,12 @@
 import { NUMBER_OF_MONTHS } from '../constants';
 import type { DPDatesConfig, DPLocaleConfig, DPMonth } from '../types';
+import { formatMonthName, getDateParts, newDate } from './date';
 import {
-  formatMonthName,
-  getDateParts,
-  getFirstDayOfTheMonth,
-  newDate,
-} from './date';
-import { maxDateAndAfter, minDateAndBeforeFirstDay } from './predicates';
+  isAfterMaxMonth,
+  isAfterMaxYear,
+  isBeforeMinMonth,
+  isBeforeMinYear,
+} from './predicates';
 
 export const createMonths = (
   offsetDate: Date,
@@ -32,8 +32,10 @@ export const createMonths = (
       active: M === i,
       now: i === nM && Y === nY,
       disabled:
-        minDateAndBeforeFirstDay(minDate, $date) ||
-        maxDateAndAfter(maxDate, getFirstDayOfTheMonth($date)),
+        isBeforeMinMonth(i, minDate) ||
+        isBeforeMinYear(Y, minDate) ||
+        isAfterMaxMonth(i, maxDate) ||
+        isAfterMaxYear(Y, maxDate),
     });
   }
 

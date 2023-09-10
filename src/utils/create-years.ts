@@ -1,6 +1,6 @@
 import type { DPDatesConfig, DPYear, DPYearsConfig } from '../types';
-import { getDateParts, getFirstDayOfTheMonth, newDate } from './date';
-import { maxDateAndAfter, minDateAndBeforeFirstDay } from './predicates';
+import { getDateParts, newDate } from './date';
+import { isAfterMaxYear, isBeforeMinYear } from './predicates';
 
 export const createYears = (
   currentYear: number,
@@ -20,9 +20,7 @@ export const createYears = (
     years.push({
       $date,
       active: Y === year,
-      disabled:
-        minDateAndBeforeFirstDay(minDate, $date) ||
-        maxDateAndAfter(maxDate, getFirstDayOfTheMonth($date)),
+      disabled: isBeforeMinYear(year, minDate) || isAfterMaxYear(year, maxDate),
       now: year === nY,
       selected: selectedDates.some((d) => getDateParts(d).Y === year),
       year,

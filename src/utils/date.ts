@@ -29,9 +29,6 @@ export const getCleanDate = (d: Date): Date =>
 export const daysInMonth = (d: Date): number =>
   newDate(getDateParts(d).Y, getDateParts(d).M + 1, 0).getDate();
 
-export const getFirstDayOfTheMonth = (d: Date): Date =>
-  newDate(getDateParts(d).Y, getDateParts(d).M, 1);
-
 export const addToDate = (d: Date, value: number, part: DPDatePart): Date => {
   const { Y, M, D } = getDateParts(d);
   // Cover case when offsetDate is 31 and next month doesn't have 31 days
