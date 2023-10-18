@@ -205,7 +205,7 @@ const DatePicker = () => {
         <div>
           <button {...subtractOffset({ months: 1 })}>&lt;</button>
           <p>{month} {year}</p>
-          <button {...appOffset({ months: 1 })}>&gt;</button>
+          <button {...addOffset({ months: 1 })}>&gt;</button>
         </div>
         <ul>
           {weekDays.map((day) => (
