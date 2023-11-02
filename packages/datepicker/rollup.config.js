@@ -1,7 +1,7 @@
 import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
+import copy from 'rollup-plugin-copy';
 import external from 'rollup-plugin-peer-deps-external';
-import sourcemaps from 'rollup-plugin-sourcemaps';
 import typescript from 'rollup-plugin-typescript2';
 
 import p from './package.json';
@@ -25,6 +25,12 @@ function createRollupConfig({ name, format, input, tsconfig }) {
       exports: 'named',
     },
     plugins: [
+      copy({
+        targets: [
+          { src: './package.json', dest: 'dist/' },
+          { src: './README.md', dest: 'dist/' },
+        ],
+      }),
       external(),
       typescript({
         tsconfig,
@@ -35,7 +41,6 @@ function createRollupConfig({ name, format, input, tsconfig }) {
         commonjs({
           include: /\/node_modules\//,
         }),
-      sourcemaps(),
       format !== 'esm' &&
         terser({
           output: { comments: false },

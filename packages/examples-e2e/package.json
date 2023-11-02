@@ -1,0 +1,16 @@
+{
+  "name": "examples-e2e",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.37.1",
+    "@rehookify/datepicker": "workspace:*",
+    "eslint-plugin-playwright": "^0.15.3",
+    "rimraf": "^5.0.1"
+  }
+}
