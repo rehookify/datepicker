@@ -2,30 +2,9 @@
   "name": "datepicker",
   "version": "6.2.0",
   "description": "The ultimate tool to create a date, range and time picker in your React applications.",
-  "main": "./index.cjs.js",
-  "module": "./index.esm.mjs",
-  "umd:main": "./index.umd.js",
-  "unpkg": "./index.umd.js",
-  "jsdelivr": "./index.umd.js",
-  "jsnext:main": "./index.esm.mjs",
-  "source": "src/index.ts",
-  "types": "./index.d.ts",
-  "sideEffects": false,
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./index.d.ts",
-      "import": "./index.esm.mjs",
-      "require": "./index.cjs.js"
-    }
-  },
   "scripts": {
     "clean": "rimraf node_modules",
     "prepare": "husky install",
-    "prepublishOnly": "npm t -- --run && npm run clean && npm run build",
     "e2e": "pnpm --filter examples-e2e test",
     "datepicker": "pnpm --filter @rehookify/datepicker"
   },
@@ -68,22 +47,16 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "husky": "^8.0.3",
-    "lint-staged": "^14.0.1",
+    "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.1",
     "typescript": "^5.2.2"
-  },
-  "peerDependencies": {
-    "react": "^16.8.0 || ^17 || ^18"
   },
   "lint-staged": {
     "**/*.{ts,tsx}": [
       "prettier --write",
       "eslint --fix"
     ]
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "engines": {
     "node": ">=16"

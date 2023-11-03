@@ -26,8 +26,10 @@
     "clean": "rimraf dist",
     "build": "rollup -c ./rollup.config.js --bundleConfigAsCjs",
     "dev": "rollup -c ./rollup.config.js -w --bundleConfigAsCjs",
-    "prebuild": "npm run clean",
-    "test": "vitest"
+    "prebuild": "pnpm run clean",
+    "prepublishOnly": "pnpm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -76,12 +78,6 @@
   },
   "peerDependencies": {
     "react": "^16.8.0 || ^17 || ^18"
-  },
-  "lint-staged": {
-    "**/*.{ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
   },
   "publishConfig": {
     "access": "public"
