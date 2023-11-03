@@ -25,7 +25,8 @@
   "scripts": {
     "clean": "rimraf node_modules",
     "prepare": "husky install",
-    "prepublishOnly": "npm t -- --run && npm run clean && npm run build"
+    "prepublishOnly": "npm t -- --run && npm run clean && npm run build",
+    "e2e": "pnpm --filter examples-e2e test"
   },
   "repository": {
     "type": "git",
