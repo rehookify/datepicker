@@ -6,7 +6,9 @@
     "clean": "rimraf node_modules",
     "prepare": "husky install",
     "e2e": "pnpm --filter examples-e2e test",
-    "datepicker": "pnpm --filter @rehookify/datepicker"
+    "datepicker": "pnpm --filter @rehookify/datepicker",
+    "test": "pnpm datepicker build && pnpm -r --parallel run test",
+    "dev": "pnpm -r --parallel run dev"
   },
   "repository": {
     "type": "git",

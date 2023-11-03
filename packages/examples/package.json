@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "clean": "rimraf node_modules",
-    "start": "vite",
+    "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
