@@ -1,0 +1,88 @@
+{
+  "name": "@rehookify/datepicker",
+  "version": "6.2.1",
+  "description": "The ultimate tool to create a date, range and time picker in your React applications.",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.mjs",
+  "umd:main": "dist/index.umd.js",
+  "unpkg": "dist/index.umd.js",
+  "jsdelivr": "dist/index.umd.js",
+  "jsnext:main": "dist/index.esm.mjs",
+  "source": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.mjs",
+      "require": "./dist/index.cjs.js"
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "rollup -c ./rollup.config.js --bundleConfigAsCjs",
+    "dev": "rollup -c ./rollup.config.js -w --bundleConfigAsCjs",
+    "prebuild": "pnpm run clean",
+    "prepublishOnly": "pnpm run build",
+    "test": "vitest --run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rehookify/datepicker.git"
+  },
+  "keywords": [
+    "react",
+    "hook",
+    "react-hooks",
+    "typescript",
+    "date-picker",
+    "react-date-picker",
+    "date-picker-hook",
+    "react-date-picker-hook",
+    "range-picker",
+    "react-range-picker",
+    "range-picker-hook",
+    "react-range-picker-hook",
+    "time-picker",
+    "react-time-picker",
+    "time-picker-hook",
+    "react-time-picker-hook"
+  ],
+  "author": "<pavel.feschenko@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rehookify/datepicker/issues"
+  },
+  "homepage": "https://github.com/rehookify/datepicker#readme",
+  "devDependencies": {
+    "@babel/core": "^7.22.17",
+    "@babel/preset-env": "^7.22.15",
+    "@babel/preset-typescript": "^7.22.15",
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-terser": "^0.4.3",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.2.21",
+    "jsdom": "^22.1.0",
+    "react": "^18.2.0",
+    "rimraf": "^5.0.1",
+    "rollup": "^3.29.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "vitest": "^0.34.4"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17 || ^18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

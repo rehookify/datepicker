@@ -1,15 +1,13 @@
 {
-  "name": "app",
+  "name": "examples",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "clean": "rimraf node_modules",
-    "start": "vite",
+    "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "link:dp": "npm link @rehookify/datepicker",
-    "clean:link": "npm run clean && npm i && npm run link:dp"
+    "preview": "vite preview"
   },
   "dependencies": {
     "clsx": "^2.0.0",
@@ -17,7 +15,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@rehookify/datepicker": "^6.0.0",
+    "@rehookify/datepicker": "workspace:*",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.4",

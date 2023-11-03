@@ -18,6 +18,5 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
   "exclude": ["node_modules"]
 }

@@ -9,9 +9,10 @@ node_modules/
 .DS_Store
 .idea/
 
-/dist
+dist
+node_modules
 
 # Playwright
-/test-results/
-/playwright-report/
-/playwright/.cache/
+test-results
+playwright-report
+playwright/.cache/

@@ -10,17 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 8
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+        cache: 'pnpm'
     - name: Install dependencies
-      run: npm ci
+      run: pnpm i
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Install app dependencies
-      run: npm ci --prefix ./app
-    - name: Run Playwright tests
-      run: npm run t:e2e
+      run: pnpm dlx playwright install --with-deps
+    - name: Build datepicker lib
+      run: pnpm datepicker build
+    - name: Run e2e for examples app
+      run: pnpm e2e
     - uses: actions/upload-artifact@v3
       if: always()
       with:
