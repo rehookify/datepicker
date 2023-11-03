@@ -21,7 +21,9 @@ jobs:
       run: pnpm i
     - name: Install Playwright Browsers
       run: pnpm dlx playwright install --with-deps
-    - name: Install app dependencies
+    - name: Build datepicker lib
+      run: pnpm datepicker build
+    - name: Run e2e for examples app
       run: pnpm e2e
     - uses: actions/upload-artifact@v3
       if: always()

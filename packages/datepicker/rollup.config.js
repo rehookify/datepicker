@@ -1,6 +1,6 @@
 import commonjs from '@rollup/plugin-commonjs';
 import terser from '@rollup/plugin-terser';
-import copy from 'rollup-plugin-copy';
+// import copy from 'rollup-plugin-copy';
 import external from 'rollup-plugin-peer-deps-external';
 import typescript from 'rollup-plugin-typescript2';
 
@@ -25,12 +25,12 @@ function createRollupConfig({ name, format, input, tsconfig }) {
       exports: 'named',
     },
     plugins: [
-      copy({
-        targets: [
-          { src: './package.json', dest: 'dist/' },
-          { src: './README.md', dest: 'dist/' },
-        ],
-      }),
+      // copy({
+      //   targets: [
+      //     { src: './package.json', dest: 'dist/' },
+      //     { src: './README.md', dest: 'dist/' },
+      //   ],
+      // }),
       external(),
       typescript({
         tsconfig,
