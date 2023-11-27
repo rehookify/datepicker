@@ -30,7 +30,7 @@ Help us in our struggle, 💰  [United24](https://u24.gov.ua/), [KOLO](https://w
 
 - Small in size.
 - No dependencies.
-- [Modular design](/datepicker/modular-hooks): You can use as little code as possible.
+- [Modular design](https://www.rehookify.com/datepicker/modular-hooks): You can use as little code as possible.
 - Supports single, multiple, and range date selection, as well as a time picker.
 - Multiple calendar support.
 - Native localization support using *.toLocaleDateString* and *.toLocaleTimeString*.
