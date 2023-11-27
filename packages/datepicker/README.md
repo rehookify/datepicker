@@ -46,7 +46,7 @@ npm i @rehookify/datepicker
 ```
 
 ```bash
-yard add @rehookify/datepicker
+yarn add @rehookify/datepicker
 ```
 
 ```bash
