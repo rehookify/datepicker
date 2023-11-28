@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: pnpm i
     - name: Install Playwright Browsers
-      run: pnpm dlx playwright install --with-deps
+      run: npx playwright install --with-deps
     - name: Build datepicker lib
       run: pnpm datepicker build
     - name: Run e2e for examples app
