@@ -7,7 +7,7 @@
     "prepare": "husky install",
     "e2e": "pnpm --filter examples-e2e test",
     "datepicker": "pnpm --filter @rehookify/datepicker",
-    "install:playwright": "pnpm --filter examples-e2e exec playwright install",
+    "install:playwright": "pnpm --filter examples-e2e exec playwright install --with-deps",
     "test": "pnpm datepicker build && pnpm -r --parallel run test",
     "dev": "pnpm -r --parallel run dev"
   },
