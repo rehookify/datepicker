@@ -14,7 +14,7 @@ export const createMonths = (
   locale: DPLocaleConfig,
   { minDate, maxDate }: DPDatesConfig,
 ): DPMonth[] => {
-  const months = [];
+  const months = Array(NUMBER_OF_MONTHS);
   const { M, Y } = getDateParts(offsetDate);
   const { Y: nY, M: nM } = getDateParts(newDate());
 
@@ -22,7 +22,7 @@ export const createMonths = (
   for (let i = 0; i < NUMBER_OF_MONTHS; i++) {
     const $date = newDate(Y, i, 1);
 
-    months.push({
+    months[i] = {
       $date,
       month: formatMonthName($date, locale),
       selected: selectedDates.some((d) => {
@@ -36,7 +36,7 @@ export const createMonths = (
         isBeforeMinYear(Y, minDate) ||
         isAfterMaxMonth(i, maxDate) ||
         isAfterMaxYear(Y, maxDate),
-    });
+    };
   }
 
   return months;

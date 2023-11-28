@@ -39,12 +39,12 @@ const createCalendar = (
   const { M, Y } = getDateParts(offsetDate);
   const { start, length } = getCalendarMonthParams(M, Y, calendar);
 
-  const days: DPDay[] = [];
+  const days: DPDay[] = Array(length);
 
   for (let i = 1; i <= length; i++) {
     const date = newDate(Y, M, i - start);
 
-    days.push({
+    days[i - 1] = {
       $date: date,
       day: toLocaleDateString(date, localeStr, { day }),
       now: isSame(getCleanDate(newDate()), date),
@@ -55,7 +55,7 @@ const createCalendar = (
         isExcluded(date, exclude),
       selected: includeDate(selectedDates, date),
       inCurrentMonth: getDateParts(date).M === M,
-    });
+    };
   }
 
   return {

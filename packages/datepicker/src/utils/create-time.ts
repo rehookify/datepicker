@@ -18,7 +18,7 @@ export const createTime = (
   const { Y, M, D } = getDateParts(d || NOW);
   const segments = MINUTES_IN_THE_DAY / interval;
 
-  const t = [];
+  const t = Array(segments);
   const minDate = getTimeDate(Y, M, D, minTime);
   const maxDate = getTimeDate(Y, M, D, maxTime);
 
@@ -27,7 +27,7 @@ export const createTime = (
     const disabled =
       !d || minDateAndBefore(minDate, $date) || maxDateAndAfter(maxDate, $date);
 
-    t.push({
+    t[i] = {
       $date,
       disabled,
       now: isSame($date, NOW),
@@ -35,7 +35,7 @@ export const createTime = (
       time: useLocales
         ? formatLocaleTime($date, locale)
         : formatTime($date, locale),
-    });
+    };
   }
 
   return t;
