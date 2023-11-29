@@ -1,7 +1,5 @@
-import { WEEK_DAYS } from '../constants';
-
 // The days in JS Date object has numbers from 0 - Sun to 6 - Sat
-export type DPDayInteger = (typeof WEEK_DAYS)[number];
+export type DPDayInteger = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export type DPDayRange =
   | 'in-range'

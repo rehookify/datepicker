@@ -1,11 +1,5 @@
 import type { Dispatch } from 'react';
 
-import {
-  SET_FOCUS_DATE_ACTION,
-  SET_OFFSET_DATE_ACTION,
-  SET_RANGE_END_ACTION,
-  SET_YEAR_ACTION,
-} from '../constants';
 import { DPConfig } from './config';
 
 export interface DPReducerState {
@@ -16,22 +10,22 @@ export interface DPReducerState {
 }
 
 export interface DPSetFocusDate {
-  type: typeof SET_FOCUS_DATE_ACTION;
+  type: 'SET_FOCUS_DATE';
   date: DPReducerState['focusDate'];
 }
 
 export interface DPSetOffsetDate {
-  type: typeof SET_OFFSET_DATE_ACTION;
+  type: 'SET_OFFSET_DATE';
   date: DPReducerState['offsetDate'];
 }
 
 export interface DPSetRangeEndAction {
-  type: typeof SET_RANGE_END_ACTION;
+  type: 'SET_RANGE_END';
   date: DPReducerState['rangeEnd'];
 }
 
 export interface DPSetYearAction {
-  type: typeof SET_YEAR_ACTION;
+  type: 'SET_YEAR';
   year: DPReducerState['offsetYear'];
 }
 

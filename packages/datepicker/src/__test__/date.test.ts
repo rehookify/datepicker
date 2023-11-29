@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
 import { ALTERNATIVE_LOCALE_CONFIG } from '../__mock__/locale';
-import { DEFAULT_LOCALE_CONFIG } from '../constants';
 import { DPLocaleConfig } from '../types';
 import {
   addAndSortAsc,
@@ -19,6 +18,18 @@ import {
   subtractFromDate,
   toLocaleDateString,
 } from '../utils/date';
+
+var DEFAULT_LOCALE_CONFIG: DPLocaleConfig = {
+  locale: 'en-GB',
+  day: '2-digit',
+  year: 'numeric',
+  weekday: 'short',
+  monthName: 'long',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: undefined,
+  second: undefined,
+};
 
 describe('getCleanDate', () => {
   test('getCleanDate should return Date without hours, minutes, seconds and milliseconds', () => {

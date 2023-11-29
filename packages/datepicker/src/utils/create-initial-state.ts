@@ -15,8 +15,8 @@ export const createInitialState = (config: DPConfig): DPReducerState => {
   const oDate = offsetDate
     ? offsetDate
     : selectedDates.length > 0
-    ? selectedDates[selectedDates.length - 1]
-    : getCalendarStartDate(minDate, maxDate, getCleanDate(newDate()));
+      ? selectedDates[selectedDates.length - 1]
+      : getCalendarStartDate(minDate, maxDate, getCleanDate(newDate()));
 
   return {
     focusDate,

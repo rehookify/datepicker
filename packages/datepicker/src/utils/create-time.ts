@@ -1,4 +1,3 @@
-import { MINUTES_IN_THE_DAY } from '../constants';
 import type { DPConfig, DPTime } from '../types';
 import {
   formatLocaleTime,
@@ -16,27 +15,29 @@ export const createTime = (
   const NOW = newDate();
   const { interval, minTime, maxTime, useLocales } = time;
   const { Y, M, D } = getDateParts(d || NOW);
-  const segments = MINUTES_IN_THE_DAY / interval;
+  // 1440 is a number of minutes in the day 60 * 24
+  const segments = 1440 / interval;
 
-  const t = Array(segments);
   const minDate = getTimeDate(Y, M, D, minTime);
   const maxDate = getTimeDate(Y, M, D, maxTime);
 
-  for (let i = 0; i < segments; i++) {
-    const $date = newDate(Y, M, D, 0, i * interval);
-    const disabled =
-      !d || minDateAndBefore(minDate, $date) || maxDateAndAfter(maxDate, $date);
+  return Array(segments)
+    .fill(0)
+    .map((_, i) => {
+      const $date = newDate(Y, M, D, 0, i * interval);
+      const disabled =
+        !d ||
+        minDateAndBefore(minDate, $date) ||
+        maxDateAndAfter(maxDate, $date);
 
-    t[i] = {
-      $date,
-      disabled,
-      now: isSame($date, NOW),
-      selected: d ? isSame(d, $date) : false,
-      time: useLocales
-        ? formatLocaleTime($date, locale)
-        : formatTime($date, locale),
-    };
-  }
-
-  return t;
+      return {
+        $date,
+        disabled,
+        now: isSame($date, NOW),
+        selected: d ? isSame(d, $date) : false,
+        time: useLocales
+          ? formatLocaleTime($date, locale)
+          : formatTime($date, locale),
+      };
+    });
 };

@@ -37,8 +37,8 @@ export const addToDate = (d: Date, value: number, part: DPDatePart): Date => {
     part === 'date'
       ? D + value
       : part === 'month' && D > daysInMonth(newDate(Y, M + value, 1))
-      ? daysInMonth(newDate(Y, M + value, 1))
-      : D;
+        ? daysInMonth(newDate(Y, M + value, 1))
+        : D;
 
   return newDate(
     Y + (part === 'year' ? value : 0),

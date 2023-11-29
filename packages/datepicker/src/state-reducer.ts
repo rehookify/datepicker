@@ -1,11 +1,5 @@
 import { Dispatch } from 'react';
 
-import {
-  SET_FOCUS_DATE_ACTION,
-  SET_OFFSET_DATE_ACTION,
-  SET_RANGE_END_ACTION,
-  SET_YEAR_ACTION,
-} from './constants';
 import type {
   DPReducerAction,
   DPReducerState,
@@ -15,10 +9,15 @@ import type {
   DPSetYearAction,
 } from './types';
 
-export const stateReducer = (
+var SET_FOCUS_DATE_ACTION = 'SET_FOCUS_DATE' as const;
+var SET_OFFSET_DATE_ACTION = 'SET_OFFSET_DATE' as const;
+var SET_RANGE_END_ACTION = 'SET_RANGE_END' as const;
+var SET_YEAR_ACTION = 'SET_YEAR' as const;
+
+export function stateReducer(
   state: DPReducerState,
   action: DPReducerAction,
-): DPReducerState => {
+): DPReducerState {
   switch (action.type) {
     case SET_FOCUS_DATE_ACTION:
       return {
@@ -43,24 +42,32 @@ export const stateReducer = (
     default:
       return state;
   }
-};
+}
 
-export const setFocus = (
+export function setFocus(
   dispatch: Dispatch<DPSetFocusDate>,
   date: DPReducerState['focusDate'],
-): void => dispatch({ type: SET_FOCUS_DATE_ACTION, date });
+): void {
+  dispatch({ type: SET_FOCUS_DATE_ACTION, date });
+}
 
-export const setOffset = (
+export function setOffset(
   dispatch: Dispatch<DPSetOffsetDate>,
   date: Date,
-): void => dispatch({ type: SET_OFFSET_DATE_ACTION, date });
+): void {
+  dispatch({ type: SET_OFFSET_DATE_ACTION, date });
+}
 
-export const setRangeEnd = (
+export function setRangeEnd(
   dispatch: Dispatch<DPSetRangeEndAction>,
   date: DPReducerState['rangeEnd'],
-): void => dispatch({ type: SET_RANGE_END_ACTION, date });
+): void {
+  dispatch({ type: SET_RANGE_END_ACTION, date });
+}
 
-export const setYear = (
+export function setYear(
   dispatch: Dispatch<DPSetYearAction>,
   year: number,
-): void => dispatch({ type: SET_YEAR_ACTION, year });
+): void {
+  dispatch({ type: SET_YEAR_ACTION, year });
+}

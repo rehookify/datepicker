@@ -1,19 +1,23 @@
-import React, { createContext, FC, useContext } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 
 import { DatePickerContextValue, DatePickerProviderProps } from './types';
 import { useDatePicker } from './use-date-picker';
 
-const DatePickerContext = createContext<DatePickerContextValue>(
+var DatePickerContext = createContext<DatePickerContextValue>(
   {} as DatePickerContextValue,
 );
 
-export const useDatePickerContext = () => useContext(DatePickerContext);
+var useDatePickerContext = () => useContext(DatePickerContext);
 
-export const DatePickerProvider: FC<DatePickerProviderProps> = ({
+function DatePickerProvider({
   children,
   config,
-}) => (
-  <DatePickerContext.Provider value={useDatePicker(config)}>
-    {children}
-  </DatePickerContext.Provider>
-);
+}: DatePickerProviderProps): ReactNode {
+  return (
+    <DatePickerContext.Provider value={useDatePicker(config)}>
+      {children}
+    </DatePickerContext.Provider>
+  );
+}
+
+export { DatePickerProvider, useDatePickerContext };

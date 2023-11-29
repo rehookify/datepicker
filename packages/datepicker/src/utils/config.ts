@@ -1,15 +1,59 @@
-import {
-  DEFAULT_CALENDAR_CONFIG,
-  DEFAULT_DATES_CONFIG,
-  DEFAULT_LOCALE_CONFIG,
-  DEFAULT_TIME_CONFIG,
-  DEFAULT_YEARS_CONFIG,
-} from '../constants';
-import type { DPConfig, DPDatesMode, DPUserConfig } from '../types';
+import type {
+  DPCalendarConfig,
+  DPConfig,
+  DPDatesConfig,
+  DPDatesMode,
+  DPLocaleConfig,
+  DPTimeConfig,
+  DPUserConfig,
+  DPYearsConfig,
+} from '../types';
 import { getCleanDate, sortDatesAsc, sortMinMax } from './date';
 import { includeDate } from './predicates';
 
-export const createConfig = ({
+var DEFAULT_CALENDAR_CONFIG: DPCalendarConfig = {
+  mode: 'static',
+  offsets: [0],
+  startDay: 0,
+};
+
+var DEFAULT_YEARS_CONFIG: DPYearsConfig = {
+  mode: 'decade',
+  /*
+   * The default value for the numberOfYears is 12
+   * it consists of 10 years + 1 year before + 1 year after
+   */
+  numberOfYears: 12,
+  step: 10,
+};
+
+var DEFAULT_DATES_CONFIG: Pick<
+  DPDatesConfig,
+  'mode' | 'toggle' | 'selectSameDate'
+> = {
+  mode: 'single',
+  toggle: false,
+  selectSameDate: false,
+};
+
+var DEFAULT_TIME_CONFIG: Pick<DPTimeConfig, 'interval' | 'useLocales'> = {
+  interval: 30,
+  useLocales: false,
+};
+
+var DEFAULT_LOCALE_CONFIG: DPLocaleConfig = {
+  locale: 'en-GB',
+  day: '2-digit',
+  year: 'numeric',
+  weekday: 'short',
+  monthName: 'long',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: undefined,
+  second: undefined,
+};
+
+export function createConfig({
   selectedDates = [],
   onDatesChange,
   focusDate,
@@ -21,7 +65,7 @@ export const createConfig = ({
   time = {},
   exclude = {},
   years,
-}: DPUserConfig): DPConfig => {
+}: DPUserConfig): DPConfig {
   const { minDate, maxDate, ...restDates } = dates;
   const { offsets = [], ...restCalendarParams } = calendar;
   const { minTime, maxTime, ...restTime } = time;
@@ -62,6 +106,8 @@ export const createConfig = ({
     },
     exclude,
   };
-};
+}
 
-export const isRange = (mode: DPDatesMode): boolean => mode === 'range';
+export function isRange(mode: DPDatesMode): boolean {
+  return mode === 'range';
+}

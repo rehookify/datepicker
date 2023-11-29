@@ -1,4 +1,3 @@
-import { NUMBER_OF_STATIC_CALENDAR_DAYS } from '../constants';
 import type { DPCalendarConfig } from '../types';
 import { daysInMonth, getDay, newDate } from './date';
 
@@ -13,6 +12,7 @@ export const getCalendarMonthParams = (
   start: number;
   length: number;
 } => {
+  var NUMBER_OF_STATIC_CALENDAR_DAYS = 42;
   const firstMonthDay = newDate(year, month, 1);
   const lastDay = daysInMonth(firstMonthDay);
 
