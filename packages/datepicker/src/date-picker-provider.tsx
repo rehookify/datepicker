@@ -7,9 +7,9 @@ var DatePickerContext = createContext<DatePickerContextValue>(
   {} as DatePickerContextValue,
 );
 
-var useDatePickerContext = () => useContext(DatePickerContext);
+export var useDatePickerContext = () => useContext(DatePickerContext);
 
-function DatePickerProvider({
+export function DatePickerProvider({
   children,
   config,
 }: DatePickerProviderProps): ReactNode {
@@ -19,5 +19,3 @@ function DatePickerProvider({
     </DatePickerContext.Provider>
   );
 }
-
-export { DatePickerProvider, useDatePickerContext };

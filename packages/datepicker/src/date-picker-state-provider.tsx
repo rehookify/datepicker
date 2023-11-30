@@ -5,9 +5,9 @@ import { useDatePickerState } from './use-date-picker-state';
 
 var DatePickerStateContext = createContext<DPState>({} as DPState);
 
-var useDatePickerStateContext = () => useContext(DatePickerStateContext);
+export var useDatePickerStateContext = () => useContext(DatePickerStateContext);
 
-function DatePickerStateProvider({
+export function DatePickerStateProvider({
   children,
   config,
 }: DatePickerProviderProps): ReactNode {
@@ -17,5 +17,3 @@ function DatePickerStateProvider({
     </DatePickerStateContext.Provider>
   );
 }
-
-export { DatePickerStateProvider, useDatePickerStateContext };

@@ -67,4 +67,4 @@ yarn add @rehookify/datepicker
 pnpm add @rehookify/datepicker
 ```
 
-Start with [tutorials](https://rehookify.com/tutorials)
+Start with [tutorials](https://rehookify.com/datepicker/tutorials)
