@@ -24,8 +24,10 @@ describe('createMonth', () => {
     expect(active.length).toBe(1);
     expect(now.length).toBe(1);
 
+    const nextMonth = M === 11 ? M - 1 : M + 1;
+
     // with 2 selected dates
-    months = createMonths(NOW, [NOW, newDate(Y, M + 1, D)], locale, dates);
+    months = createMonths(NOW, [NOW, newDate(Y, nextMonth, D)], locale, dates);
 
     let selected = months.filter(({ selected }) => selected);
 

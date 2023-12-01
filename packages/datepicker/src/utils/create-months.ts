@@ -13,6 +13,7 @@ export function createMonths(
   locale: DPLocaleConfig,
   { minDate, maxDate }: DPDatesConfig,
 ): DPMonth[] {
+  console.log('SELECTED DATES', selectedDates);
   // 12 is a number of months in the year
   const { M, Y } = getDateParts(offsetDate);
   const { Y: nY, M: nM } = getDateParts(newDate());
