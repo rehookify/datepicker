@@ -28,7 +28,7 @@ export const useTimePropGetter: DPUseTimePropGetter = ({
 }) => {
   const timeButton = useCallback(
     (
-      { $date, selected, disabled }: DPTime,
+      { $date, selected, disabled, now }: DPTime,
       { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
@@ -46,7 +46,10 @@ export const useTimePropGetter: DPUseTimePropGetter = ({
             }),
           )(evt, $date);
         },
-        rest,
+        {
+          ...rest,
+          tabIndex: selected || now ? 0 : -1,
+        },
         selected,
       ),
     [selectedDates, onDatesChange, dispatch, focusDate],

@@ -39,13 +39,16 @@ export const useYearsPropGetters: DPUseYearsPropGetters = (dpState) => {
 
   const yearButton = useCallback(
     (
-      { $date, disabled, selected }: DPYear,
+      { $date, disabled, selected, active }: DPYear,
       { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
         (evt) => callAll(onClick, skipFirst(setDPOffset(dpState)))(evt, $date),
-        rest,
+        {
+          ...rest,
+          tabIndex: active ? 0 : -1,
+        },
         selected,
       ),
     [dpState],
