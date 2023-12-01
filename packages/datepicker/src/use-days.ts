@@ -35,7 +35,7 @@ export const useDaysPropGetters: DPUseDaysPropGetters = ({
 
   const dayButton = useCallback(
     (
-      { $date, selected, disabled }: DPDay,
+      { $date, selected, disabled, active }: DPDay,
       { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
@@ -76,6 +76,7 @@ export const useDaysPropGetters: DPUseDaysPropGetters = ({
                 setRangeEndAction(dispatch, $date);
               },
             }),
+          tabIndex: active ? 0 : -1,
         },
         selected,
       ),

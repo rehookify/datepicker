@@ -24,6 +24,10 @@ describe('createMonth', () => {
     expect(active.length).toBe(1);
     expect(now.length).toBe(1);
 
+    // This manipulation is needed to prevent selecting month in the next year
+    // for example if today is December then next month will be January
+    // and test will fail because in current year selected only 1 month 😅
+    // eslint-disable-next-line playwright/no-conditional-in-test
     const nextMonth = M === 11 ? M - 1 : M + 1;
 
     // with 2 selected dates

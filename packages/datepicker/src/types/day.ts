@@ -13,6 +13,7 @@ export type DPDayRange =
 
 export interface DPDay {
   $date: Date;
+  active: boolean;
   day: string;
   disabled: boolean;
   inCurrentMonth: boolean;

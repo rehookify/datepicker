@@ -25,6 +25,7 @@ import {
 
 const createCalendar = (
   offsetDate: Date,
+  calendarStartDate: Date,
   selectedDates: Date[],
   { rangeEnd }: DPReducerState,
   config: DPConfig,
@@ -36,7 +37,7 @@ const createCalendar = (
     exclude,
   } = config;
   const { locale: localeStr, day, year } = locale;
-  const { M, Y } = getDateParts(offsetDate);
+  const { M, Y } = getDateParts(calendarStartDate);
   const { start, length } = getCalendarMonthParams(M, Y, calendar);
 
   const days: DPDay[] = Array(length)
@@ -46,6 +47,7 @@ const createCalendar = (
 
       return {
         $date,
+        active: isSame(offsetDate, $date),
         day: toLocaleDateString($date, localeStr, { day }),
         now: isSame(getCleanDate(newDate()), $date),
         range: getDateRangeState($date, rangeEnd, selectedDates, mode),
@@ -59,8 +61,8 @@ const createCalendar = (
     });
 
   return {
-    year: toLocaleDateString(offsetDate, localeStr, { year }),
-    month: formatMonthName(offsetDate, locale),
+    year: toLocaleDateString(calendarStartDate, localeStr, { year }),
+    month: formatMonthName(calendarStartDate, locale),
     days,
   };
 };
@@ -73,6 +75,7 @@ export const createCalendars = ({
 }: DPState): DPCalendar[] => {
   return config.calendar.offsets.map((offset) =>
     createCalendar(
+      offsetDate,
       addToDate(offsetDate, offset, 'month'),
       selectedDates,
       state,

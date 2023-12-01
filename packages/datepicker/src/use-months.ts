@@ -26,13 +26,16 @@ export const useMonths: DPUseMonths = ({
 export const useMonthsPropGetters: DPUseMonthsPropGetters = (dpState) => {
   const monthButton = useCallback(
     (
-      { $date, disabled, selected }: DPMonth,
+      { $date, disabled, selected, active }: DPMonth,
       { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
         (evt) => callAll(onClick, skipFirst(setDPOffset(dpState)))(evt, $date),
-        rest,
+        {
+          ...rest,
+          tabIndex: active ? 0 : -1,
+        },
         selected,
       ),
     [dpState],
