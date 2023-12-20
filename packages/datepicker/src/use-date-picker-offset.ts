@@ -8,7 +8,11 @@ import {
 import { callAll, skipFirst } from './utils/call-all';
 import { createPropGetter } from './utils/create-prop-getter';
 import { getNextOffsetDate, setDPOffset } from './utils/offset';
-import { maxDateAndAfter, minDateAndBefore } from './utils/predicates';
+import {
+  isAfterMaxMonth,
+  maxDateAndAfter,
+  minDateAndBefore,
+} from './utils/predicates';
 
 export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
   (state) => {
@@ -23,8 +27,12 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
         { disabled, onClick, ...rest }: DPPropsGetterConfig = {},
       ) => {
         const nextDate = getNextOffsetDate(state.offsetDate, offsetValue);
+        const disabledDueToMaxDateAndMonthOffset =
+          !!offsetValue.months &&
+          maxDateAndAfter(maxDate, nextDate) &&
+          isAfterMaxMonth(nextDate.getMonth(), maxDate);
 
-        const isDisabled = !!disabled || maxDateAndAfter(maxDate, nextDate);
+        const isDisabled = !!disabled || disabledDueToMaxDateAndMonthOffset;
 
         return createPropGetter(
           isDisabled,

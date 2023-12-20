@@ -137,4 +137,78 @@ describe('useDatePicker', () => {
     expect(result.current.propGetters.dayButton(rightEdge).onClick).toBeFalsy();
     expect(result.current.propGetters.dayButton(rightEdge).disabled).toBe(true);
   });
+
+  test('useDatePicker: test edges with minDate and maxDate: maxDate is the same month like next date given by offset', () => {
+    const selectedDateInNovember = newDate(2023, 10, 18);
+    const maxDateInDecember = newDate(2023, 11, 19);
+    const minDateInOctober = newDate(2023, 9, 30);
+    const { result } = renderHook(() =>
+      useDatePicker({
+        selectedDates: [selectedDateInNovember],
+        onDatesChange: vi.fn(),
+        dates: {
+          minDate: minDateInOctober,
+          maxDate: maxDateInDecember,
+        },
+      }),
+    );
+
+    //Ensure that next month button is enabled
+    expect(result.current.propGetters.addOffset({ months: 1 }).disabled).toBe(
+      undefined,
+    );
+    expect(
+      result.current.propGetters.subtractOffset({ months: 1 }).disabled,
+    ).toBe(true);
+
+    // Ensure that all months disabled expect October, November and December
+    const enabledMonths = result.current.data.months.filter(
+      ({ disabled }) => !disabled,
+    );
+    expect(enabledMonths.length).toBe(3);
+
+    // Ensure that next/previous years buttons are disabled
+    expect(result.current.propGetters.nextYearsButton().disabled).toBe(true);
+    expect(result.current.propGetters.previousYearsButton().disabled).toBe(
+      true,
+    );
+
+    // Ensure that all years disabled expect 2023
+    const enabledYears = result.current.data.years.filter(
+      ({ disabled }) => !disabled,
+    );
+    expect(enabledYears.length).toBe(1);
+
+    const enabledDaysInNovember = result.current.data.calendars[0].days.filter(
+      ({ disabled, inCurrentMonth }) => !disabled && inCurrentMonth,
+    );
+    expect(enabledDaysInNovember.length).toBe(30);
+    const [leftEdge] = result.current.data.calendars[0].days.filter(
+      ({ $date }) => $date.getDate() === minDateInOctober.getDate() - 1,
+    );
+
+    // Ensure that buttons beyond range has no onClick and disabled
+    expect(result.current.propGetters.dayButton(leftEdge).onClick).toBeFalsy();
+    expect(result.current.propGetters.dayButton(leftEdge).disabled).toBe(true);
+
+    // click on next button to get right edge - move to December
+    act(
+      () =>
+        result.current.propGetters
+          .addOffset({ months: 1 })
+          .onClick?.(null as unknown as React.MouseEvent<HTMLButtonElement>),
+    );
+
+    const [rightEdge] = result.current.data.calendars[0].days.filter(
+      ({ $date }) => $date.getDate() === maxDateInDecember.getDate() + 1,
+    );
+
+    const enabledDaysInDecember = result.current.data.calendars[0].days.filter(
+      ({ disabled, inCurrentMonth }) => !disabled && inCurrentMonth,
+    );
+    expect(enabledDaysInDecember.length).toBe(19);
+
+    expect(result.current.propGetters.dayButton(rightEdge).onClick).toBeFalsy();
+    expect(result.current.propGetters.dayButton(rightEdge).disabled).toBe(true);
+  });
 });

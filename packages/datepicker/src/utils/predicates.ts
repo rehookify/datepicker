@@ -30,8 +30,14 @@ export const isBeforeMinMonth = (month: number, minDate?: Date): boolean =>
 export const isBeforeMinYear = (year: number, minDate?: Date): boolean =>
   !!minDate && year < getDateParts(minDate).Y;
 
-export const isAfterMaxMonth = (month: number, maxDate?: Date): boolean =>
-  !!maxDate && month > getDateParts(maxDate).M;
+export const isAfterMaxMonth = (month: number, maxDate?: Date): boolean => {
+  const maxDateMonth = maxDate && getDateParts(maxDate).M;
+  // edge case comparing maxDate in December and month in January
+  if (month === 0 && maxDateMonth === 11) {
+    return true;
+  }
+  return !!maxDate && month > getDateParts(maxDate).M;
+};
 
 export const isAfterMaxYear = (year: number, maxDate?: Date): boolean =>
   !!maxDate && year > getDateParts(maxDate).Y;
