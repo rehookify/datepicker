@@ -29,14 +29,19 @@ export const useTimePropGetter: DPUseTimePropGetter = ({
   const timeButton = useCallback(
     (
       { $date, selected, disabled, now }: DPTime,
-      { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
+      {
+        onClick,
+        onPress,
+        disabled: disabledProps,
+        ...rest
+      }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         disabled || !!disabledProps,
         (evt) => {
           if (selected) return;
           callAll(
-            onClick,
+            onClick || onPress,
             skipFirst((d: Date) => {
               const newSelected = selectedDates.map((selected) => {
                 return isSame(focusDate as Date, selected) ? d : selected;

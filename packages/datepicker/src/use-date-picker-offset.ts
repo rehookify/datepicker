@@ -20,7 +20,7 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
     const addOffset = useCallback(
       (
         offsetValue: DPOffsetValue,
-        { disabled, onClick, ...rest }: DPPropsGetterConfig = {},
+        { disabled, onClick, onPress, ...rest }: DPPropsGetterConfig = {},
       ) => {
         const nextDate = getNextOffsetDate(state.offsetDate, offsetValue);
 
@@ -29,7 +29,10 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
         return createPropGetter(
           isDisabled,
           (evt) =>
-            callAll(onClick, skipFirst(setDPOffset(state)))(evt, nextDate),
+            callAll(onClick || onPress, skipFirst(setDPOffset(state)))(
+              evt,
+              nextDate,
+            ),
           rest,
         );
       },
@@ -39,7 +42,7 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
     const subtractOffset = useCallback(
       (
         { days = 0, months = 0, years = 0 }: DPOffsetValue,
-        { disabled, onClick, ...rest }: DPPropsGetterConfig = {},
+        { disabled, onClick, onPress, ...rest }: DPPropsGetterConfig = {},
       ) => {
         const negativeOffsetValue = {
           days: -days,
@@ -57,7 +60,10 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
         return createPropGetter(
           isDisabled,
           (evt) =>
-            callAll(onClick, skipFirst(setDPOffset(state)))(evt, nextDate),
+            callAll(onClick || onPress, skipFirst(setDPOffset(state)))(
+              evt,
+              nextDate,
+            ),
           rest,
         );
       },
@@ -65,7 +71,10 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
     );
 
     const setOffset = useCallback(
-      (d: Date, { disabled, onClick, ...rest }: DPPropsGetterConfig = {}) => {
+      (
+        d: Date,
+        { disabled, onClick, onPress, ...rest }: DPPropsGetterConfig = {},
+      ) => {
         const isDisabled =
           !!disabled ||
           minDateAndBefore(minDate, d) ||
@@ -73,7 +82,8 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
 
         return createPropGetter(
           isDisabled,
-          (evt) => callAll(onClick, skipFirst(setDPOffset(state)))(evt, d),
+          (evt) =>
+            callAll(onClick || onPress, skipFirst(setDPOffset(state)))(evt, d),
           rest,
         );
       },

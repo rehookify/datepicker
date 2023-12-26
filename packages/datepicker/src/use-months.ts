@@ -27,11 +27,20 @@ export const useMonthsPropGetters: DPUseMonthsPropGetters = (dpState) => {
   const monthButton = useCallback(
     (
       { $date, disabled, selected, active }: DPMonth,
-      { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
+      {
+        onClick,
+        onPress,
+        disabled: disabledProps,
+        ...rest
+      }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
-        (evt) => callAll(onClick, skipFirst(setDPOffset(dpState)))(evt, $date),
+        (evt) =>
+          callAll(onClick || onPress, skipFirst(setDPOffset(dpState)))(
+            evt,
+            $date,
+          ),
         {
           ...rest,
           tabIndex: active ? 0 : -1,

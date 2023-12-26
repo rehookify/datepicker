@@ -13,6 +13,7 @@ import { createPropGetter } from './utils/create-prop-getter';
 import { formatDate, getCleanDate } from './utils/date';
 import { getMultipleDates } from './utils/get-multiple-dates';
 import { includeDate, isSame } from './utils/predicates';
+import { isWeb } from './utils/platform';
 
 export const useDays: DPUseDays = ({ selectedDates, config: { locale } }) =>
   useMemo(
@@ -36,7 +37,12 @@ export const useDaysPropGetters: DPUseDaysPropGetters = ({
   const dayButton = useCallback(
     (
       { $date, selected, disabled, active }: DPDay,
-      { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
+      {
+        onClick,
+        onPress,
+        disabled: disabledProps,
+        ...rest
+      }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         disabled || !!disabledProps,
@@ -53,7 +59,7 @@ export const useDaysPropGetters: DPUseDaysPropGetters = ({
             setRangeEndAction(dispatch, null);
           }
           callAll(
-            onClick,
+            onClick || onPress,
             skipFirst((d: Date) => {
               const nextSelectedDates = getMultipleDates(
                 selectedDates,
@@ -71,7 +77,8 @@ export const useDaysPropGetters: DPUseDaysPropGetters = ({
         {
           ...rest,
           ...(isRange(mode) &&
-            selectedDates.length === 1 && {
+            selectedDates.length === 1 &&
+            isWeb && {
               onMouseEnter() {
                 setRangeEndAction(dispatch, $date);
               },
