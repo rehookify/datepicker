@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
 import { DatePickerContextValue, DatePickerProviderProps } from './types';
 import { useDatePicker } from './use-date-picker';
@@ -12,7 +12,7 @@ export var useDatePickerContext = () => useContext(DatePickerContext);
 export function DatePickerProvider({
   children,
   config,
-}: DatePickerProviderProps): ReactNode {
+}: DatePickerProviderProps): JSX.Element {
   return (
     <DatePickerContext.Provider value={useDatePicker(config)}>
       {children}
