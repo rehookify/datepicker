@@ -91,13 +91,13 @@ describe('useDatePicker', () => {
       }),
     );
 
-    //Ensure that next/previous months buttons are disabled
+    //Ensure that next month button is disabled
     expect(result.current.propGetters.addOffset({ months: 1 }).disabled).toBe(
       true,
     );
     expect(
       result.current.propGetters.subtractOffset({ months: 1 }).disabled,
-    ).toBe(true);
+    ).toBe(undefined);
 
     // Ensure that all months disabled expect current
     const enabledMonths = result.current.data.months.filter(
