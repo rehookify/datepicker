@@ -7,12 +7,12 @@ import {
   isBeforeMinYear,
 } from './predicates';
 
-export function createMonths(
+export var createMonths = (
   offsetDate: Date,
   selectedDates: Date[],
   locale: DPLocaleConfig,
   { minDate, maxDate }: DPDatesConfig,
-): DPMonth[] {
+): DPMonth[] => {
   // 12 is a number of months in the year
   const { M, Y } = getDateParts(offsetDate);
   const { Y: nY, M: nM } = getDateParts(newDate());
@@ -38,4 +38,4 @@ export function createMonths(
           isAfterMaxYear(Y, maxDate),
       };
     });
-}
+};
