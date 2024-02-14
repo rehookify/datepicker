@@ -14,10 +14,10 @@ var SET_OFFSET_DATE_ACTION = 'SET_OFFSET_DATE' as const;
 var SET_RANGE_END_ACTION = 'SET_RANGE_END' as const;
 var SET_YEAR_ACTION = 'SET_YEAR' as const;
 
-export function stateReducer(
+export var stateReducer = (
   state: DPReducerState,
   action: DPReducerAction,
-): DPReducerState {
+): DPReducerState => {
   switch (action.type) {
     case SET_FOCUS_DATE_ACTION:
       return {
@@ -42,32 +42,32 @@ export function stateReducer(
     default:
       return state;
   }
-}
+};
 
-export function setFocus(
+export var setFocus = (
   dispatch: Dispatch<DPSetFocusDate>,
   date: DPReducerState['focusDate'],
-): void {
+): void => {
   dispatch({ type: SET_FOCUS_DATE_ACTION, date });
-}
+};
 
-export function setOffset(
+export var setOffset = (
   dispatch: Dispatch<DPSetOffsetDate>,
   date: Date,
-): void {
+): void => {
   dispatch({ type: SET_OFFSET_DATE_ACTION, date });
-}
+};
 
-export function setRangeEnd(
+export var setRangeEnd = (
   dispatch: Dispatch<DPSetRangeEndAction>,
   date: DPReducerState['rangeEnd'],
-): void {
+): void => {
   dispatch({ type: SET_RANGE_END_ACTION, date });
-}
+};
 
-export function setYear(
+export var setYear = (
   dispatch: Dispatch<DPSetYearAction>,
   year: number,
-): void {
+): void => {
   dispatch({ type: SET_YEAR_ACTION, year });
-}
+};
