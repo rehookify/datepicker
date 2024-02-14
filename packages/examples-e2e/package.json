@@ -8,9 +8,9 @@
     "test": "playwright test"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.41.2",
     "@rehookify/datepicker": "workspace:*",
-    "eslint-plugin-playwright": "^0.18.0",
+    "eslint-plugin-playwright": "^1.0.1",
     "rimraf": "^5.0.5"
   }
 }

@@ -8,7 +8,7 @@ import {
 } from './date';
 import { isSame, maxDateAndAfter, minDateAndBefore } from './predicates';
 
-export const createTime = (
+export var createTime = (
   d: Date | undefined,
   { time, locale }: DPConfig,
 ): DPTime[] => {
