@@ -30,21 +30,21 @@ export const getNextOffsetDate = (
 
 export const getEdgedOffsetDate = (
   offsetDate: Date,
-  { days, months, years }: DPOffsetValue,
+  { days = 0, months = 0, years = 0 }: DPOffsetValue,
   dateEdge?: Date,
 ): Date => {
-  if (dateEdge) {
-    if (isSame(offsetDate, dateEdge)) return offsetDate;
-    if (days && days !== 0) {
-      return calculateNewDateWithOffset(offsetDate, dateEdge, days, 'date');
-    }
-    if (months && months !== 0) {
-      return calculateNewDateWithOffset(offsetDate, dateEdge, months, 'month');
-    }
-    if (years && years !== 0) {
-      return calculateNewDateWithOffset(offsetDate, dateEdge, years, 'year');
-    }
+  if (!dateEdge) return offsetDate;
+  if (isSame(offsetDate, dateEdge)) return offsetDate;
+  if (days !== 0) {
+    return calculateNewDateWithOffset(offsetDate, dateEdge, days, 'date');
   }
+  if (months !== 0) {
+    return calculateNewDateWithOffset(offsetDate, dateEdge, months, 'month');
+  }
+  if (years !== 0) {
+    return calculateNewDateWithOffset(offsetDate, dateEdge, years, 'year');
+  }
+
   return offsetDate;
 };
 
