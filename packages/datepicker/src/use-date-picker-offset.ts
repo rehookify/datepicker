@@ -7,7 +7,11 @@ import {
 } from './types';
 import { callAll, skipFirst } from './utils/call-all';
 import { createPropGetter } from './utils/create-prop-getter';
-import { getNextOffsetDate, setDPOffset } from './utils/offset';
+import {
+  getEdgedOffsetDate,
+  getNextOffsetDate,
+  setDPOffset,
+} from './utils/offset';
 import { maxDateAndAfter, minDateAndBefore } from './utils/predicates';
 
 export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
@@ -22,7 +26,12 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
         offsetValue: DPOffsetValue,
         { disabled, onClick, ...rest }: DPPropsGetterConfig = {},
       ) => {
-        const nextDate = getNextOffsetDate(state.offsetDate, offsetValue);
+        const offsetDate = getEdgedOffsetDate(
+          state.offsetDate,
+          offsetValue,
+          maxDate,
+        );
+        const nextDate = getNextOffsetDate(offsetDate, offsetValue);
 
         const isDisabled = !!disabled || maxDateAndAfter(maxDate, nextDate);
 
@@ -47,10 +56,12 @@ export const useDatePickerOffsetPropGetters: DPUseDatePickerOffsetPropGetters =
           years: -years,
         };
 
-        const nextDate = getNextOffsetDate(
+        const offsetDate = getEdgedOffsetDate(
           state.offsetDate,
           negativeOffsetValue,
+          minDate,
         );
+        const nextDate = getNextOffsetDate(offsetDate, negativeOffsetValue);
 
         const isDisabled = !!disabled || minDateAndBefore(minDate, nextDate);
 

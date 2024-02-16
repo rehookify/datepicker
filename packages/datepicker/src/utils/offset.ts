@@ -1,6 +1,7 @@
 import { setOffset } from '../state-reducer';
 import { DPOffsetValue, DPState } from '../types';
-import { addToDate } from './date';
+import { addToDate, subtractFromDate } from './date';
+import { isSame, maxDateAndAfter, minDateAndBefore } from './predicates';
 
 export const setDPOffset =
   ({ dispatch, config: { onOffsetChange, offsetDate } }: DPState) =>
@@ -25,4 +26,44 @@ export const getNextOffsetDate = (
     nextDate = addToDate(nextDate, years, 'year');
   }
   return nextDate;
+};
+
+export const getEdgedOffsetDate = (
+  offsetDate: Date,
+  { days = 0, months = 0, years = 0 }: DPOffsetValue,
+  dateEdge?: Date,
+): Date => {
+  if (!dateEdge) return offsetDate;
+  if (isSame(offsetDate, dateEdge)) return offsetDate;
+  if (days !== 0) {
+    return calculateNewDateWithOffset(offsetDate, dateEdge, days, 'date');
+  }
+  if (months !== 0) {
+    return calculateNewDateWithOffset(offsetDate, dateEdge, months, 'month');
+  }
+  if (years !== 0) {
+    return calculateNewDateWithOffset(offsetDate, dateEdge, years, 'year');
+  }
+
+  return offsetDate;
+};
+
+export const calculateNewDateWithOffset = (
+  offsetDate: Date,
+  dateEdge: Date,
+  offsetValue: number,
+  unit: 'date' | 'month' | 'year',
+): Date => {
+  const newDate = addToDate(offsetDate, offsetValue, unit);
+  const isPositiveOffsetValue = offsetValue > 0;
+  if (isPositiveOffsetValue) {
+    const isMaxDateAfterNewDate = maxDateAndAfter(dateEdge, newDate);
+    return isMaxDateAfterNewDate
+      ? subtractFromDate(dateEdge, offsetValue, unit)
+      : offsetDate;
+  }
+  const isMinDateBeforeNewDate = minDateAndBefore(dateEdge, newDate);
+  return isMinDateBeforeNewDate
+    ? subtractFromDate(dateEdge, offsetValue, unit)
+    : offsetDate;
 };

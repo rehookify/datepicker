@@ -3,8 +3,12 @@ import { useState } from 'react';
 import { describe, expect, test, vi } from 'vitest';
 
 import { useDatePickerState } from '../use-date-picker-state';
-import { getCleanDate, newDate } from '../utils/date';
-import { getNextOffsetDate, setDPOffset } from '../utils/offset';
+import { getCleanDate, newDate, subtractFromDate } from '../utils/date';
+import {
+  getEdgedOffsetDate,
+  getNextOffsetDate,
+  setDPOffset,
+} from '../utils/offset';
 
 describe('setDPOffset', () => {
   test('should set offset without onOffsetChange', () => {
@@ -79,5 +83,65 @@ describe('getNextOffsetDate', () => {
       years: -1,
     });
     expect(testResult4).toEqual(getCleanDate(newDate(2020, 11, 30)));
+  });
+});
+
+describe('getEdgedOffsetDate', () => {
+  test('should return offsetDate when dateEdge is not provided', () => {
+    const offsetDate = newDate(2022, 11, 11);
+    const result = getEdgedOffsetDate(offsetDate, {
+      days: 0,
+      months: 0,
+      years: 0,
+    });
+    expect(result).toEqual(offsetDate);
+  });
+
+  test('should return offsetDate when offsetDate and dateEdge are the same', () => {
+    const offsetDate = newDate(2022, 11, 11);
+    const dateEdge = newDate(2022, 11, 11);
+    const result = getEdgedOffsetDate(
+      offsetDate,
+      { days: 0, months: 0, years: 0 },
+      dateEdge,
+    );
+    expect(result).toEqual(offsetDate);
+  });
+
+  test('should return offsetDate when days, months, and years are all zero', () => {
+    const offsetDate = newDate(2022, 11, 11);
+    const dateEdge = newDate(2022, 11, 12);
+    const result = getEdgedOffsetDate(
+      offsetDate,
+      { days: 0, months: 0, years: 0 },
+      dateEdge,
+    );
+    expect(result).toEqual(offsetDate);
+  });
+
+  test('should return date edge - offsetValue if the offset date + offsetValue is greater then max edge', () => {
+    const offsetDate = newDate(2022, 11, 11);
+    const offsetValue = { days: 0, months: 1, years: 0 };
+    const maxDateEdge = newDate(2022, 11, 12);
+    const result = getEdgedOffsetDate(offsetDate, offsetValue, maxDateEdge);
+    const expectedDate = subtractFromDate(
+      maxDateEdge,
+      offsetValue.months,
+      'month',
+    );
+    expect(result).toEqual(expectedDate);
+  });
+
+  test('should return date edge - offsetValue if the offset date + offsetValue is greater then min edge', () => {
+    const offsetDate = newDate(2022, 11, 11);
+    const offsetValue = { days: 0, months: -1, years: 0 };
+    const minDateEdge = newDate(2022, 10, 12);
+    const result = getEdgedOffsetDate(offsetDate, offsetValue, minDateEdge);
+    const expectedDate = subtractFromDate(
+      minDateEdge,
+      offsetValue.months,
+      'month',
+    );
+    expect(result).toEqual(expectedDate);
   });
 });
