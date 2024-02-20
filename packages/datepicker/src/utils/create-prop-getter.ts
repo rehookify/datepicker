@@ -1,6 +1,7 @@
 import { MouseEvent } from 'react';
 
 import type { DPPropGetter, DPPropsGetterConfig } from '../types';
+import { isWeb } from './platform';
 
 export const createPropGetter = (
   isDisabled: boolean,
@@ -16,9 +17,17 @@ export const createPropGetter = (
         'aria-disabled': true,
       }
     : {
-        onClick(evt: MouseEvent<HTMLElement>) {
-          action(evt);
-        },
+        ...(isWeb
+          ? {
+              onClick(evt: MouseEvent<HTMLElement>) {
+                action(evt);
+              },
+            }
+          : {
+              onPress(evt: any) {
+                action(evt);
+              },
+            }),
       }),
   ...(selected ? { 'aria-selected': true } : {}),
   ...props,

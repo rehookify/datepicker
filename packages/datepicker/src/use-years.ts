@@ -40,11 +40,20 @@ export const useYearsPropGetters: DPUseYearsPropGetters = (dpState) => {
   const yearButton = useCallback(
     (
       { $date, disabled, selected, active }: DPYear,
-      { onClick, disabled: disabledProps, ...rest }: DPPropsGetterConfig = {},
+      {
+        onClick,
+        onPress,
+        disabled: disabledProps,
+        ...rest
+      }: DPPropsGetterConfig = {},
     ) =>
       createPropGetter(
         !!disabledProps || disabled,
-        (evt) => callAll(onClick, skipFirst(setDPOffset(dpState)))(evt, $date),
+        (evt) =>
+          callAll(onClick || onPress, skipFirst(setDPOffset(dpState)))(
+            evt,
+            $date,
+          ),
         {
           ...rest,
           tabIndex: active ? 0 : -1,
@@ -55,7 +64,7 @@ export const useYearsPropGetters: DPUseYearsPropGetters = (dpState) => {
   );
 
   const nextYearsButton = useCallback(
-    ({ onClick, disabled, ...rest }: DPPropsGetterConfig = {}) => {
+    ({ onClick, onPress, disabled, ...rest }: DPPropsGetterConfig = {}) => {
       const endYearDate = newDate(offsetYear + numberOfYears - 1, M, D);
       const isDisabled =
         !!disabled ||
@@ -66,7 +75,7 @@ export const useYearsPropGetters: DPUseYearsPropGetters = (dpState) => {
         isDisabled,
         (evt) =>
           callAll(
-            onClick,
+            onClick || onPress,
             skipAll(() => setYear(dispatch, offsetYear + step)),
           )(evt),
         rest,
@@ -76,7 +85,7 @@ export const useYearsPropGetters: DPUseYearsPropGetters = (dpState) => {
   );
 
   const previousYearsButton = useCallback(
-    ({ onClick, disabled, ...rest }: DPPropsGetterConfig = {}) => {
+    ({ onClick, onPress, disabled, ...rest }: DPPropsGetterConfig = {}) => {
       const isDisabled =
         !!disabled || minDateAndBefore(minDate, newDate(offsetYear, M, D));
 
@@ -84,7 +93,7 @@ export const useYearsPropGetters: DPUseYearsPropGetters = (dpState) => {
         isDisabled,
         (evt) =>
           callAll(
-            onClick,
+            onClick || onPress,
             skipAll(() => setYear(dispatch, offsetYear - step)),
           )(evt),
         rest,
