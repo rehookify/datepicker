@@ -11,6 +11,8 @@ import {
   isBeforeMinYear,
   isBetween,
   isSame,
+  isSameOrAfterMaxYear,
+  isSameOrBeforeMinYear,
   maxDateAndAfter,
   minDateAndBefore,
 } from '../utils/predicates';
@@ -167,5 +169,31 @@ describe('isAfterMaxYear', () => {
     expect(isAfterMaxYear(2022, maxYear)).toBe(false);
     expect(isAfterMaxYear(2023, maxYear)).toBe(false);
     expect(isAfterMaxYear(2024, maxYear)).toBe(true);
+  });
+});
+
+describe('isSameOrAfterMaxYear', () => {
+  test('should return false if maxDate is not exist', () => {
+    expect(isSameOrAfterMaxYear(2022)).toBe(false);
+  });
+
+  test('should return true if year >= maxDate year', () => {
+    const maxYear = newDate(2024, 1, 1);
+    expect(isSameOrAfterMaxYear(2023, maxYear)).toBe(false);
+    expect(isSameOrAfterMaxYear(2024, maxYear)).toBe(true);
+    expect(isSameOrAfterMaxYear(2025, maxYear)).toBe(true);
+  });
+});
+
+describe('isSameOrBeforeMinYear', () => {
+  test('should return false if minYear is not exist', () => {
+    expect(isSameOrBeforeMinYear(2024)).toBe(false);
+  });
+
+  test('should return true if year < minYear', () => {
+    const minYear = newDate(2024, 1, 1);
+    expect(isSameOrBeforeMinYear(2023, minYear)).toBe(true);
+    expect(isSameOrBeforeMinYear(2024, minYear)).toBe(true);
+    expect(isSameOrBeforeMinYear(2025, minYear)).toBe(false);
   });
 });

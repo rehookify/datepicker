@@ -35,3 +35,9 @@ export const isAfterMaxMonth = (month: number, maxDate?: Date): boolean =>
 
 export const isAfterMaxYear = (year: number, maxDate?: Date): boolean =>
   !!maxDate && year > getDateParts(maxDate).Y;
+
+export const isSameOrAfterMaxYear = (year: number, maxDate?: Date): boolean =>
+  !!maxDate && year >= getDateParts(maxDate).Y;
+
+export const isSameOrBeforeMinYear = (year: number, minDate?: Date): boolean =>
+  !!minDate && year <= getDateParts(minDate).Y;
