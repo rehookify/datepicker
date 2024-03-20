@@ -40,6 +40,8 @@ export const HomePage = () => {
     prefersDark.addEventListener('change', (mQ) => toggleDarkTheme(mQ.matches));
   }, []);
 
+  const NOW = new Date();
+
   const [selectedDates, onDatesChange] = useState<Date[]>([]);
   const {
     data: { calendars, weekDays, months, years },
@@ -59,8 +61,8 @@ export const HomePage = () => {
       mode: 'range',
       // toggle: true,
       // selectSameDate: true,
-      minDate: new Date(2000, 0, 1),
-      maxDate: new Date(),
+      minDate: new Date(NOW.getFullYear() - 1, 0, 1),
+      maxDate: NOW,
     },
     calendar: {
       offsets: [-1, 1],
@@ -74,7 +76,7 @@ export const HomePage = () => {
           leftButton={
             <HeaderButton
               {...subtractOffset({ months: 1 })}
-              data-testid="previous-month-button"
+              aria-label="previous month button"
             >
               <ChevronLeft />
             </HeaderButton>
@@ -100,7 +102,7 @@ export const HomePage = () => {
       <Calendar>
         <CalendarHeader>
           <div />
-          <CalendarHeaderTitle data-testid="main-calendar-title">
+          <CalendarHeaderTitle aria-label="current month and year">
             {calendars[0].month} {calendars[0].year}
           </CalendarHeaderTitle>
         </CalendarHeader>
@@ -122,7 +124,7 @@ export const HomePage = () => {
           rightButton={
             <HeaderButton
               {...addOffset({ months: 1 })}
-              data-testid="next-month-button"
+              aria-label="next month button"
             >
               <ChevronRight />
             </HeaderButton>

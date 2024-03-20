@@ -2,9 +2,9 @@ import type { DPDatesConfig, DPLocaleConfig, DPMonth } from '../types';
 import { formatMonthName, getDateParts, newDate } from './date';
 import {
   isAfterMaxMonth,
-  isAfterMaxYear,
   isBeforeMinMonth,
-  isBeforeMinYear,
+  isSameOrAfterMaxYear,
+  isSameOrBeforeMinYear,
 } from './predicates';
 
 export var createMonths = (
@@ -32,10 +32,8 @@ export var createMonths = (
         active: M === i,
         now: i === nM && Y === nY,
         disabled:
-          isBeforeMinMonth(i, minDate) ||
-          isBeforeMinYear(Y, minDate) ||
-          isAfterMaxMonth(i, maxDate) ||
-          isAfterMaxYear(Y, maxDate),
+          (isBeforeMinMonth(i, minDate) && isSameOrBeforeMinYear(Y, minDate)) ||
+          (isAfterMaxMonth(i, maxDate) && isSameOrAfterMaxYear(Y, maxDate)),
       };
     });
 };
