@@ -11,13 +11,13 @@ export const newDate = (Y?: number, M?: number, ...rest: number[]): Date =>
   !Y || M == null ? new Date() : new Date(Y, M, ...rest);
 
 export const getDateParts = (d: Date): DPDateParts => ({
-  D: d.getDate(),
-  M: d.getMonth(),
-  Y: d.getFullYear(),
+  D: new Date(d).getDate(),
+  M: new Date(d).getMonth(),
+  Y: new Date(d).getFullYear(),
 });
 
 // Days in order sun = 0 ... sat = 6
-export const getDay = (d: Date): number => d.getDay();
+export const getDay = (d: Date): number => new Date(d).getDay();
 
 /*
  * We need this function to eliminate time from the comparison.
