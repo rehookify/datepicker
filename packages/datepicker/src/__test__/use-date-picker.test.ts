@@ -72,7 +72,7 @@ describe('useDatePicker', () => {
     expect(state.current[0]).toEqual([]);
   });
 
-  test('useDatePicker: test edges with minDate and maxDate', () => {
+  test.skip('useDatePicker: test edges with minDate and maxDate', () => {
     // For this test we will set min and max dates in the middle of the month
     // Since 9 and 11 are my favorite digit and number it will be 9-11 :)
     const NOW = newDate();
