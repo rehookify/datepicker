@@ -12,8 +12,6 @@ export const ModularContextProvider = () => {
         onDatesChange,
         dates: {
           // mode: 'multiple',
-          minDate: new Date(2024, 6, 9),
-          maxDate: new Date(2024, 6, 11),
         },
         calendar: {
           startDay: 1,

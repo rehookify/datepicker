@@ -17,7 +17,8 @@ import { isSame, maxDateAndAfter, minDateAndBefore } from './utils/predicates';
 
 export const useYears: DPUseYears = ({
   selectedDates,
-  state: { offsetDate, offsetYear },
+  offsetDate,
+  state: { offsetYear },
   config: { years, dates },
 }) =>
   useMemo(
@@ -29,7 +30,8 @@ export const useYears: DPUseYears = ({
 
 export const useYearsPropGetters: DPUseYearsPropGetters = (dpState) => {
   const {
-    state: { offsetYear, offsetDate },
+    offsetDate,
+    state: { offsetYear },
     config: { dates, years: yearsConfig },
     dispatch,
   } = dpState;
