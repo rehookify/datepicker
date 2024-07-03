@@ -14,13 +14,13 @@ export var createMonths = (
   { minDate, maxDate }: DPDatesConfig,
 ): DPMonth[] => {
   // 12 is a number of months in the year
-  const { M, Y } = getDateParts(offsetDate);
+  const { M, Y, D } = getDateParts(offsetDate);
   const { Y: nY, M: nM } = getDateParts(newDate());
 
   return Array(12)
     .fill(0)
     .map((_, i) => {
-      const $date = newDate(Y, i, 1);
+      const $date = newDate(Y, i, D);
 
       return {
         $date,
