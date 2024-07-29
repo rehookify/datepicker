@@ -20,7 +20,7 @@ Here is a quick guide to doing code contributions to the library.
 
 5. Run all packages in dev mode:
 
-   > pnpm i
+   > pnpm dev
 
 6. If you've added a code that should be tested, ensure the test suite still passes.
 
