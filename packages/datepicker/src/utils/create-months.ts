@@ -1,5 +1,5 @@
 import type { DPDatesConfig, DPLocaleConfig, DPMonth } from '../types';
-import { formatMonthName, getDateParts, newDate } from './date';
+import { daysInMonth, formatMonthName, getDateParts, newDate } from './date';
 import {
   isAfterMaxMonth,
   isBeforeMinMonth,
@@ -13,14 +13,16 @@ export var createMonths = (
   locale: DPLocaleConfig,
   { minDate, maxDate }: DPDatesConfig,
 ): DPMonth[] => {
-  // 12 is a number of months in the year
   const { M, Y, D } = getDateParts(offsetDate);
   const { Y: nY, M: nM } = getDateParts(newDate());
 
+  // 12 is a number of months in the year
   return Array(12)
     .fill(0)
     .map((_, i) => {
-      const $date = newDate(Y, i, D);
+      // Prevent situation when previous month has less days than current March -> February
+      const maxMonthDate = daysInMonth(newDate(Y, i, 1));
+      const $date = newDate(Y, i, D > maxMonthDate ? maxMonthDate : D);
 
       return {
         $date,

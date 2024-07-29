@@ -1,6 +1,6 @@
 {
   "name": "datepicker",
-  "version": "6.6.1",
+  "version": "6.6.6",
   "description": "The ultimate tool to create a date, range and time picker in your React applications.",
   "scripts": {
     "clean": "rimraf node_modules",
@@ -40,6 +40,7 @@
   },
   "homepage": "https://github.com/rehookify/datepicker#readme",
   "devDependencies": {
+    "@eslint/compat": "^1.1.1",
     "@testing-library/react": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
@@ -62,6 +63,6 @@
     ]
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   }
 }
