@@ -141,7 +141,9 @@ describe('formatMonthName', () => {
     expect(formatMonthName(testDate, DEFAULT_LOCALE_CONFIG)).toBe('November');
     // Short version of Ukrainian "листопад"
     // Note node 16 has value "лис" and node 18+ has value "лист."
-    expect(formatMonthName(testDate, ALTERNATIVE_LOCALE_CONFIG)).toMatch(/лис/);
+    expect(formatMonthName(testDate, ALTERNATIVE_LOCALE_CONFIG)).toMatch(
+      /^лис/,
+    );
   });
 });
 
