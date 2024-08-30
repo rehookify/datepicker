@@ -1,6 +1,6 @@
 {
   "name": "datepicker",
-  "version": "6.6.6",
+  "version": "6.6.7",
   "description": "The ultimate tool to create a date, range and time picker in your React applications.",
   "scripts": {
     "clean": "rimraf node_modules",
@@ -63,6 +63,6 @@
     ]
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=16"
   }
 }
