@@ -20,8 +20,8 @@ describe('setDPOffset', () => {
       }),
     );
 
-    act(() => setDPOffset(result.current)(d)),
-      expect(result.current.offsetDate).toEqual(d);
+    act(() => setDPOffset(result.current)(d));
+    expect(result.current.offsetDate).toEqual(d);
   });
 
   test('should set offset with onOffsetChange', () => {

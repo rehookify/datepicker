@@ -1,67 +1,75 @@
-import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import reactHooks from "eslint-plugin-react-hooks";
-import simpleImportSort from "eslint-plugin-simple-import-sort";
-import prettier from "eslint-plugin-prettier";
-import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+import { fixupPluginRules } from '@eslint/compat';
+import js from '@eslint/js';
+import playwright from 'eslint-plugin-playwright';
+import prettier from 'eslint-plugin-prettier/recommended';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import tseslint from 'typescript-eslint';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
-
-export default [{
-    ignores: ["node_modules", "dist", "rollup"],
-}, ...fixupConfigRules(compat.extends(
-    "plugin:playwright/recommended",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react-hooks/recommended",
-    "prettier",
-)), {
+export default tseslint.config(
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    name: 'ignore',
+    ignores: [
+      'node_modules',
+      '**/dist',
+      '**/rollup',
+      '**/node_modules',
+      '**/babel.config.js',
+    ],
+  },
+  {
+    name: 'main',
     plugins: {
-        "@typescript-eslint": fixupPluginRules(typescriptEslint),
-        "react-hooks": fixupPluginRules(reactHooks),
-        "simple-import-sort": simpleImportSort,
-        prettier,
+      react,
+      'react-hooks': fixupPluginRules(reactHooks),
     },
 
     languageOptions: {
-        parser: tsParser,
-        ecmaVersion: 2020,
-        sourceType: "module",
+      ecmaVersion: 2020,
+      sourceType: 'module',
 
-        parserOptions: {
-            ecmaFeatures: {
-                jsx: true,
-            },
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
         },
+      },
     },
 
     settings: {
-        react: {
-            pragma: "React",
-            version: "detect",
-        },
+      react: {
+        pragma: 'React',
+        version: 'detect',
+      },
     },
 
     rules: {
-        "prettier/prettier": "error",
-        "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error",
-        "no-var": 0,
+      'no-var': 0,
     },
-}, {
-    files: ["**/*.test.ts", "**/*.test.tsx"],
-
+  },
+  {
+    name: 'simple-import-sort',
+    plugins: {
+      'simple-import-sort': simpleImportSort,
+    },
     rules: {
-        "@typescript-eslint/ban-ts-comment": "off",
+      'simple-import-sort/exports': 'error',
+      'simple-import-sort/imports': 'error',
     },
-}];
+  },
+  {
+    name: 'typescript',
+    files: ['**/*.test.ts', '**/*.test.tsx'],
+    rules: {
+      '@typescript-eslint/ban-ts-comment': 'off',
+    },
+  },
+  {
+    name: 'playwright',
+    ...playwright.configs['flat/recommended'],
+    files: ['./packages/examples-e2e/test/*.spec.ts'],
+  },
+  prettier,
+);
